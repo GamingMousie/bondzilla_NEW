@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 // Import Geist fonts using named import syntax
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import './globals.css';
+import './globals.css'; // Ensure this path is correct
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
 import { WarehouseProvider } from '@/contexts/WarehouseContext';
