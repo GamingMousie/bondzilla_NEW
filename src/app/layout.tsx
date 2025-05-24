@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 // Import Geist fonts using named import syntax
 import { GeistSans } from 'geist/font/sans';
-// import { GeistMono } from 'geist/font/mono'; // Temporarily removed for diagnostics
+import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
@@ -21,8 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     // Apply font variable classes directly to the <html> tag.
-    // Temporarily removed GeistMono.variable for diagnostics
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       {/*
         Styling like antialiasing and base font-family is applied in globals.css to the html selector.
         The body tag below only needs to contain the application structure.
