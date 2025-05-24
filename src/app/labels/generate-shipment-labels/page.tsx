@@ -110,7 +110,7 @@ export default function GenerateShipmentLabelsPage() {
                   id="trailerId"
                   value={trailerIdInput}
                   onChange={(e) => setTrailerIdInput(e.target.value)}
-                  placeholder="Enter Trailer ID (e.g., T-001)"
+                  placeholder="Enter Trailer ID (e.g., STS2910)"
                   className="pl-10"
                   onKeyDown={(e) => { if (e.key === 'Enter') handleGenerateLabels();}}
                 />
