@@ -32,11 +32,12 @@ interface WarehouseContextType {
 const WarehouseContext = createContext<WarehouseContextType | undefined>(undefined);
 
 const TRAILER_STATUSES: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
-const COMPANIES = ["LogiCorp", "FastHaul", "GlobalTrans", "ShipSwift", "CargoLink"];
-const IMPORTERS = ["ImpAlpha Co", "ImpBeta Ltd", "ImpGamma Inc", "ImpDelta LLC", "ImpEpsilon Group"];
-const EXPORTERS = ["ExpZeta Co", "ExpEta Ltd", "ExpTheta Inc", "ExpIota LLC", "ExpKappa Group"];
-const LOCATION_PREFIXES = ["Bay ", "Shelf ", "Zone ", "Rack ", "Aisle ", "Area ", "Dock ", "Staging "];
-const LOCATION_SUFFIXES = ["A1", "B2-Top", "C3-Low", "D4", "E5-Mid", "F6", "G7-East", "H8-West", "J9", "K10"];
+const COMPANIES = ["LogiCorp", "FastHaul", "GlobalTrans", "ShipSwift", "CargoLink", "ReliableFreight", "SpeedyTransCo", "PioneerLogistics"];
+const IMPORTERS = ["ImpAlpha Co", "ImpBeta Ltd", "ImpGamma Inc", "ImpDelta LLC", "ImpEpsilon Group", "ImpZeta Corp", "ImpEta Solutions", "ImpTheta Global"];
+const EXPORTERS = ["ExpZeta Co", "ExpEta Ltd", "ExpTheta Inc", "ExpIota LLC", "ExpKappa Group", "ExpLambda Exports", "ExpMu Trading", "ExpNu Intl."];
+const LOCATION_PREFIXES = ["Bay ", "Shelf ", "Zone ", "Rack ", "Aisle ", "Area ", "Dock ", "Staging ", "Upper ", "Lower ", "East ", "West "];
+const LOCATION_SUFFIXES = ["A1", "B2-Top", "C3-Low", "D4", "E5-Mid", "F6", "G7-East", "H8-West", "J9", "K10", "L11", "M12"];
+const TRAILER_NAMES_PREFIX = ["Titan", "Voyager", "Goliath", "Pioneer", "Sprinter", "Juggernaut", "Comet", "Stallion"];
 
 const getRandomElement = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 const getRandomNumber = (min: number, max: number, isInt = true): number => {
@@ -71,14 +72,14 @@ const generateRandomLocations = (): LocationInfo[] => {
 
 const newInitialTrailers: Trailer[] = [];
 const newInitialShipments: Shipment[] = [];
-const baseTrailerIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994"];
+const baseTrailerIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994", "STS2995", "STS2996", "STS2997", "STS2998", "STS2999"];
 let stsJobCounter = 10001;
 
 baseTrailerIds.forEach((trailerId, index) => {
-  const arrivalDate = getRandomDate(-5, 5);
+  const arrivalDate = getRandomDate(-10, 10);
   const newTrailer: Trailer = {
     id: trailerId,
-    name: `${getRandomElement(["Alpha", "Bravo", "Charlie", "Delta", "Echo"])} Hauler ${index + 1}`,
+    name: `${getRandomElement(TRAILER_NAMES_PREFIX)} Hauler ${index + 1}`,
     status: getRandomElement(TRAILER_STATUSES),
     company: getRandomElement(COMPANIES),
     arrivalDate: arrivalDate,
@@ -86,10 +87,10 @@ baseTrailerIds.forEach((trailerId, index) => {
     weight: getRandomNumber(2500, 5500, false),
     customField1: getRandomBoolean() ? `T1A-${getRandomNumber(100, 999)}` : undefined,
     customField2: getRandomBoolean() ? `T1B-${getRandomNumber(100, 999)}` : undefined,
-    outturnReportDocumentName: getRandomBoolean() ? `${trailerId}_outturn.pdf` : null,
-    t1SummaryDocumentName: getRandomBoolean() ? `${trailerId}_t1.pdf` : null,
-    manifestDocumentName: getRandomBoolean() ? `${trailerId}_manifest.pdf` : null,
-    acpDocumentName: getRandomBoolean() ? `ACP_${trailerId}_${new Date().getTime()}.pdf` : null,
+    outturnReportDocumentName: getRandomBoolean() ? `${trailerId}_outturn_${uuidv4().substring(0,4)}.pdf` : null,
+    t1SummaryDocumentName: getRandomBoolean() ? `${trailerId}_t1_${uuidv4().substring(0,4)}.pdf` : null,
+    manifestDocumentName: getRandomBoolean() ? `${trailerId}_manifest_${uuidv4().substring(0,4)}.pdf` : null,
+    acpDocumentName: getRandomBoolean() ? `ACP_${trailerId}_${new Date().getTime().toString().slice(-5)}.pdf` : null,
   };
   newInitialTrailers.push(newTrailer);
 
@@ -107,8 +108,8 @@ baseTrailerIds.forEach((trailerId, index) => {
       importer: getRandomElement(IMPORTERS),
       exporter: getRandomElement(EXPORTERS),
       locations: generateRandomLocations(),
-      releaseDocumentName: isReleased ? `release_doc_${stsJobCounter}.pdf` : undefined,
-      clearanceDocumentName: isCleared ? `clearance_doc_${stsJobCounter}.pdf` : undefined,
+      releaseDocumentName: isReleased ? `release_doc_${stsJobCounter}_${uuidv4().substring(0,4)}.pdf` : undefined,
+      clearanceDocumentName: isCleared ? `clearance_doc_${stsJobCounter}_${uuidv4().substring(0,4)}.pdf` : undefined,
       released: isReleased,
       cleared: isCleared,
       weight: getRandomNumber(100, 2000, false),
@@ -348,3 +349,4 @@ export const useWarehouse = (): WarehouseContextType => {
   }
   return context;
 };
+
