@@ -7,7 +7,10 @@ import './globals.css'; // Ensure this path is correct
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
 import { WarehouseProvider } from '@/contexts/WarehouseContext';
-// import { cn } from "@/lib/utils"; // Not currently used
+
+// This line helps ensure the font modules are processed by Next.js
+// and their CSS variables (--font-geist-sans, --font-geist-mono) become globally available.
+const M_ENSURE_FONT_IMPORTS = [GeistSans, GeistMono];
 
 export const metadata: Metadata = {
   title: 'ShipShape - Warehouse Management',
@@ -20,13 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Apply font variable classes directly to the <html> tag.
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      {/*
-        Styling like antialiasing and base font-family is applied in globals.css to the html selector.
-        The body tag below only needs to contain the application structure.
-      */}
-      <body> {/* Styled by globals.css */}
+    // No className on <html> here. Font variables are globally available via import.
+    // globals.css handles applying font-family and antialiasing to the html element.
+    <html lang="en">
+      {/* No className on <body> here. globals.css handles base body styling. */}
+      <body>
         <WarehouseProvider>
           <Header />
           <main className="container mx-auto px-4 py-8">

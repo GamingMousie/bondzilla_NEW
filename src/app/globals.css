@@ -14,24 +14,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 180 100% 25%; /* Teal - HSL for #008080 */
+    --primary: 222.2 47.4% 11.2%; /* Standard Blue Primary */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 0 0% 96.1%; /* Light Gray */
+    --secondary: 210 40% 96.1%; /* Light Gray */
     --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 0 0% 96.1%;
+    --muted:  210 40% 96.1%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 180 80% 35%; /* A slightly brighter teal for accents if needed */
-    --accent-foreground: 0 0% 100%;
+    --accent: 210 40% 96.1%;  /* Standard Blue Accent */
+    --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 89.8%; /* Lighter gray for borders */
     --input: 0 0% 89.8%;
-    --ring: 180 100% 25%; /* Teal for focus rings */
+    --ring: 222.2 47.4% 11.2%; /* Standard Blue for focus rings */
 
     --radius: 0.5rem;
 
@@ -63,7 +63,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 180 90% 65%; /* Lighter Teal for dark mode */
+    --primary: 217.2 91.2% 59.8%; /* Lighter Blue for dark mode */
     --primary-foreground: 240 5.9% 10%;
 
     --secondary: 240 3.7% 15.9%;
@@ -72,15 +72,15 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 180 70% 55%; /* Brighter Teal accent for dark mode */
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 217.2 91.2% 59.8%; /* Lighter Blue accent for dark mode */
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 180 80% 55%; /* Lighter Teal for dark mode focus rings */
+    --ring: 217.2 91.2% 59.8%; /* Lighter Blue for dark mode focus rings */
 
     /* Chart colors for dark mode */
     --chart-1: 210 70% 80%;
@@ -287,3 +287,4 @@
 html {
   scroll-padding-top: 4rem; /* Adjust based on your fixed header's height */
 }
+
