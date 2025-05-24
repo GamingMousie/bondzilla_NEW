@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText, Search, Printer, AlertTriangle, PackageSearch } from 'lucide-react';
+import { FileText, Search, Download, AlertTriangle, PackageSearch } from 'lucide-react'; // Changed Printer to Download
 import { format, parseISO } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -52,7 +52,7 @@ export default function GenerateShipmentLabelsPage() {
 
     if (shipments.length === 0) {
       setErrorMessage(`No shipments found for Trailer ID "${trailer.id}".`);
-      setSelectedTrailer(trailer); 
+      setSelectedTrailer(trailer);
       setShipmentsToLabel([]);
       setIsLoading(false);
       return;
@@ -63,16 +63,28 @@ export default function GenerateShipmentLabelsPage() {
     setIsLoading(false);
   };
 
-  const handlePrintLabels = () => {
+  const handleDownloadAllImages = async () => {
     if (shipmentsToLabel.length > 0 && selectedTrailer) {
-      window.print();
+      const downloadButtons = document.querySelectorAll('.individual-label-download-button');
+      if (downloadButtons.length > 0) {
+        for (let i = 0; i < downloadButtons.length; i++) {
+          (downloadButtons[i] as HTMLElement).click();
+          // Add a small delay to ensure downloads are initiated properly
+          // and to avoid overwhelming the browser if there are many labels.
+          if (i < downloadButtons.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+          }
+        }
+      } else {
+        // This case should ideally not be reached if labels are displayed
+        alert("No download buttons found for the labels. This might be an issue.");
+      }
     }
   };
 
   const getLabelDate = (trailer: Trailer | null): string => {
     if (!isClient) return '';
-    // Format date as DD/MM/YYYY
-    const dateFormat = 'dd/MM/yyyy'; 
+    const dateFormat = 'dd/MM/yyyy';
     if (trailer && trailer.arrivalDate) {
       try {
         return format(parseISO(trailer.arrivalDate), dateFormat);
@@ -83,7 +95,7 @@ export default function GenerateShipmentLabelsPage() {
     }
     return format(new Date(), dateFormat);
   };
-  
+
   const labelDateForShipments = selectedTrailer ? getLabelDate(selectedTrailer) : getLabelDate(null);
 
   return (
@@ -145,7 +157,7 @@ export default function GenerateShipmentLabelsPage() {
           <AlertDescription>{errorMessage}</AlertDescription>
         </Alert>
       )}
-      
+
       {selectedTrailer && shipmentsToLabel.length === 0 && !errorMessage && !isLoading && (
          <div className="text-center py-10 bg-card rounded-lg shadow no-print">
             <PackageSearch className="mx-auto h-12 w-12 text-muted-foreground" />
@@ -160,14 +172,14 @@ export default function GenerateShipmentLabelsPage() {
             <h2 className="text-xl font-bold text-foreground">
               Labels for Trailer: {selectedTrailer.name || 'N/A'} (ID: {selectedTrailer.id}) - {shipmentsToLabel.length} Shipment(s)
             </h2>
-            <Button onClick={handlePrintLabels} variant="outline">
-              <Printer className="mr-2 h-4 w-4" />
-              Print All Displayed Labels
+            <Button onClick={handleDownloadAllImages} variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Download All Labels as Images
             </Button>
           </div>
         </div>
       )}
-      
+
       {/* Section for labels - visible on screen and for printing */}
       <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 printable-area label-grid ${(!isLoading && selectedTrailer && shipmentsToLabel.length > 0) ? '' : 'hidden print:hidden'}`} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(150mm, 1fr))' }}>
         {isClient && selectedTrailer && shipmentsToLabel.length > 0 && !isLoading &&
@@ -193,4 +205,3 @@ export default function GenerateShipmentLabelsPage() {
     </div>
   );
 }
-

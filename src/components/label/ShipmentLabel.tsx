@@ -17,7 +17,7 @@ interface ShipmentLabelProps {
 // Helper function to parse print classes and apply them as inline styles
 const applyCaptureStyles = (clonedElement: HTMLElement, originalElement: HTMLElement) => {
   const printClasses = Array.from(originalElement.classList).filter(cls => cls.startsWith('print:'));
-  
+
   const screenTextSizeClasses = ['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl', 'text-6xl'];
   screenTextSizeClasses.forEach(cls => clonedElement.classList.remove(cls));
 
@@ -36,7 +36,7 @@ const applyCaptureStyles = (clonedElement: HTMLElement, originalElement: HTMLEle
     } else if (pClass.startsWith('print:mb-')) {
       const mbMatch = pClass.match(/print:mb-(\d+(\.\d+)?)/);
       if (mbMatch && mbMatch[1]) {
-        clonedElement.style.marginBottom = `${parseFloat(mbMatch[1]) * 4}px`; 
+        clonedElement.style.marginBottom = `${parseFloat(mbMatch[1]) * 4}px`;
       }
     } else if (pClass.startsWith('print:mt-')) {
       const mtMatch = pClass.match(/print:mt-(\d+(\.\d+)?)/);
@@ -102,35 +102,35 @@ const applyCaptureStyles = (clonedElement: HTMLElement, originalElement: HTMLEle
 
 
 export default function ShipmentLabel({ shipment, trailer, labelDate }: ShipmentLabelProps) {
-  const barcodeValue = shipment.id || 'error-no-id'; 
+  const barcodeValue = shipment.id || 'error-no-id';
   const labelRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadImage = async () => {
     if (!labelRef.current) return;
-    
-    const targetWidthPx = Math.round((15 / 2.54) * 150);  // approx 886px for 15cm
-    const targetHeightPx = Math.round((10.8 / 2.54) * 150); // approx 638px for 10.8cm
+
+    const targetWidthPx = Math.round((15 / 2.54) * 150);  // approx 886px for 15cm width
+    const targetHeightPx = Math.round((10.8 / 2.54) * 150); // approx 638px for 10.8cm height
 
     try {
       const canvas = await html2canvas(labelRef.current, {
         useCORS: true,
         backgroundColor: '#ffffff',
-        width: targetWidthPx, 
+        width: targetWidthPx,
         height: targetHeightPx,
-        scale: 2, // Renders at 2x then scales down for sharpness
-        logging: false, 
+        scale: 2,
+        logging: false,
         onclone: (documentClone) => {
           const clonedLabelRoot = documentClone.getElementById(labelRef.current?.id || '');
           if (clonedLabelRoot && labelRef.current) {
             clonedLabelRoot.style.width = `${targetWidthPx}px`;
             clonedLabelRoot.style.height = `${targetHeightPx}px`;
-            clonedLabelRoot.style.padding = `${0.375 * 16}px`; // approx 1.5mm if 1rem=16px (print:p-1.5)
+            clonedLabelRoot.style.padding = `${0.375 * 16}px`;
             clonedLabelRoot.style.border = '1px solid black';
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
-            clonedLabelRoot.style.justifyContent = 'space-between'; 
-            clonedLabelRoot.style.backgroundColor = '#ffffff'; 
-            clonedLabelRoot.style.color = '#000000'; 
+            clonedLabelRoot.style.justifyContent = 'space-between';
+            clonedLabelRoot.style.backgroundColor = '#ffffff';
+            clonedLabelRoot.style.color = '#000000';
             clonedLabelRoot.style.boxSizing = 'border-box';
             clonedLabelRoot.style.lineHeight = 'normal';
 
@@ -147,14 +147,14 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
                 }
               });
             };
-            
+
             const originalDirectChildren = Array.from(labelRef.current.children) as HTMLElement[];
             const clonedDirectChildren = Array.from(clonedLabelRoot.children) as HTMLElement[];
 
             originalDirectChildren.forEach((origChild, index) => {
                 if(clonedDirectChildren[index]) {
-                    applyCaptureStyles(clonedDirectChildren[index], origChild); 
-                    applyStylesToChildren(origChild, clonedDirectChildren[index]); 
+                    applyCaptureStyles(clonedDirectChildren[index], origChild);
+                    applyStylesToChildren(origChild, clonedDirectChildren[index]);
                 }
             });
           }
@@ -171,63 +171,63 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
       console.error('Error generating image:', error);
     }
   };
-  
+
   const trailerIdDisplay = trailer.id || 'N/A';
   const companyDisplay = trailer.company || 'N/A';
 
   return (
     <div className="flex flex-col items-center group">
-      <div 
+      <div
         ref={labelRef}
         id={`shipment-label-${shipment.id}`}
-        className="border border-foreground rounded-md shadow-sm w-full bg-background text-foreground 
-                   print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5 
+        className="border border-foreground rounded-md shadow-sm w-full bg-background text-foreground
+                   print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
                    print:break-words label-item flex flex-col justify-between print:leading-normal print-page-break-after-always"
       >
         {/* Main content area */}
-        <div className="flex-grow flex flex-col print:leading-normal"> {/* Removed justify-around */}
+        <div className="flex-grow flex flex-col print:leading-normal">
           {/* Date row */}
-          <div className="flex justify-between items-baseline print:mb-1">
+          <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[28pt] print:font-semibold">Date:</span>
             <span className="text-sm print:text-[28pt] print:font-semibold text-right">{labelDate}</span>
           </div>
 
           {/* Agent row */}
-          <div className="flex justify-between items-baseline print:mb-1">
+          <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[32pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
-          
+
           {/* Importer row */}
-          <div className="flex justify-between items-baseline print:mb-1">
+          <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[32pt] print:font-semibold">Importer:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
 
           {/* Pieces row */}
-          <div className="flex justify-between items-baseline print:mb-2">
-            <span className="text-sm print:text-[22pt] print:font-semibold">Pieces:</span> {/* Label for pieces */}
+          <div className="flex justify-between items-baseline print:mb-1">
+            <span className="text-sm print:text-[32pt] print:font-semibold">Pieces:</span>
             <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
-          
+
           {/* Ref/Job row */}
-          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-1" title={`Tr: ${trailerIdDisplay} / Job: ${shipment.stsJob}`}>
+          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-0.5" title={`Tr: ${trailerIdDisplay} / Job: ${shipment.stsJob}`}>
             Ref: {trailerIdDisplay} / Job: {shipment.stsJob}
           </p>
         </div>
 
         {/* Barcode Section - Bottom part of the label */}
-        <div className="mt-auto pt-1 border-t border-dashed border-muted-foreground print:border-black print:mt-1 print:pt-0.5 print:mb-0"> 
+        <div className="mt-auto pt-1 border-t border-dashed border-muted-foreground print:border-black print:mt-0.5 print:pt-0.5 print:mb-0">
           <div className="flex justify-center items-center mt-0.5 print:mt-0.5">
-             <Barcode 
-                value={barcodeValue} 
-                format="CODE128" 
-                width={1.8} 
-                height={45} 
+             <Barcode
+                value={barcodeValue}
+                format="CODE128"
+                width={1.8} // Adjusted for better clarity within the new dimensions
+                height={45} // Adjusted for better clarity
                 displayValue={false}
                 background="transparent"
                 lineColor="black"
-                margin={0} 
+                margin={0}
              />
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         onClick={handleDownloadImage}
         variant="outline"
         size="sm"
-        className="mt-2 no-print transition-opacity duration-150" 
+        className="mt-2 no-print transition-opacity duration-150 individual-label-download-button" // Added class here
         aria-label={`Download label for shipment ${shipment.stsJob} as image`}
       >
         <Download className="mr-2 h-4 w-4" />
