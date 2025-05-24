@@ -5,8 +5,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 0 0% 100%; /* White */
+    --foreground: 240 10% 3.9%; /* Dark Gray - almost black */
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -14,24 +14,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 180 100% 25%; /* Teal - HSL for #008080 */
+    --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 240 4.8% 95.9%;
+    --secondary: 0 0% 96.1%; /* Light Gray */
     --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 240 4.8% 95.9%;
+    --muted: 0 0% 96.1%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 180 80% 35%; /* A slightly brighter teal for accents if needed */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%; /* Adjusted for neutral theme, often same as primary or darker */
+    --border: 0 0% 89.8%; /* Lighter gray for borders */
+    --input: 0 0% 89.8%;
+    --ring: 180 100% 25%; /* Teal for focus rings */
 
     --radius: 0.5rem;
 
@@ -42,9 +42,9 @@
     --chart-4: 280 65% 60%;
     --chart-5: 350 75% 50%;
 
-    /* Sidebar colors */
-    --sidebar-background: 240 10% 3.9%; /* Dark background for sidebar */
-    --sidebar-foreground: 0 0% 98%; /* Light foreground for sidebar */
+    /* Sidebar colors - Kept original as per previous requirements */
+    --sidebar-background: 240 10% 3.9%; 
+    --sidebar-foreground: 0 0% 98%; 
     --sidebar-primary: 0 0% 98%;
     --sidebar-primary-foreground: 240 5.9% 10%;
     --sidebar-accent: 240 3.7% 15.9%;
@@ -63,7 +63,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
+    --primary: 180 90% 65%; /* Lighter Teal for dark mode */
     --primary-foreground: 240 5.9% 10%;
 
     --secondary: 240 3.7% 15.9%;
@@ -72,15 +72,15 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 180 70% 55%; /* Brighter Teal accent for dark mode */
+    --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --ring: 180 80% 55%; /* Lighter Teal for dark mode focus rings */
 
     /* Chart colors for dark mode */
     --chart-1: 210 70% 80%;
@@ -89,8 +89,8 @@
     --chart-4: 290 65% 75%;
     --chart-5: 350 75% 70%;
     
-    /* Sidebar colors for dark mode */
-    --sidebar-background: 240 10% 3.9%; /* Consistent with main dark background */
+    /* Sidebar colors for dark mode - Kept original */
+    --sidebar-background: 240 10% 3.9%; 
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 0 0% 98%;
     --sidebar-primary-foreground: 240 5.9% 10%;
@@ -102,13 +102,13 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html {
+    @apply antialiased;
+    font-family: var(--font-geist-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-geist-sans);
-    font-feature-settings: "rlig" 1, "calt" 1;
   }
   pre, code, kbd, samp {
     font-family: var(--font-geist-mono);
@@ -230,8 +230,15 @@
   .print\:p-2 { padding: 0.5rem !important; }
   .print\:p-3 { padding: 0.75rem !important; }
   
+  .print\:text-\[52pt\] { font-size: 52pt !important; }
+  .print\:text-\[48pt\] { font-size: 48pt !important; }
+  .print\:text-\[44pt\] { font-size: 44pt !important; }
+  .print\:text-\[40pt\] { font-size: 40pt !important; }
+  .print\:text-\[36pt\] { font-size: 36pt !important; }
+  .print\:text-\[32pt\] { font-size: 32pt !important; }
   .print\:text-\[28pt\] { font-size: 28pt !important; }
   .print\:text-\[22pt\] { font-size: 22pt !important; }
+  .print\:text-\[20pt\] { font-size: 20pt !important; }
   .print\:text-\[18pt\] { font-size: 18pt !important; }
   .print\:text-\[16pt\] { font-size: 16pt !important; }
   .print\:text-\[14pt\] { font-size: 14pt !important; }
@@ -244,11 +251,6 @@
   .print\:text-\[5\.5pt\] { font-size: 5.5pt !important; }
   .print\:text-\[5pt\] { font-size: 5pt !important; }
   .print\:text-\[4\.5pt\] { font-size: 4.5pt !important; }
-
-  .print\:text-\[32pt\] { font-size: 32pt !important; }
-  .print\:text-\[36pt\] { font-size: 36pt !important; }
-  .print\:text-\[40pt\] { font-size: 40pt !important; }
-  .print\:text-\[48pt\] { font-size: 48pt !important; }
   
   .print\:mb-0\.5 { margin-bottom: 0.125rem !important; }
   .print\:mb-1 { margin-bottom: 0.25rem !important; }
@@ -285,4 +287,3 @@
 html {
   scroll-padding-top: 4rem; /* Adjust based on your fixed header's height */
 }
-
