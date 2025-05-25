@@ -6,9 +6,9 @@ import { useWarehouse } from '@/contexts/WarehouseContext';
 import type { Shipment, Trailer } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label'; // Corrected import
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ClipboardList, PackageSearch, Download, Printer } from 'lucide-react';
+import { ClipboardList, PackageSearch, Download } from 'lucide-react';
 import ShipmentLabel from '@/components/label/ShipmentLabel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format, parseISO } from 'date-fns';
@@ -66,10 +66,6 @@ export default function GenerateShipmentLabelsPage() {
       setShipmentsToLabel([]);
     }
     setIsLoading(false);
-  };
-
-  const handlePrintLabels = () => {
-    window.print();
   };
 
   const handleDownloadAllImages = async () => {
@@ -143,9 +139,7 @@ export default function GenerateShipmentLabelsPage() {
             <Button onClick={handleDownloadAllImages} variant="outline">
               <Download className="mr-2 h-4 w-4" /> Download All Labels as Images
             </Button>
-            <Button onClick={handlePrintLabels}>
-              <Printer className="mr-2 h-4 w-4" /> Print All Displayed Labels
-            </Button>
+            {/* Removed Print All Displayed Labels button */}
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-10 print:block print:space-y-0 print:gap-0 label-grid">
             {shipmentsToLabel.map((shipment) => (
