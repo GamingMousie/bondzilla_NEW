@@ -6,7 +6,7 @@ import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Barcode } from 'react-barcode';
+import { Barcode } from 'react-barcode'; // Ensure this import is present
 
 interface ShipmentLabelProps {
   shipment: Shipment;
@@ -129,7 +129,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
             clonedLabelRoot.style.border = '1px solid black';
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
-            clonedLabelRoot.style.justifyContent = 'space-between';
+            clonedLabelRoot.style.justifyContent = 'space-between'; // Changed from 'around'
             clonedLabelRoot.style.backgroundColor = '#ffffff'; // Ensure white background
             clonedLabelRoot.style.color = '#000000'; // Ensure black text
             clonedLabelRoot.style.boxSizing = 'border-box';
@@ -167,7 +167,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
       const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.href = image;
-      link.download = `label-${trailer?.id || 'unknown_trailer'}-${shipment.stsJob}.png`;
+      link.download = `label-${trailer.id || 'unknown_trailer'}-${shipment.stsJob}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -176,8 +176,8 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
     }
   };
 
-  const trailerIdDisplay = trailer?.id || 'N/A';
-  const companyDisplay = trailer?.company || 'N/A';
+  const trailerIdDisplay = trailer.id || 'N/A';
+  const companyDisplay = trailer.company || 'N/A';
 
   return (
     <div className="flex flex-col items-center group">
@@ -188,34 +188,34 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
                    label-item flex flex-col print:leading-normal print-page-break-after-always"
       >
-        {/* Main content area, with justify-between for print to spread content */}
-        <div className="flex-grow flex flex-col justify-between print:leading-normal print:space-y-0 p-1 print:p-0">
+        {/* Main content area */}
+        <div className="flex-grow flex flex-col print:leading-normal p-1 print:p-0">
           {/* Date row */}
-          <div className="flex justify-between items-baseline print:mb-0">
+          <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[28pt] print:font-semibold">Date:</span>
             <span className="text-sm print:text-[28pt] print:font-semibold text-right">{labelDate}</span>
           </div>
 
           {/* Agent row */}
-          <div className="flex justify-between items-baseline print:mb-0">
-            <span className="text-sm print:text-[32pt] print:font-semibold">Agent:</span>
+          <div className="flex justify-between items-baseline print:mb-0.5">
+            <span className="text-sm print:text-[22pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
 
           {/* Importer row */}
-          <div className="flex justify-between items-baseline print:mb-0">
+          <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[18pt] print:font-semibold">Importer:</span>
-            <span className="text-sm print:text-[28pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
+            <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
 
           {/* Pieces row */}
-          <div className="flex justify-between items-baseline print:mb-0">
+          <div className="flex justify-between items-baseline print:mb-1">
             <span className="text-sm print:text-[18pt] print:font-semibold">Pieces:</span>
-            <span className="text-lg print:text-[36pt] print:font-bold text-right">{shipment.quantity}</span>
+            <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
           {/* Ref/Job row */}
-          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-0" title={`Tr: ${trailerIdDisplay} / Job: ${shipment.stsJob}`}>
+          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-1">
             {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
