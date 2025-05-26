@@ -6,7 +6,7 @@ import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import Barcode from 'react-barcode';
+import { Barcode } from 'react-barcode';
 
 interface ShipmentLabelProps {
   shipment: Shipment;
@@ -114,25 +114,27 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
     try {
       const canvas = await html2canvas(labelRef.current, {
         useCORS: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#ffffff', // Ensure background is white for capture
         width: targetWidthPx,
         height: targetHeightPx,
-        scale: 2,
+        scale: 2, // Render at higher resolution
         logging: false,
         onclone: (documentClone) => {
           const clonedLabelRoot = documentClone.getElementById(labelRef.current?.id || '');
           if (clonedLabelRoot && labelRef.current) {
+            // Explicitly style the cloned root element for html2canvas
             clonedLabelRoot.style.width = `${targetWidthPx}px`;
             clonedLabelRoot.style.height = `${targetHeightPx}px`;
-            clonedLabelRoot.style.padding = `${0.375 * 16}px`;
+            clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5
             clonedLabelRoot.style.border = '1px solid black';
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
             clonedLabelRoot.style.justifyContent = 'space-between';
-            clonedLabelRoot.style.backgroundColor = '#ffffff';
-            clonedLabelRoot.style.color = '#000000';
+            clonedLabelRoot.style.backgroundColor = '#ffffff'; // Ensure white background
+            clonedLabelRoot.style.color = '#000000'; // Ensure black text
             clonedLabelRoot.style.boxSizing = 'border-box';
             clonedLabelRoot.style.lineHeight = 'normal';
+
 
             const applyStylesToChildren = (originalNode: HTMLElement, clonedNode: HTMLElement) => {
               const originalChildren = Array.from(originalNode.children) as HTMLElement[];
@@ -148,12 +150,14 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
               });
             };
 
+            // Apply styles to direct children of the label root
             const originalDirectChildren = Array.from(labelRef.current.children) as HTMLElement[];
             const clonedDirectChildren = Array.from(clonedLabelRoot.children) as HTMLElement[];
 
             originalDirectChildren.forEach((origChild, index) => {
                 if(clonedDirectChildren[index]) {
                     applyCaptureStyles(clonedDirectChildren[index], origChild);
+                    // Recursively apply styles to deeper children
                     applyStylesToChildren(origChild, clonedDirectChildren[index]);
                 }
             });
@@ -163,7 +167,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
       const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.href = image;
-      link.download = `label-${trailer.id}-${shipment.stsJob}.png`;
+      link.download = `label-${trailer?.id || 'unknown_trailer'}-${shipment.stsJob}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -172,8 +176,8 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
     }
   };
 
-  const trailerIdDisplay = trailer.id || 'N/A';
-  const companyDisplay = trailer.company || 'N/A';
+  const trailerIdDisplay = trailer?.id || 'N/A';
+  const companyDisplay = trailer?.company || 'N/A';
 
   return (
     <div className="flex flex-col items-center group">
@@ -182,48 +186,48 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         id={`shipment-label-${shipment.id}`}
         className="border border-foreground rounded-md shadow-sm w-full bg-background text-foreground
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
-                   print:break-words label-item flex flex-col justify-between print:leading-normal print-page-break-after-always"
+                   label-item flex flex-col print:leading-normal print-page-break-after-always"
       >
-        {/* Main content area */}
-        <div className="flex-grow flex flex-col print:leading-normal">
+        {/* Main content area, with justify-between for print to spread content */}
+        <div className="flex-grow flex flex-col justify-between print:leading-normal print:space-y-0 p-1 print:p-0">
           {/* Date row */}
-          <div className="flex justify-between items-baseline print:mb-0.5">
+          <div className="flex justify-between items-baseline print:mb-0">
             <span className="text-sm print:text-[28pt] print:font-semibold">Date:</span>
             <span className="text-sm print:text-[28pt] print:font-semibold text-right">{labelDate}</span>
           </div>
 
           {/* Agent row */}
-          <div className="flex justify-between items-baseline print:mb-0.5">
+          <div className="flex justify-between items-baseline print:mb-0">
             <span className="text-sm print:text-[32pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
 
           {/* Importer row */}
-          <div className="flex justify-between items-baseline print:mb-0.5">
-            <span className="text-sm print:text-[32pt] print:font-semibold">Importer:</span>
-            <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
+          <div className="flex justify-between items-baseline print:mb-0">
+            <span className="text-sm print:text-[18pt] print:font-semibold">Importer:</span>
+            <span className="text-sm print:text-[28pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
 
           {/* Pieces row */}
-          <div className="flex justify-between items-baseline print:mb-1">
-            <span className="text-sm print:text-[32pt] print:font-semibold">Pieces:</span>
-            <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
+          <div className="flex justify-between items-baseline print:mb-0">
+            <span className="text-sm print:text-[18pt] print:font-semibold">Pieces:</span>
+            <span className="text-lg print:text-[36pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
           {/* Ref/Job row */}
-          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-0.5" title={`Tr: ${trailerIdDisplay} / Job: ${shipment.stsJob}`}>
-            Ref: {trailerIdDisplay} / Job: {shipment.stsJob}
+          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-0" title={`Tr: ${trailerIdDisplay} / Job: ${shipment.stsJob}`}>
+            {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
 
         {/* Barcode Section - Bottom part of the label */}
-        <div className="mt-auto pt-1 border-t border-dashed border-muted-foreground print:border-black print:mt-0.5 print:pt-0.5 print:mb-0">
-          <div className="flex justify-center items-center mt-0.5 print:mt-0.5">
+        <div className="mt-auto pt-1 border-t border-dashed border-muted-foreground print:border-black print:mt-1 print:pt-1 print:mb-0">
+          <div className="flex justify-center items-center print:mt-0.5">
              <Barcode
                 value={barcodeValue}
                 format="CODE128"
-                width={1.8} // Adjusted for better clarity within the new dimensions
-                height={45} // Adjusted for better clarity
+                width={1.8} 
+                height={40}
                 displayValue={false}
                 background="transparent"
                 lineColor="black"
@@ -236,7 +240,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         onClick={handleDownloadImage}
         variant="outline"
         size="sm"
-        className="mt-2 no-print transition-opacity duration-150 individual-label-download-button" // Added class here
+        className="mt-2 no-print transition-opacity duration-150 individual-label-download-button"
         aria-label={`Download label for shipment ${shipment.stsJob} as image`}
       >
         <Download className="mr-2 h-4 w-4" />
@@ -245,3 +249,4 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
     </div>
   );
 }
+
