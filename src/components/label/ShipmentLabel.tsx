@@ -6,7 +6,7 @@ import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Barcode } from 'react-barcode'; // Ensure this import is present
+import Barcode from 'react-barcode'; // Changed to default import
 
 interface ShipmentLabelProps {
   shipment: Shipment;
@@ -108,30 +108,29 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
   const handleDownloadImage = async () => {
     if (!labelRef.current) return;
 
-    const targetWidthPx = Math.round((15 / 2.54) * 150);  // approx 886px for 15cm width
-    const targetHeightPx = Math.round((10.8 / 2.54) * 150); // approx 638px for 10.8cm height
+    const targetWidthPx = Math.round((15 / 2.54) * 150);  // 15cm width at 150 DPI
+    const targetHeightPx = Math.round((10.8 / 2.54) * 150); // 10.8cm height at 150 DPI
 
     try {
       const canvas = await html2canvas(labelRef.current, {
         useCORS: true,
-        backgroundColor: '#ffffff', // Ensure background is white for capture
+        backgroundColor: '#ffffff',
         width: targetWidthPx,
         height: targetHeightPx,
-        scale: 2, // Render at higher resolution
+        scale: 2,
         logging: false,
         onclone: (documentClone) => {
           const clonedLabelRoot = documentClone.getElementById(labelRef.current?.id || '');
           if (clonedLabelRoot && labelRef.current) {
-            // Explicitly style the cloned root element for html2canvas
             clonedLabelRoot.style.width = `${targetWidthPx}px`;
             clonedLabelRoot.style.height = `${targetHeightPx}px`;
             clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5
             clonedLabelRoot.style.border = '1px solid black';
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
-            clonedLabelRoot.style.justifyContent = 'space-between'; // Changed from 'around'
-            clonedLabelRoot.style.backgroundColor = '#ffffff'; // Ensure white background
-            clonedLabelRoot.style.color = '#000000'; // Ensure black text
+            clonedLabelRoot.style.justifyContent = 'space-between';
+            clonedLabelRoot.style.backgroundColor = '#ffffff';
+            clonedLabelRoot.style.color = '#000000';
             clonedLabelRoot.style.boxSizing = 'border-box';
             clonedLabelRoot.style.lineHeight = 'normal';
 
@@ -150,14 +149,12 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
               });
             };
 
-            // Apply styles to direct children of the label root
             const originalDirectChildren = Array.from(labelRef.current.children) as HTMLElement[];
             const clonedDirectChildren = Array.from(clonedLabelRoot.children) as HTMLElement[];
 
             originalDirectChildren.forEach((origChild, index) => {
                 if(clonedDirectChildren[index]) {
                     applyCaptureStyles(clonedDirectChildren[index], origChild);
-                    // Recursively apply styles to deeper children
                     applyStylesToChildren(origChild, clonedDirectChildren[index]);
                 }
             });
@@ -186,7 +183,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         id={`shipment-label-${shipment.id}`}
         className="border border-foreground rounded-md shadow-sm w-full bg-background text-foreground
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
-                   label-item flex flex-col print:leading-normal print-page-break-after-always"
+                   label-item flex flex-col print:page-break-after-always print:leading-normal"
       >
         {/* Main content area */}
         <div className="flex-grow flex flex-col print:leading-normal p-1 print:p-0">
@@ -198,19 +195,19 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
           {/* Agent row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
-            <span className="text-sm print:text-[22pt] print:font-semibold">Agent:</span>
+            <span className="text-sm print:text-[28pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
 
           {/* Importer row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
-            <span className="text-sm print:text-[18pt] print:font-semibold">Importer:</span>
+            <span className="text-sm print:text-[22pt] print:font-semibold">Importer:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
 
           {/* Pieces row */}
           <div className="flex justify-between items-baseline print:mb-1">
-            <span className="text-sm print:text-[18pt] print:font-semibold">Pieces:</span>
+            <span className="text-sm print:text-[22pt] print:font-semibold">Pieces:</span>
             <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
