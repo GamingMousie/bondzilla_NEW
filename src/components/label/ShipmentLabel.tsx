@@ -124,11 +124,11 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
           if (clonedLabelRoot && labelRef.current) {
             clonedLabelRoot.style.width = `${targetWidthPx}px`;
             clonedLabelRoot.style.height = `${targetHeightPx}px`;
-            clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5
+            clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5 (0.375rem * 16px/rem)
             clonedLabelRoot.style.border = '1px solid black';
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
-            clonedLabelRoot.style.justifyContent = 'space-between';
+            clonedLabelRoot.style.justifyContent = 'space-between'; // Helps push barcode to bottom
             clonedLabelRoot.style.backgroundColor = '#ffffff';
             clonedLabelRoot.style.color = '#000000';
             clonedLabelRoot.style.boxSizing = 'border-box';
@@ -149,13 +149,14 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
               });
             };
 
+            // Apply styles to direct children first, then recursively
             const originalDirectChildren = Array.from(labelRef.current.children) as HTMLElement[];
             const clonedDirectChildren = Array.from(clonedLabelRoot.children) as HTMLElement[];
 
             originalDirectChildren.forEach((origChild, index) => {
                 if(clonedDirectChildren[index]) {
-                    applyCaptureStyles(clonedDirectChildren[index], origChild);
-                    applyStylesToChildren(origChild, clonedDirectChildren[index]);
+                    applyCaptureStyles(clonedDirectChildren[index], origChild); // Apply to direct child
+                    applyStylesToChildren(origChild, clonedDirectChildren[index]); // Apply to grandchildren and deeper
                 }
             });
           }
@@ -183,7 +184,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         id={`shipment-label-${shipment.id}`}
         className="border border-foreground rounded-md shadow-sm w-full bg-background text-foreground
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
-                   label-item flex flex-col print:page-break-after-always print:leading-normal"
+                   label-item flex flex-col print:page-break-after-always"
       >
         {/* Main content area */}
         <div className="flex-grow flex flex-col print:leading-normal p-1 print:p-0">
@@ -195,24 +196,24 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
           {/* Agent row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
-            <span className="text-sm print:text-[28pt] print:font-semibold">Agent:</span>
+            <span className="text-sm print:text-[32pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
 
           {/* Importer row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
-            <span className="text-sm print:text-[22pt] print:font-semibold">Importer:</span>
+            <span className="text-sm print:text-[32pt] print:font-semibold">Importer:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
 
           {/* Pieces row */}
           <div className="flex justify-between items-baseline print:mb-1">
-            <span className="text-sm print:text-[22pt] print:font-semibold">Pieces:</span>
+            <span className="text-sm print:text-[18pt] print:font-semibold">Pieces:</span>
             <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
           {/* Ref/Job row */}
-          <p className="text-lg print:text-[40pt] print:font-bold text-center print:mb-1">
+          <p className="text-lg print:text-[52pt] print:font-bold text-center print:mb-1">
             {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
