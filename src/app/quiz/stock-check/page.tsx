@@ -275,8 +275,8 @@ export default function StockCheckQuizPage() {
                 {currentItem.locationPallets !== undefined ? ` (${currentItem.locationPallets} plts)` : ''}
               </span>
             </div>
-            <div className="flex items-center">
-              <Truck className="mr-2 h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center text-xl font-semibold">
+              <Truck className="mr-2 h-6 w-6 text-muted-foreground" />
               <strong className="mr-2">Identifier:</strong>
               <span>Trailer <Link href={`/trailers/${currentItem.trailerId}`} className="text-primary hover:underline">{currentItem.trailerId}</Link> / Job <Link href={`/shipments/${currentItem.shipmentId}`} className="text-primary hover:underline">{currentItem.stsJob}</Link></span>
             </div>

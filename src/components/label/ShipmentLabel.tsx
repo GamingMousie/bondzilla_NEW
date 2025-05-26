@@ -213,7 +213,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
           </div>
 
           {/* Ref/Job row */}
-          <p className="text-lg print:text-[52pt] print:font-bold text-center print:mb-1">
+          <p className="print:text-[105pt] print:font-bold text-center print:mb-1">
             {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
@@ -225,7 +225,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
                 value={barcodeValue}
                 format="CODE128"
                 width={1.8} 
-                height={40}
+                height={100}
                 displayValue={false}
                 background="transparent"
                 lineColor="black"
