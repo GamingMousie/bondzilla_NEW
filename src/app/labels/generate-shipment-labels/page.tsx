@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import type { Shipment, Trailer } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,9 @@ import ShipmentLabel from '@/components/label/ShipmentLabel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format, parseISO } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import html2canvas from 'html2canvas';
+import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
+
 
 export default function GenerateShipmentLabelsPage() {
   const { getTrailerById, getShipmentsByTrailerId } = useWarehouse();
@@ -48,18 +51,16 @@ export default function GenerateShipmentLabelsPage() {
       if (shipments.length === 0) {
         setError(`No shipments found for Trailer ID: ${trailer.id}`);
       }
-      // Determine label date
       const dateFormat = 'dd/MM/yyyy';
       if (trailer.arrivalDate) {
         try {
           setLabelDateForShipments(format(parseISO(trailer.arrivalDate), dateFormat));
         } catch {
-          setLabelDateForShipments(format(new Date(), dateFormat)); // Fallback if parsing fails
+          setLabelDateForShipments(format(new Date(), dateFormat));
         }
       } else {
-        setLabelDateForShipments(format(new Date(), dateFormat)); // Fallback if no arrival date
+        setLabelDateForShipments(format(new Date(), dateFormat));
       }
-
     } else {
       setError(`Trailer with ID: ${trailerIdInput.trim()} not found.`);
       setSelectedTrailer(null);
@@ -69,8 +70,8 @@ export default function GenerateShipmentLabelsPage() {
   };
 
   const handleDownloadAllImages = async () => {
-    const downloadButtons = document.querySelectorAll('.individual-label-download-button');
-    if (downloadButtons.length === 0) {
+    const renderedLabelElements = document.querySelectorAll('.label-item');
+    if (renderedLabelElements.length === 0 || !selectedTrailer) {
       toast({
         title: "No Labels to Download",
         description: "Please generate labels first.",
@@ -80,15 +81,108 @@ export default function GenerateShipmentLabelsPage() {
     }
 
     toast({
-      title: "Download Started",
-      description: `Attempting to download ${downloadButtons.length} label images. Your browser might ask for permission for multiple downloads.`,
+      title: "Composite Image Download Started",
+      description: `Attempting to download labels in groups. This may take a moment.`,
     });
 
-    for (let i = 0; i < downloadButtons.length; i++) {
-      const button = downloadButtons[i] as HTMLButtonElement;
-      button.click();
-      // Add a small delay to help browsers manage multiple downloads
-      await new Promise(resolve => setTimeout(resolve, 500));
+    const LABELS_PER_PAGE = 2; // Number of labels per image page
+    const DPI = 150;
+    const MM_TO_INCH = 1 / 25.4;
+    const LABEL_WIDTH_MM = 150;
+    const LABEL_HEIGHT_MM = 108;
+
+    const labelWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
+    const labelHeightPx = Math.round(LABEL_HEIGHT_MM * MM_TO_INCH * DPI);
+
+    const CONTAINER_PADDING_PX = Math.round(5 * MM_TO_INCH * DPI); // ~5mm padding
+    const LABEL_GAP_PX = Math.round(5 * MM_TO_INCH * DPI);       // ~5mm gap
+
+    // Container dimensions for LABELS_PER_PAGE labels stacked vertically
+    const containerWidthPx = labelWidthPx + (CONTAINER_PADDING_PX * 2);
+    const containerHeightPx = (labelHeightPx * LABELS_PER_PAGE) + (LABEL_GAP_PX * (LABELS_PER_PAGE - 1)) + (CONTAINER_PADDING_PX * 2);
+
+    const labelElementsArray = Array.from(renderedLabelElements);
+
+    for (let i = 0; i < labelElementsArray.length; i += LABELS_PER_PAGE) {
+      const chunk = labelElementsArray.slice(i, i + LABELS_PER_PAGE);
+      const pageNum = Math.floor(i / LABELS_PER_PAGE) + 1;
+
+      const captureContainer = document.createElement('div');
+      captureContainer.id = `capture-container-page-${pageNum}`;
+      captureContainer.style.position = 'absolute';
+      captureContainer.style.left = '-9999px';
+      captureContainer.style.top = '-9999px';
+      captureContainer.style.width = `${containerWidthPx}px`;
+      captureContainer.style.height = `${containerHeightPx}px`;
+      captureContainer.style.backgroundColor = '#ffffff';
+      captureContainer.style.display = 'flex';
+      captureContainer.style.flexDirection = 'column';
+      captureContainer.style.alignItems = 'center';
+      captureContainer.style.justifyContent = 'flex-start';
+      captureContainer.style.padding = `${CONTAINER_PADDING_PX}px`;
+      captureContainer.style.gap = `${LABEL_GAP_PX}px`;
+      captureContainer.style.boxSizing = 'border-box';
+      captureContainer.style.border = '1px dashed #ccc'; // Optional: for debugging visibility
+
+      chunk.forEach(originalLabelNode => {
+        const clonedLabel = originalLabelNode.cloneNode(true) as HTMLElement;
+        
+        // Style the cloned label itself for its placement within the capture container
+        clonedLabel.style.width = `${labelWidthPx}px`;
+        clonedLabel.style.height = `${labelHeightPx}px`;
+        clonedLabel.style.border = '1px solid black';
+        clonedLabel.style.boxSizing = 'border-box';
+        clonedLabel.style.backgroundColor = '#ffffff';
+        clonedLabel.style.color = '#000000';
+        clonedLabel.style.display = 'flex'; // Ensure flex properties are on the cloned label
+        clonedLabel.style.flexDirection = 'column';
+        // Remove print-page-break-after-always if it exists, as it's not needed for composite image
+        clonedLabel.classList.remove('print-page-break-after-always');
+
+        // Apply print-like styles to the content OF the cloned label
+        applyRecursivePrintStyles(originalLabelNode as HTMLElement, clonedLabel);
+        
+        captureContainer.appendChild(clonedLabel);
+      });
+
+      document.body.appendChild(captureContainer);
+
+      try {
+        const canvas = await html2canvas(captureContainer, {
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          width: containerWidthPx,
+          height: containerHeightPx,
+          scale: 2, // Render at 2x and then scale down by html2canvas to canvas width/height
+          logging: false,
+        });
+        const image = canvas.toDataURL('image/png', 1.0);
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `labels-page-${pageNum}-trailer-${selectedTrailer.id}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast({
+          title: `Page ${pageNum} Downloaded`,
+          description: `Image with ${chunk.length} label(s) generated.`,
+        });
+      } catch (error) {
+        console.error(`Error generating composite image for page ${pageNum}:`, error);
+        toast({
+          title: "Image Generation Error",
+          description: `Failed to generate image for page ${pageNum}.`,
+          variant: "destructive",
+        });
+      } finally {
+        if (document.body.contains(captureContainer)) {
+            document.body.removeChild(captureContainer);
+        }
+      }
+
+      if (i + LABELS_PER_PAGE < labelElementsArray.length) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
   };
 
@@ -123,9 +217,9 @@ export default function GenerateShipmentLabelsPage() {
       </Card>
 
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8 label-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8 print:block print:space-y-0 print:gap-0 label-grid" style={{ '--label-width': '150mm' } as React.CSSProperties}>
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="border border-dashed rounded-md p-4 h-[150mm] w-[108mm] flex flex-col items-center justify-center bg-muted/50">
+            <div key={i} className="border border-dashed rounded-md p-4 h-[108mm] w-[150mm] flex flex-col items-center justify-center bg-muted/50">
               <Skeleton className="h-1/3 w-2/3" />
               <Skeleton className="h-8 w-1/2 mt-4" />
             </div>
@@ -139,9 +233,8 @@ export default function GenerateShipmentLabelsPage() {
             <Button onClick={handleDownloadAllImages} variant="outline">
               <Download className="mr-2 h-4 w-4" /> Download All Labels as Images
             </Button>
-            {/* Removed Print All Displayed Labels button */}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-10 print:block print:space-y-0 print:gap-0 label-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-10 print:block print:space-y-0 print:gap-0 label-grid" style={{ '--label-width': '150mm' } as React.CSSProperties}>
             {shipmentsToLabel.map((shipment) => (
               <ShipmentLabel
                 key={shipment.id}
@@ -151,6 +244,7 @@ export default function GenerateShipmentLabelsPage() {
               />
             ))}
           </div>
+          {/* This print-only block might not be relevant if we are not using browser print for labels */}
           <div className="print-only-block text-center mt-4">
             <p className="text-xs text-muted-foreground">
               Labels generated for Trailer ID: {selectedTrailer.id} on {new Date().toLocaleDateString()}
@@ -172,3 +266,4 @@ export default function GenerateShipmentLabelsPage() {
     </div>
   );
 }
+
