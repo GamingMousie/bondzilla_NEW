@@ -24,8 +24,8 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
     const DPI = 150;
     const MM_TO_INCH = 1 / 25.4;
-    const LABEL_WIDTH_MM = 150; // 15cm
-    const LABEL_HEIGHT_MM = 108; // 10.8cm
+    const LABEL_WIDTH_MM = 150; 
+    const LABEL_HEIGHT_MM = 108; 
 
     const targetWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
     const targetHeightPx = Math.round(LABEL_HEIGHT_MM * MM_TO_INCH * DPI);
@@ -41,6 +41,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
         onclone: (documentClone) => {
           const clonedLabelRoot = documentClone.getElementById(labelRef.current?.id || '');
           if (clonedLabelRoot && labelRef.current) {
+            // Style the root of the cloned label for capture
             clonedLabelRoot.style.width = `${targetWidthPx}px`;
             clonedLabelRoot.style.height = `${targetHeightPx}px`;
             clonedLabelRoot.style.border = '1px solid black';
@@ -78,32 +79,39 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
                    label-item flex flex-col print:page-break-after-always"
       >
-        <div className="flex-grow flex flex-col p-1 print:p-0 print:leading-normal"> {/* Removed justify-around */}
+        {/* Main content area for the label text and barcode */}
+        <div className="flex-grow flex flex-col p-1 print:p-0 print:leading-normal"> {/* Removed justify-around for print */}
+          {/* Date row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[28pt] print:font-semibold">Date:</span>
             <span className="text-sm print:text-[28pt] print:font-semibold text-right">{labelDate}</span>
           </div>
 
+          {/* Agent row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[32pt] print:font-semibold">Agent:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={companyDisplay}>{companyDisplay}</span>
           </div>
 
+          {/* Importer row */}
           <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[32pt] print:font-semibold">Importer:</span>
             <span className="text-sm print:text-[32pt] print:font-semibold text-right" title={shipment.importer}>{shipment.importer}</span>
           </div>
           
+          {/* Pieces row */}
           <div className="flex justify-between items-baseline print:mb-2">
             <span className="text-sm print:text-[48pt] print:font-semibold">Pieces:</span>
             <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
-          <p className="print:text-[100pt] print:font-bold text-center print:mb-2"> {/* Adjusted font size and margin */}
+          {/* Trailer ID and Job Number */}
+          <p className="print:text-[95pt] print:font-bold text-center print:mb-2"> {/* Changed from 100pt to 95pt */}
             {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
 
+        {/* Barcode Section - at the bottom */}
         <div className="mt-auto pt-1 border-t border-dashed border-muted-foreground print:border-black print:mt-1 print:pt-1 print:mb-0">
           <div className="flex justify-center items-center print:mt-0.5">
              <Barcode
