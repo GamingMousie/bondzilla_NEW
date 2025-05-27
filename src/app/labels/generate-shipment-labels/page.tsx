@@ -85,7 +85,7 @@ export default function GenerateShipmentLabelsPage() {
       description: `Attempting to download labels in groups. This may take a moment.`,
     });
 
-    const LABELS_PER_PAGE = 2; // Number of labels per image page
+    const LABELS_PER_PAGE = 15; // Number of labels per image page
     const DPI = 150;
     const MM_TO_INCH = 1 / 25.4;
     const LABEL_WIDTH_MM = 150;
