@@ -13,9 +13,8 @@ import ShipmentLabel from '@/components/label/ShipmentLabel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format, parseISO } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
-import html2canvas from 'html2canvas';
-import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
-
+// html2canvas and applyRecursivePrintStyles are not directly used here anymore for "Download All"
+// but ShipmentLabel still uses them.
 
 export default function GenerateShipmentLabelsPage() {
   const { getTrailerById, getShipmentsByTrailerId } = useWarehouse();
@@ -70,8 +69,8 @@ export default function GenerateShipmentLabelsPage() {
   };
 
   const handleDownloadAllImages = async () => {
-    const renderedLabelElements = document.querySelectorAll('.label-item');
-    if (renderedLabelElements.length === 0 || !selectedTrailer) {
+    const downloadButtons = document.querySelectorAll('.individual-label-download-button');
+    if (downloadButtons.length === 0) {
       toast({
         title: "No Labels to Download",
         description: "Please generate labels first.",
@@ -81,107 +80,16 @@ export default function GenerateShipmentLabelsPage() {
     }
 
     toast({
-      title: "Composite Image Download Started",
-      description: `Attempting to download labels in groups. This may take a moment.`,
+      title: "Image Downloads Started",
+      description: `Attempting to download ${downloadButtons.length} label(s). This may take a moment.`,
     });
 
-    const LABELS_PER_PAGE = 15; // Number of labels per image page
-    const DPI = 150;
-    const MM_TO_INCH = 1 / 25.4;
-    const LABEL_WIDTH_MM = 150;
-    const LABEL_HEIGHT_MM = 108;
-
-    const labelWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
-    const labelHeightPx = Math.round(LABEL_HEIGHT_MM * MM_TO_INCH * DPI);
-
-    const CONTAINER_PADDING_PX = Math.round(5 * MM_TO_INCH * DPI); // ~5mm padding
-    const LABEL_GAP_PX = Math.round(5 * MM_TO_INCH * DPI);       // ~5mm gap
-
-    // Container dimensions for LABELS_PER_PAGE labels stacked vertically
-    const containerWidthPx = labelWidthPx + (CONTAINER_PADDING_PX * 2);
-    const containerHeightPx = (labelHeightPx * LABELS_PER_PAGE) + (LABEL_GAP_PX * (LABELS_PER_PAGE - 1)) + (CONTAINER_PADDING_PX * 2);
-
-    const labelElementsArray = Array.from(renderedLabelElements);
-
-    for (let i = 0; i < labelElementsArray.length; i += LABELS_PER_PAGE) {
-      const chunk = labelElementsArray.slice(i, i + LABELS_PER_PAGE);
-      const pageNum = Math.floor(i / LABELS_PER_PAGE) + 1;
-
-      const captureContainer = document.createElement('div');
-      captureContainer.id = `capture-container-page-${pageNum}`;
-      captureContainer.style.position = 'absolute';
-      captureContainer.style.left = '-9999px';
-      captureContainer.style.top = '-9999px';
-      captureContainer.style.width = `${containerWidthPx}px`;
-      captureContainer.style.height = `${containerHeightPx}px`;
-      captureContainer.style.backgroundColor = '#ffffff';
-      captureContainer.style.display = 'flex';
-      captureContainer.style.flexDirection = 'column';
-      captureContainer.style.alignItems = 'center';
-      captureContainer.style.justifyContent = 'flex-start';
-      captureContainer.style.padding = `${CONTAINER_PADDING_PX}px`;
-      captureContainer.style.gap = `${LABEL_GAP_PX}px`;
-      captureContainer.style.boxSizing = 'border-box';
-      captureContainer.style.border = '1px dashed #ccc'; // Optional: for debugging visibility
-
-      chunk.forEach(originalLabelNode => {
-        const clonedLabel = originalLabelNode.cloneNode(true) as HTMLElement;
-        
-        // Style the cloned label itself for its placement within the capture container
-        clonedLabel.style.width = `${labelWidthPx}px`;
-        clonedLabel.style.height = `${labelHeightPx}px`;
-        clonedLabel.style.border = '1px solid black';
-        clonedLabel.style.boxSizing = 'border-box';
-        clonedLabel.style.backgroundColor = '#ffffff';
-        clonedLabel.style.color = '#000000';
-        clonedLabel.style.display = 'flex'; // Ensure flex properties are on the cloned label
-        clonedLabel.style.flexDirection = 'column';
-        // Remove print-page-break-after-always if it exists, as it's not needed for composite image
-        clonedLabel.classList.remove('print-page-break-after-always');
-
-        // Apply print-like styles to the content OF the cloned label
-        applyRecursivePrintStyles(originalLabelNode as HTMLElement, clonedLabel);
-        
-        captureContainer.appendChild(clonedLabel);
-      });
-
-      document.body.appendChild(captureContainer);
-
-      try {
-        const canvas = await html2canvas(captureContainer, {
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          width: containerWidthPx,
-          height: containerHeightPx,
-          scale: 2, // Render at 2x and then scale down by html2canvas to canvas width/height
-          logging: false,
-        });
-        const image = canvas.toDataURL('image/png', 1.0);
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `labels-page-${pageNum}-trailer-${selectedTrailer.id}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        toast({
-          title: `Page ${pageNum} Downloaded`,
-          description: `Image with ${chunk.length} label(s) generated.`,
-        });
-      } catch (error) {
-        console.error(`Error generating composite image for page ${pageNum}:`, error);
-        toast({
-          title: "Image Generation Error",
-          description: `Failed to generate image for page ${pageNum}.`,
-          variant: "destructive",
-        });
-      } finally {
-        if (document.body.contains(captureContainer)) {
-            document.body.removeChild(captureContainer);
-        }
-      }
-
-      if (i + LABELS_PER_PAGE < labelElementsArray.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+    for (let i = 0; i < downloadButtons.length; i++) {
+      (downloadButtons[i] as HTMLElement).click();
+      // Add a small delay to help browsers manage multiple downloads
+      // and to give each html2canvas instance time to complete.
+      if (i < downloadButtons.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
       }
     }
   };
@@ -266,4 +174,3 @@ export default function GenerateShipmentLabelsPage() {
     </div>
   );
 }
-
