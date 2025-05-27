@@ -13,8 +13,10 @@ import ShipmentLabel from '@/components/label/ShipmentLabel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format, parseISO } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
-// html2canvas and applyRecursivePrintStyles are not directly used here anymore for "Download All"
-// but ShipmentLabel still uses them.
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
+
 
 export default function GenerateShipmentLabelsPage() {
   const { getTrailerById, getShipmentsByTrailerId } = useWarehouse();
@@ -68,11 +70,10 @@ export default function GenerateShipmentLabelsPage() {
     setIsLoading(false);
   };
 
-  const handleDownloadAllImages = async () => {
-    const downloadButtons = document.querySelectorAll('.individual-label-download-button');
-    if (downloadButtons.length === 0) {
+  const handleDownloadAllLabelsAsPdf = async () => {
+    if (shipmentsToLabel.length === 0 || !selectedTrailer) {
       toast({
-        title: "No Labels to Download",
+        title: "No Labels to Process",
         description: "Please generate labels first.",
         variant: "destructive",
       });
@@ -80,18 +81,83 @@ export default function GenerateShipmentLabelsPage() {
     }
 
     toast({
-      title: "Image Downloads Started",
-      description: `Attempting to download ${downloadButtons.length} label(s). This may take a moment.`,
+      title: "PDF Generation Started",
+      description: `Attempting to generate PDF with ${shipmentsToLabel.length} label(s). This may take a moment.`,
     });
 
-    for (let i = 0; i < downloadButtons.length; i++) {
-      (downloadButtons[i] as HTMLElement).click();
-      // Add a small delay to help browsers manage multiple downloads
-      // and to give each html2canvas instance time to complete.
-      if (i < downloadButtons.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+    // Constants for label dimensions in mm and DPI for canvas rendering
+    const LABEL_WIDTH_MM = 150;
+    const LABEL_HEIGHT_MM = 108;
+    const DPI = 150; 
+    const MM_TO_INCH = 1 / 25.4;
+
+    const targetWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
+    const targetHeightPx = Math.round(LABEL_HEIGHT_MM * MM_TO_INCH * DPI);
+    
+    const pdf = new jsPDF({
+      orientation: 'landscape', // Since 150mm > 108mm
+      unit: 'mm',
+      format: [LABEL_WIDTH_MM, LABEL_HEIGHT_MM],
+    });
+
+    const labelElements = document.querySelectorAll('.label-item');
+
+    for (let i = 0; i < labelElements.length; i++) {
+      const labelElement = labelElements[i] as HTMLElement;
+      if (!labelElement) continue;
+
+      try {
+        const canvas = await html2canvas(labelElement, {
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          width: targetWidthPx, 
+          height: targetHeightPx,
+          scale: 2, // Render at higher res, then scale down to targetWidth/Height for quality
+          logging: false,
+          onclone: (documentClone) => {
+            const clonedLabelRoot = documentClone.getElementById(labelElement.id);
+            if (clonedLabelRoot) {
+              // Style the root of the cloned label for capture
+              clonedLabelRoot.style.width = `${targetWidthPx}px`;
+              clonedLabelRoot.style.height = `${targetHeightPx}px`;
+              clonedLabelRoot.style.border = '1px solid black';
+              clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5
+              clonedLabelRoot.style.display = 'flex';
+              clonedLabelRoot.style.flexDirection = 'column';
+              clonedLabelRoot.style.backgroundColor = '#ffffff';
+              clonedLabelRoot.style.color = '#000000';
+              clonedLabelRoot.style.boxSizing = 'border-box';
+              applyRecursivePrintStyles(labelElement, clonedLabelRoot);
+            }
+          },
+        });
+        const imageDataUrl = canvas.toDataURL('image/png', 1.0);
+        
+        if (i > 0) {
+          pdf.addPage([LABEL_WIDTH_MM, LABEL_HEIGHT_MM], 'landscape');
+        }
+        pdf.addImage(imageDataUrl, 'PNG', 0, 0, LABEL_WIDTH_MM, LABEL_HEIGHT_MM);
+        
+        // Small delay to allow UI to update and prevent browser freezing on large jobs
+        if (i < labelElements.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 250)); 
+        }
+
+      } catch (error) {
+        console.error('Error generating image for PDF for label:', labelElement.id, error);
+        toast({
+          title: "Error Generating Image",
+          description: `Could not process label for ${shipmentsToLabel[i]?.stsJob}. Skipping.`,
+          variant: "destructive",
+        });
       }
     }
+
+    pdf.save(`labels_trailer_${selectedTrailer.id}.pdf`);
+    toast({
+      title: "PDF Generated",
+      description: "The PDF with all labels has been downloaded.",
+    });
   };
 
 
@@ -138,8 +204,8 @@ export default function GenerateShipmentLabelsPage() {
       {isClient && !isLoading && shipmentsToLabel.length > 0 && selectedTrailer && (
         <>
           <div className="flex justify-end gap-2 no-print mb-4">
-            <Button onClick={handleDownloadAllImages} variant="outline">
-              <Download className="mr-2 h-4 w-4" /> Download All Labels as Images
+            <Button onClick={handleDownloadAllLabelsAsPdf} variant="outline">
+              <Download className="mr-2 h-4 w-4" /> Download All Labels as PDF
             </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-10 print:block print:space-y-0 print:gap-0 label-grid" style={{ '--label-width': '150mm' } as React.CSSProperties}>
@@ -151,12 +217,6 @@ export default function GenerateShipmentLabelsPage() {
                 labelDate={labelDateForShipments}
               />
             ))}
-          </div>
-          {/* This print-only block might not be relevant if we are not using browser print for labels */}
-          <div className="print-only-block text-center mt-4">
-            <p className="text-xs text-muted-foreground">
-              Labels generated for Trailer ID: {selectedTrailer.id} on {new Date().toLocaleDateString()}
-            </p>
           </div>
         </>
       )}
