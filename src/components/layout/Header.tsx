@@ -10,7 +10,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
           <ShipShapeLogo className="h-8 w-8" />
-          <span>ShipShape</span>
+          <span>Bondzilla</span>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2 flex-wrap justify-end">
           <Button variant="ghost" asChild className="px-2 sm:px-3">
@@ -62,3 +62,4 @@ const Header = () => {
 };
 
 export default Header;
+

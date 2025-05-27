@@ -8,12 +8,12 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
 import { WarehouseProvider } from '@/contexts/WarehouseContext';
 
-// Applying font variables directly to <html> tag below.
+// Applying font variables directly to the <html> tag below.
 // This line can be removed if GeistSans.variable and GeistMono.variable are used directly.
 // const M_ENSURE_FONT_IMPORTS = [GeistSans, GeistMono];
 
 export const metadata: Metadata = {
-  title: 'ShipShape - Warehouse Management',
+  title: 'Bondzilla - Warehouse Management',
   description: 'Efficiently manage trailers, shipments, and locations.',
 };
 
@@ -41,3 +41,4 @@ export default function RootLayout({
     </html>
   );
 }
+

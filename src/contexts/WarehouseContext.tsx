@@ -32,7 +32,7 @@ interface WarehouseContextType {
 const WarehouseContext = createContext<WarehouseContextType | undefined>(undefined);
 
 const TRAILER_STATUSES: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
-const COMPANIES = ["LogiCorp", "FastHaul", "GlobalTrans", "ShipSwift", "CargoLink", "ReliableFreight", "SpeedyTransCo", "PioneerLogistics"];
+const COMPANIES = ["TCB", "Cardinal Maritime"];
 const IMPORTERS = ["ImpAlpha Co", "ImpBeta Ltd", "ImpGamma Inc", "ImpDelta LLC", "ImpEpsilon Group", "ImpZeta Corp", "ImpEta Solutions", "ImpTheta Global"];
 const EXPORTERS = ["ExpZeta Co", "ExpEta Ltd", "ExpTheta Inc", "ExpIota LLC", "ExpKappa Group", "ExpLambda Exports", "ExpMu Trading", "ExpNu Intl."];
 const LOCATION_PREFIXES = ["Bay ", "Shelf ", "Zone ", "Rack ", "Aisle ", "Area ", "Dock ", "Staging ", "Upper ", "Lower ", "East ", "West "];
