@@ -6,7 +6,7 @@ import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Barcode } from 'react-barcode'; // Re-added this import
+import Barcode from 'react-barcode'; // Changed from named to default import
 import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
 
 interface ShipmentLabelProps {
@@ -24,8 +24,8 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
     const DPI = 150;
     const MM_TO_INCH = 1 / 25.4;
-    const LABEL_WIDTH_MM = 150;
-    const LABEL_HEIGHT_MM = 108;
+    const LABEL_WIDTH_MM = 150; // 15cm
+    const LABEL_HEIGHT_MM = 108; // 10.8cm
 
     const targetWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
     const targetHeightPx = Math.round(LABEL_HEIGHT_MM * MM_TO_INCH * DPI);
