@@ -6,7 +6,7 @@ import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Barcode } from 'react-barcode';
+import { Barcode } from 'react-barcode'; // Re-added this import
 import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
 
 interface ShipmentLabelProps {
@@ -24,7 +24,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
     const DPI = 150;
     const MM_TO_INCH = 1 / 25.4;
-    const LABEL_WIDTH_MM = 150; 
+    const LABEL_WIDTH_MM = 150;
     const LABEL_HEIGHT_MM = 108;
 
     const targetWidthPx = Math.round(LABEL_WIDTH_MM * MM_TO_INCH * DPI);
@@ -34,9 +34,9 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
       const canvas = await html2canvas(labelRef.current, {
         useCORS: true,
         backgroundColor: '#ffffff',
-        width: targetWidthPx, 
+        width: targetWidthPx,
         height: targetHeightPx,
-        scale: 2, 
+        scale: 2,
         logging: false,
         onclone: (documentClone) => {
           const clonedLabelRoot = documentClone.getElementById(labelRef.current?.id || '');
@@ -47,10 +47,9 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
             clonedLabelRoot.style.padding = `${0.375 * 16}px`; // Approx print:p-1.5
             clonedLabelRoot.style.display = 'flex';
             clonedLabelRoot.style.flexDirection = 'column';
-            clonedLabelRoot.style.backgroundColor = '#ffffff'; 
-            clonedLabelRoot.style.color = '#000000';         
+            clonedLabelRoot.style.backgroundColor = '#ffffff';
+            clonedLabelRoot.style.color = '#000000';
             clonedLabelRoot.style.boxSizing = 'border-box';
-            
             applyRecursivePrintStyles(labelRef.current, clonedLabelRoot);
           }
         },
@@ -79,7 +78,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
                    print:shadow-none print:border-black print:w-[150mm] print:h-[108mm] print:p-1.5
                    label-item flex flex-col print:page-break-after-always"
       >
-        <div className="flex-grow flex flex-col p-1 print:p-0 print:leading-normal">
+        <div className="flex-grow flex flex-col p-1 print:p-0 print:leading-normal"> {/* Removed justify-around */}
           <div className="flex justify-between items-baseline print:mb-0.5">
             <span className="text-sm print:text-[28pt] print:font-semibold">Date:</span>
             <span className="text-sm print:text-[28pt] print:font-semibold text-right">{labelDate}</span>
@@ -96,11 +95,11 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
           </div>
           
           <div className="flex justify-between items-baseline print:mb-2">
-            <span className="text-sm print:text-[36pt] print:font-semibold">Pieces:</span>
+            <span className="text-sm print:text-[48pt] print:font-semibold">Pieces:</span>
             <span className="text-lg print:text-[48pt] print:font-bold text-right">{shipment.quantity}</span>
           </div>
 
-          <p className="print:text-[100pt] print:font-bold text-center print:mb-2">
+          <p className="print:text-[100pt] print:font-bold text-center print:mb-2"> {/* Adjusted font size and margin */}
             {trailerIdDisplay} / {shipment.stsJob}
           </p>
         </div>
