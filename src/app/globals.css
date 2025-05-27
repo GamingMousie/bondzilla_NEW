@@ -230,6 +230,7 @@
   .print\:p-2 { padding: 0.5rem !important; }
   .print\:p-3 { padding: 0.75rem !important; }
   
+  .print\:text-\[100pt\] { font-size: 100pt !important; }
   .print\:text-\[52pt\] { font-size: 52pt !important; }
   .print\:text-\[48pt\] { font-size: 48pt !important; }
   .print\:text-\[44pt\] { font-size: 44pt !important; }
