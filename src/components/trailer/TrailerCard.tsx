@@ -205,11 +205,11 @@ export default function TrailerCard({ trailer, viewMode, onDelete, onStatusChang
        <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)} className="h-8">
         <Edit className="mr-1.5 h-3.5 w-3.5" /> Edit
       </Button>
-      <Link href={`/trailers/${trailer.id}`} legacyBehavior>
-        <Button variant="ghost" size="sm" className="text-primary hover:text-primary-foreground hover:bg-primary h-8">
+      <Button asChild variant="ghost" size="sm" className="text-primary hover:text-primary-foreground hover:bg-primary h-8">
+        <Link href={`/trailers/${trailer.id}`}>
           Manage <ChevronRight className="ml-1 h-4 w-4" />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-8 w-8">

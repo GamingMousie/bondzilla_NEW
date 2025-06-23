@@ -177,15 +177,13 @@ export default function CalendarPage() {
                   <div className={`p-1 sm:p-1.5 flex-grow space-y-1 overflow-y-auto max-h-[150px] sm:max-h-[200px] 
                                  ${viewMode === 'month' && !isCurrentMonthDay ? 'opacity-60' : ''}`}>
                     {isClient && trailersByArrivalDate[dayKey]?.map(trailer => (
-                      <Link href={`/trailers/${trailer.id}`} key={trailer.id} legacyBehavior>
-                        <a className="block p-1 sm:p-1.5 bg-background hover:bg-secondary rounded-md text-xs sm:text-sm shadow-sm transition-all border border-border hover:border-primary/50">
+                      <Link href={`/trailers/${trailer.id}`} key={trailer.id} className="block p-1 sm:p-1.5 bg-background hover:bg-secondary rounded-md text-xs sm:text-sm shadow-sm transition-all border border-border hover:border-primary/50">
                           <p className="font-semibold text-primary truncate" title={`ID: ${trailer.id}`}>ID: {trailer.id}</p>
                           {trailer.name && <p className="text-muted-foreground truncate text-[0.65rem] sm:text-xs" title={`Name: ${trailer.name}`}>{trailer.name}</p>}
                           <div className="flex items-center text-muted-foreground mt-0.5 text-[0.65rem] sm:text-xs">
                              <Package className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1 flex-shrink-0" /> 
                              <span>Pieces: {trailer.totalPieces}</span>
                           </div>
-                        </a>
                       </Link>
                     ))}
                     {isClient && (!trailersByArrivalDate[dayKey] || trailersByArrivalDate[dayKey]?.length === 0) && isCurrentMonthDay && (

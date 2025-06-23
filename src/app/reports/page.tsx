@@ -179,7 +179,7 @@ export default function ReportsPage() {
           </CardFooter>
         </Card>
 
-        <Link href="/reports/weekly-released" passHref>
+        <Link href="/reports/weekly-released">
           <Card className="shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col justify-between cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-primary">
@@ -198,7 +198,7 @@ export default function ReportsPage() {
           </Card>
         </Link>
 
-        <Link href="/reports/monthly-overdue-released" passHref>
+        <Link href="/reports/monthly-overdue-released">
           <Card className="shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col justify-between cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-primary">
@@ -217,7 +217,7 @@ export default function ReportsPage() {
           </Card>
         </Link>
 
-        <Link href="/reports/monthly-company-trailers" passHref>
+        <Link href="/reports/monthly-company-trailers">
           <Card className="shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col justify-between cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-primary">
@@ -236,7 +236,7 @@ export default function ReportsPage() {
           </Card>
         </Link>
 
-        <Link href="/reports/unreleased-stock-locations" passHref>
+        <Link href="/reports/unreleased-stock-locations">
           <Card className="shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col justify-between cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-primary">
@@ -366,4 +366,5 @@ export default function ReportsPage() {
     </div>
   );
 }
+
 
