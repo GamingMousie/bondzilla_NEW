@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -14,6 +13,7 @@ import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText,
 import { format, parseISO } from 'date-fns';
 import EditShipmentDialog from '@/components/shipment/EditShipmentDialog'; 
 import ConfirmationDialog from '@/components/shared/ConfirmationDialog';
+import ManageCommentDialog from '@/components/shipment/ManageCommentDialog';
 
 export default function SingleShipmentPage() {
   const router = useRouter();
@@ -27,6 +27,7 @@ export default function SingleShipmentPage() {
   const [printedDateTime, setPrintedDateTime] = useState<string | null>(null);
   const [isEditShipmentDialogOpen, setIsEditShipmentDialogOpen] = useState(false); 
   const [isReprintConfirmOpen, setIsReprintConfirmOpen] = useState(false);
+  const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -46,7 +47,7 @@ export default function SingleShipmentPage() {
         setPrintedDateTime(null);
       }
     }
-  }, [isClient, shipmentId, getShipmentById, shipment?.releasedAt, shipment?.stsJob, shipment?.mrn, shipment?.clearanceDate]);
+  }, [isClient, shipmentId, getShipmentById, shipment?.releasedAt, shipment?.stsJob, shipment?.mrn, shipment?.clearanceDate, shipment?.comments]);
 
 
   const trailer = shipment?.trailerId ? getTrailerById(shipment.trailerId) : null;
@@ -188,6 +189,9 @@ export default function SingleShipmentPage() {
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
         <div className="flex gap-2 flex-wrap justify-center sm:justify-end">
+          <Button onClick={() => setIsCommentDialogOpen(true)} variant="outline" size="sm">
+            <MessageSquare className="mr-2 h-4 w-4" /> {shipment.comments ? 'Edit Comment' : 'Add Comment'}
+          </Button>
           <Button onClick={() => setIsEditShipmentDialogOpen(true)} variant="outline" size="sm">
             <Edit3 className="mr-2 h-4 w-4" /> Edit Shipment
           </Button>
@@ -433,6 +437,14 @@ export default function SingleShipmentPage() {
           isOpen={isEditShipmentDialogOpen}
           setIsOpen={setIsEditShipmentDialogOpen}
           shipmentToEdit={shipment}
+        />
+      )}
+
+      {isCommentDialogOpen && shipment && (
+        <ManageCommentDialog
+            isOpen={isCommentDialogOpen}
+            setIsOpen={setIsCommentDialogOpen}
+            shipmentToManage={shipment}
         />
       )}
 
