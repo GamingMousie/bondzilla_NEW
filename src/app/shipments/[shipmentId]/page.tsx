@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText, Users, Weight, Box, Truck, Hash, Eye, Send, Briefcase, CalendarCheck, Archive, Edit3, Fingerprint, CalendarClock, Mail } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import EditShipmentDialog from '@/components/shipment/EditShipmentDialog'; 
+import ConfirmationDialog from '@/components/shared/ConfirmationDialog';
 
 export default function SingleShipmentPage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function SingleShipmentPage() {
   const [isClient, setIsClient] = useState(false);
   const [printedDateTime, setPrintedDateTime] = useState<string | null>(null);
   const [isEditShipmentDialogOpen, setIsEditShipmentDialogOpen] = useState(false); 
+  const [isReprintConfirmOpen, setIsReprintConfirmOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -51,18 +53,25 @@ export default function SingleShipmentPage() {
 
   const canPrint = shipment?.cleared && shipment?.released;
 
+  const proceedWithPrint = () => {
+    if (!canPrint || !shipment) return;
+    
+    if (!shipment.releasedAt) {
+      markShipmentAsPrinted(shipment.id);
+    }
+    
+    setTimeout(() => {
+      window.print();
+    }, 0);
+  };
+  
   const handlePrint = () => {
     if (canPrint && shipment) {
-      if (!shipment.releasedAt) { 
-        markShipmentAsPrinted(shipment.id); 
-        setPrintedDateTime(new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
+      if (shipment.releasedAt) {
+        setIsReprintConfirmOpen(true);
       } else {
-        setPrintedDateTime(new Date(shipment.releasedAt).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
+        proceedWithPrint();
       }
-      
-      setTimeout(() => {
-        window.print();
-      }, 0);
     }
   };
 
@@ -417,7 +426,17 @@ export default function SingleShipmentPage() {
           shipmentToEdit={shipment}
         />
       )}
+
+      {isReprintConfirmOpen && (
+        <ConfirmationDialog
+          isOpen={isReprintConfirmOpen}
+          setIsOpen={setIsReprintConfirmOpen}
+          onConfirm={proceedWithPrint}
+          title="Reprint Shipment?"
+          description={`This shipment was already released on ${printedDateTime}. Are you sure you want to print it again?`}
+          confirmText="Yes, Reprint"
+        />
+      )}
     </div>
   );
 }
-
