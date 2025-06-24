@@ -56,13 +56,13 @@ export default function SingleShipmentPage() {
   const proceedWithPrint = () => {
     if (!canPrint || !shipment) return;
     
-    if (!shipment.releasedAt) {
-      markShipmentAsPrinted(shipment.id);
-    }
+    // Always update the 'releasedAt' timestamp on print or reprint.
+    markShipmentAsPrinted(shipment.id);
     
+    // Use a short timeout to allow the state update to propagate before printing
     setTimeout(() => {
       window.print();
-    }, 0);
+    }, 100);
   };
   
   const handlePrint = () => {
@@ -433,7 +433,7 @@ export default function SingleShipmentPage() {
           setIsOpen={setIsReprintConfirmOpen}
           onConfirm={proceedWithPrint}
           title="Reprint Shipment?"
-          description={`This shipment was already released on ${printedDateTime}. Are you sure you want to print it again?`}
+          description={`This shipment was already released on ${printedDateTime}. Are you sure you want to print it again? This will update the release date to now.`}
           confirmText="Yes, Reprint"
         />
       )}
