@@ -41,6 +41,7 @@ export interface Shipment {
   emptyPalletRequired?: number;
   mrn?: string; // Movement Reference Number
   clearanceDate?: string | null; // Date when clearance document was uploaded/status set
+  comments?: string;
 }
 
 // Used for the form data when creating or updating a shipment
@@ -61,6 +62,7 @@ export interface ShipmentFormData {
   emptyPalletRequired?: number | null;
   mrn?: string;
   clearanceDate?: Date | null; // Form handles Date object or null
+  comments?: string;
 }
 
 // Specifically for updating an existing shipment via context
@@ -81,6 +83,7 @@ export interface ShipmentUpdateData {
   emptyPalletRequired?: number;
   mrn?: string;
   clearanceDate?: string | null; // Context handles ISO string or null
+  comments?: string;
 }
 
 // Specifically for updating an existing trailer via context

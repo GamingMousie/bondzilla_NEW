@@ -5,7 +5,7 @@ import type { Shipment } from '@/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, MapPin, Edit3, Trash2, MoreVertical, FileText, CheckCircle2, CircleOff, Weight, Box, Pencil, FileUp, Users, Hash, Send, Briefcase, Truck, Archive, Fingerprint, CalendarClock, Mail } from 'lucide-react';
+import { Package, MapPin, Edit3, Trash2, MoreVertical, FileText, CheckCircle2, CircleOff, Weight, Box, Pencil, FileUp, Users, Hash, Send, Briefcase, Truck, Archive, Fingerprint, CalendarClock, Mail, MessageSquare } from 'lucide-react';
 import ManageLocationsDialog from './ManageLocationsDialog';
 import EditShipmentDialog from './EditShipmentDialog';
 import AttachDocumentDialog from './AttachDocumentDialog';
@@ -253,6 +253,13 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
             {shipment.emptyPalletRequired && shipment.emptyPalletRequired > 0 ? shipment.emptyPalletRequired : 'No'}
           </span>
         </div>
+        
+        {shipment.comments && (
+            <div className="flex items-start text-xs text-muted-foreground pt-1">
+                <MessageSquare className="mr-1.5 h-3.5 w-3.5 mt-0.5 flex-shrink-0" />
+                <p className="italic">"{shipment.comments}"</p>
+            </div>
+        )}
 
         {shipment.releaseDocumentName && (
           <div className="flex items-center pt-0.5">
@@ -344,4 +351,3 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
     </>
   );
 }
-

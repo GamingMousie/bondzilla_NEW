@@ -17,7 +17,7 @@ interface WarehouseContextType {
   deleteTrailer: (trailerId: string) => void;
   shipments: Shipment[];
   getShipmentsByTrailerId: (trailerId: string) => Shipment[];
-  addShipment: (shipment: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string }) => void;
+  addShipment: (shipment: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate' | 'comments'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string, comments?: string }) => void;
   deleteShipment: (shipmentId: string) => void;
   getTrailerById: (trailerId: string) => Trailer | undefined;
   getShipmentById: (shipmentId: string) => Shipment | undefined;
@@ -38,6 +38,8 @@ const EXPORTERS = ["ExpZeta Co", "ExpEta Ltd", "ExpTheta Inc", "ExpIota LLC", "E
 const LOCATION_PREFIXES = ["Bay ", "Shelf ", "Zone ", "Rack ", "Aisle ", "Area ", "Dock ", "Staging ", "Upper ", "Lower ", "East ", "West "];
 const LOCATION_SUFFIXES = ["A1", "B2-Top", "C3-Low", "D4", "E5-Mid", "F6", "G7-East", "H8-West", "J9", "K10", "L11", "M12"];
 const TRAILER_NAMES_PREFIX = ["Titan", "Voyager", "Goliath", "Pioneer", "Sprinter", "Juggernaut", "Comet", "Stallion"];
+const COMMENTS_POOL = ["Handle with care, item is fragile.", "Urgent, needs to be dispatched by EOD.", "Check for seal integrity before offloading.", "Keep in dry storage only.", "Re-palletize on arrival."];
+
 
 const getRandomElement = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 const getRandomNumber = (min: number, max: number, isInt = true): number => {
@@ -118,6 +120,7 @@ baseTrailerIds.forEach((trailerId, index) => {
       emptyPalletRequired: getRandomNumber(0, 5),
       mrn: isCleared ? `MRN${getRandomNumber(100000, 999999)}` : undefined,
       clearanceDate: clearanceDate,
+      comments: getRandomBoolean() ? getRandomElement(COMMENTS_POOL) : undefined,
     };
     newInitialShipments.push(newShipment);
   }
@@ -174,7 +177,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
     return shipments.filter((s) => s.trailerId === trailerId);
   }, [shipments]);
 
-  const addShipment = useCallback((shipmentData: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string }) => {
+  const addShipment = useCallback((shipmentData: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate' | 'comments'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string, comments?: string }) => {
 
     let initialLocations: LocationInfo[];
     if (shipmentData.initialLocationName) {
@@ -201,6 +204,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       emptyPalletRequired: shipmentData.emptyPalletRequired ?? 0,
       mrn: shipmentData.mrn || undefined,
       clearanceDate: (shipmentData.cleared || shipmentData.clearanceDocumentName) ? new Date().toISOString() : null,
+      comments: shipmentData.comments || undefined,
     };
     setShipments((prev) => [...prev, newShipment]);
   }, [setShipments]);
@@ -234,6 +238,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
 
           updatedShipment.customerJobNumber = data.customerJobNumber !== undefined ? data.customerJobNumber : s.customerJobNumber;
           updatedShipment.mrn = data.mrn !== undefined ? data.mrn : s.mrn;
+          updatedShipment.comments = data.comments !== undefined ? data.comments : s.comments;
 
 
           if (data.locations && data.locations.length > 0 && !(data.locations.length === 1 && data.locations[0].name === 'Pending Assignment')) {
@@ -349,4 +354,3 @@ export const useWarehouse = (): WarehouseContextType => {
   }
   return context;
 };
-

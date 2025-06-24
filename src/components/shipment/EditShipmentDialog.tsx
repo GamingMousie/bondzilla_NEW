@@ -17,11 +17,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Weight, Box, Edit, Users, Send, Briefcase, Archive, Fingerprint, CalendarIcon, CalendarClock } from 'lucide-react';
+import { FileText, Weight, Box, Edit, Users, Send, Briefcase, Archive, Fingerprint, CalendarIcon, CalendarClock, MessageSquare } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Textarea } from '@/components/ui/textarea';
 
 // Using ShipmentFormData as base for the form, which includes clearanceDate as Date | null
 const editShipmentSchema = z.object({
@@ -39,6 +40,7 @@ const editShipmentSchema = z.object({
   emptyPalletRequired: z.coerce.number().int("Must be a whole number").min(0, 'Cannot be negative').optional().nullable(),
   mrn: z.string().max(50, "MRN too long").optional(),
   clearanceDate: z.date().nullable().optional(), // Matching ShipmentFormData
+  comments: z.string().max(200, "Comments are too long").optional(),
 });
 
 // This type is for what the form's `data` object will look like on submit
@@ -72,6 +74,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
       emptyPalletRequired: 0,
       mrn: '',
       clearanceDate: null,
+      comments: '',
     }
   });
 
@@ -92,6 +95,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
         emptyPalletRequired: shipmentToEdit.emptyPalletRequired ?? 0,
         mrn: shipmentToEdit.mrn || '',
         clearanceDate: shipmentToEdit.clearanceDate ? parseISO(shipmentToEdit.clearanceDate) : null,
+        comments: shipmentToEdit.comments || '',
       });
     }
   }, [shipmentToEdit, isOpen, reset]);
@@ -116,6 +120,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
       emptyPalletRequired: data.emptyPalletRequired ?? 0,
       mrn: data.mrn || undefined,
       clearanceDate: data.clearanceDate ? data.clearanceDate.toISOString() : null,
+      comments: data.comments,
     };
 
     updateShipment(shipmentToEdit.id, updatedData);
@@ -200,6 +205,14 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
             </Label>
             <Input id="mrn" {...register('mrn')} />
             {errors.mrn && <p className="text-sm text-destructive mt-1">{errors.mrn.message}</p>}
+          </div>
+          
+          <div>
+            <Label htmlFor="comments" className="flex items-center">
+              <MessageSquare className="mr-2 h-4 w-4 text-muted-foreground" /> Comments
+            </Label>
+            <Textarea id="comments" {...register('comments')} placeholder="Special handling instructions..." rows={3} />
+            {errors.comments && <p className="text-sm text-destructive mt-1">{errors.comments.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -302,4 +315,3 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
     </Dialog>
   );
 }
-

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText, Users, Weight, Box, Truck, Hash, Eye, Send, Briefcase, CalendarCheck, Archive, Edit3, Fingerprint, CalendarClock, Mail } from 'lucide-react';
+import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText, Users, Weight, Box, Truck, Hash, Eye, Send, Briefcase, CalendarCheck, Archive, Edit3, Fingerprint, CalendarClock, Mail, MessageSquare } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import EditShipmentDialog from '@/components/shipment/EditShipmentDialog'; 
 import ConfirmationDialog from '@/components/shared/ConfirmationDialog';
@@ -300,6 +300,15 @@ export default function SingleShipmentPage() {
             <div className="space-y-1 no-print">
               <h3 className="font-semibold text-muted-foreground flex items-center"><CalendarClock className="mr-2 h-4 w-4" />Clearance Date</h3>
               <p className="text-base font-medium">{formatDate(shipment.clearanceDate, 'PP')}</p>
+            </div>
+          )}
+
+          {shipment.comments && (
+            <div className="space-y-1 col-span-1 print:col-span-2 md:col-span-2">
+                <h3 className="font-semibold text-muted-foreground flex items-center"><MessageSquare className="mr-2 h-4 w-4" />Comments</h3>
+                <blockquote className="border-l-4 border-primary pl-4 italic text-base">
+                    {shipment.comments}
+                </blockquote>
             </div>
           )}
 
