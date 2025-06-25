@@ -1,18 +1,1 @@
-gitignore
-# Ignore common cache directories
-.cache/
-
-# Ignore VS Code cache and log files
-.codeoss-cloudworkstations/
-
-# Ignore emulator files
-.emu/
-
-# Ignore npm cache and logs
-.npm/
-
-# Ignore pki files
-.pki/
-
-# Ignore any logs directory
-**/logs/
+hello!

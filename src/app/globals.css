@@ -1,0 +1,292 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* White */
+    --foreground: 240 10% 3.9%; /* Dark Gray - almost black */
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 222.2 47.4% 11.2%; /* Standard Blue Primary */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 210 40% 96.1%; /* Light Gray */
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted:  210 40% 96.1%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 210 40% 96.1%;  /* Standard Blue Accent */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%; /* Lighter gray for borders */
+    --input: 0 0% 89.8%;
+    --ring: 222.2 47.4% 11.2%; /* Standard Blue for focus rings */
+
+    --radius: 0.5rem;
+
+    /* Chart colors */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 350 75% 50%;
+
+    /* Sidebar colors - Kept original as per previous requirements */
+    --sidebar-background: 240 10% 3.9%; 
+    --sidebar-foreground: 0 0% 98%; 
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 240 4.9% 83.9%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 217.2 91.2% 59.8%; /* Lighter Blue for dark mode */
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 217.2 91.2% 59.8%; /* Lighter Blue accent for dark mode */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 91.2% 59.8%; /* Lighter Blue for dark mode focus rings */
+
+    /* Chart colors for dark mode */
+    --chart-1: 210 70% 80%;
+    --chart-2: 160 60% 75%;
+    --chart-3: 40 80% 70%;
+    --chart-4: 290 65% 75%;
+    --chart-5: 350 75% 70%;
+    
+    /* Sidebar colors for dark mode - Kept original */
+    --sidebar-background: 240 10% 3.9%; 
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+    font-family: var(--font-geist-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  pre, code, kbd, samp {
+    font-family: var(--font-geist-mono);
+  }
+}
+
+/* Custom print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .printable-area {
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: avoid; /* Attempt to keep the entire printable area on one page */
+  }
+  .print-only-block {
+    display: block !important; /* Ensure it's block, could be other display types too */
+  }
+  /* Hide elements within a printable area that should not be printed */
+  .printable-area .no-print-in-area {
+     display: none !important;
+  }
+   /* Ensure card content prints reasonably */
+  .card-content-print {
+    padding-top: 1rem !important; /* Adjust as needed */
+  }
+  .print-text-foreground {
+    color: #000 !important; /* Ensure text is black for printing */
+  }
+  .print-no-underline {
+    text-decoration: none !important;
+  }
+
+  /* Specific for ACP form print and general report printing */
+  .printable-area h1, .printable-area h2, .printable-area h3, .printable-area p, .printable-area span, .printable-area label, .printable-area div {
+    color: black !important; /* Ensure all text is black */
+    font-size: 9pt !important; /* Adjust font size for print */
+    line-height: 1.2 !important;
+  }
+  .printable-area .font-bold {
+    font-weight: bold !important;
+  }
+  .printable-area .border-foreground {
+    border-color: black !important;
+  }
+   .printable-area .border-muted-foreground {
+    border-color: #666 !important; /* A lighter gray for dashed lines */
+  }
+  .printable-area .min-h-\[1\.5em\] { min-height: 1.5em !important; }
+  .printable-area .min-h-\[2\.5em\] { min-height: 2.5em !important; }
+  .printable-area .mb-0\.5 { margin-bottom: 0.125rem !important; }
+  .printable-area .mb-1 { margin-bottom: 0.25rem !important; }
+  .printable-area .mt-0\.5 { margin-top: 0.125rem !important; }
+  .printable-area .mt-1 { margin-top: 0.25rem !important; }
+  .printable-area .p-1 { padding: 0.25rem !important; }
+  .printable-area .pb-1 { padding-bottom: 0.25rem !important; }
+  .printable-area .pt-1 { padding-top: 0.25rem !important; }
+  .printable-area .space-y-0\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.125rem !important; }
+  .printable-area .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem !important; }
+
+  /* Remove page breaks inside important blocks if possible, or manage them */
+  .printable-area .border {
+    page-break-inside: avoid;
+  }
+
+  /* Styles for the signature block in print view */
+  .print-signature-block { /* The wrapper div for signature section */
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    margin-top: 1rem !important;
+    border-top-color: black !important;
+  }
+  .print-signature-block h3 {
+    font-size: 8pt !important;
+    margin-bottom: 0.5rem !important; 
+  }
+  .print-signature-block label {
+    font-size: 7pt !important;
+    margin-bottom: 0.05rem !important; /* minimal space below label */
+  }
+  .print-signature-block .grid {
+    gap: 0.5rem !important; 
+  }
+  .print-signature-block .h-12 { /* The signature line */
+    height: 2em !important; 
+    margin-bottom: 0.1rem !important; /* minimal space after each line */
+    border-bottom-color: black !important;
+  }
+  .print-signature-block .space-y-1 > :not([hidden]) ~ :not([hidden]) { 
+    margin-top: 0.1rem !important; /* reduce space between label and line */
+  }
+
+  /* Styles for label generation */
+  .label-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150mm, 1fr)); /* Approximate label width */
+    gap: 2mm; /* Space between labels */
+  }
+  .label-item {
+    page-break-inside: avoid !important;
+    background-color: white !important; /* Ensure white background for labels */
+    color: black !important; /* Ensure black text for labels */
+  }
+   /* Ensure all text within label-item is black for printing */
+  .label-item, .label-item * {
+    color: black !important;
+  }
+  .print-page-break-after-always {
+    page-break-after: always !important;
+  }
+  .print\:w-\[48mm\] { width: 48mm !important; }
+  .print\:h-\[70mm\] { height: 70mm !important; }
+  .print\:w-\[108mm\] { width: 108mm !important; }
+  .print\:h-\[108mm\] { height: 108mm !important; }
+  .print\:w-\[150mm\] { width: 150mm !important; }
+  .print\:h-\[150mm\] { height: 150mm !important; }
+  .print\:p-1\.5 { padding: 0.375rem !important; } /* approx 1.5mm if 1rem = 16px */
+  .print\:p-2 { padding: 0.5rem !important; }
+  .print\:p-3 { padding: 0.75rem !important; }
+  
+  .print\:text-\[100pt\] { font-size: 100pt !important; }
+  .print\:text-\[95pt\] { font-size: 95pt !important; }
+  .print\:text-\[52pt\] { font-size: 52pt !important; }
+  .print\:text-\[48pt\] { font-size: 48pt !important; }
+  .print\:text-\[44pt\] { font-size: 44pt !important; }
+  .print\:text-\[40pt\] { font-size: 40pt !important; }
+  .print\:text-\[36pt\] { font-size: 36pt !important; }
+  .print\:text-\[32pt\] { font-size: 32pt !important; }
+  .print\:text-\[28pt\] { font-size: 28pt !important; }
+  .print\:text-\[22pt\] { font-size: 22pt !important; }
+  .print\:text-\[20pt\] { font-size: 20pt !important; }
+  .print\:text-\[18pt\] { font-size: 18pt !important; }
+  .print\:text-\[16pt\] { font-size: 16pt !important; }
+  .print\:text-\[14pt\] { font-size: 14pt !important; }
+  .print\:text-\[12pt\] { font-size: 12pt !important; }
+  .print\:text-\[10pt\] { font-size: 10pt !important; }
+  .print\:text-\[9pt\] { font-size: 9pt !important; }
+  .print\:text-\[8pt\] { font-size: 8pt !important; }
+  .print\:text-\[7pt\] { font-size: 7pt !important; }
+  .print\:text-\[6pt\] * { font-size: 6pt !important; } /* Retained for ACP form potentially */
+  .print\:text-\[5\.5pt\] { font-size: 5.5pt !important; }
+  .print\:text-\[5pt\] { font-size: 5pt !important; }
+  .print\:text-\[4\.5pt\] { font-size: 4.5pt !important; }
+  
+  .print\:mb-0\.5 { margin-bottom: 0.125rem !important; }
+  .print\:mb-1 { margin-bottom: 0.25rem !important; }
+  .print\:mb-2 { margin-bottom: 0.5rem !important; }
+  .print\:mb-3 { margin-bottom: 0.75rem !important; }
+  .print\:mt-1 { margin-top: 0.25rem !important; }
+  .print\:mt-2 { margin-top: 0.5rem !important; }
+  .print\:my-px { margin-top: 1px !important; margin-bottom: 1px !important; }
+  .print\:pt-0\.5 { padding-top: 0.125rem !important; }
+  .print\:pt-1 { padding-top: 0.25rem !important; }
+  .print\:h-5 { height: 1.25rem !important; } /* Adjust as needed for barcode visual */
+  .print\:w-24 { width: 6rem !important; } /* approx 25mm */
+  .print\:h-24 { height: 6rem !important; } /* approx 25mm */
+  .print\:w-32 { width: 8rem !important; } /* approx 34mm */
+  .print\:h-32 { height: 8rem !important; } /* approx 34mm */
+  .print\:bg-black { background-color: black !important; }
+
+
+  @page {
+    size: A4; /* Or your target paper size */
+    margin: 10mm; /* Adjust margins as needed */
+  }
+  body {
+    -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+    color-adjust: exact !important; /* Firefox, Edge */
+  }
+}
+
+/* Ensure this is outside @media print if it applies generally */
+.print-only-block {
+  display: none; /* Hidden by default, shown only for print */
+}
+
+html {
+  scroll-padding-top: 4rem; /* Adjust based on your fixed header's height */
+}
+
