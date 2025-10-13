@@ -1,9 +1,7 @@
 {
+  "type": "thread",
   "uuid": "90a43272-cc5a-45fe-aac6-8f283626c06c",
-  "title": "",
   "agentId": "prototyper",
-  "lastEditTimestamp": 1750781376714,
-  "status": "ready",
   "state": {
     "shownPostOnboardingMessage": true
   },
@@ -29023,7 +29021,1428 @@
       ],
       "agentData": {},
       "uuid": "fbd82caa-10bf-467e-9125-998200104bf3"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:31Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:33Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:34Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:34Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:34Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:58Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:58Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:58Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T14:55:31Z [web] <Firebase Studio> Starting preview...\n2025-06-26T14:55:31Z [web] Waiting for your web server to start serving\n2025-06-26T14:55:33Z [web] \n2025-06-26T14:55:33Z [web] > bondzilla@0.1.0 dev\n2025-06-26T14:55:33Z [web] > next dev --port 9002 --hostname 0.0.0.0\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "17d4b99b-86a6-429a-90a9-73465d5f13fb"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826309) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:31Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:33Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:33Z [web] \n> 2025-06-26T14:55:33Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:34Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:34Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:34Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:58Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:58Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:58Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "e93673af-e93a-4671-b198-c6557539321d"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:58Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:58Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:58Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:59:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:59:48Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:59:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:03:07Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:03:07Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:03:08Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:18:04Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:18:04Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:18:05Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T14:55:34Z [web] \n2025-06-26T14:55:34Z [web] Error: sh: line 1: next: command not found\n2025-06-26T14:55:34Z [web] \n2025-06-26T14:55:34Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-26T14:55:58Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "6b999012-4b75-47d6-9fe7-2b2762fef546"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:34Z [web] \n> 2025-06-26T14:55:34Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:55:58Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:55:58Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:55:58Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:59:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:59:48Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:59:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:03:07Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:03:07Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:03:08Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:18:04Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:18:04Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:18:05Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "c8421674-5390-49e1-9050-85d95a7435f3"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:59:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:59:48Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:59:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:03:07Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:03:07Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:03:08Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:18:04Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:18:04Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:18:05Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:23:35Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:23:35Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:23:35Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T14:55:58Z [web] \n2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n2025-06-26T14:55:58Z [web] \n2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-26T14:59:48Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "c0737b21-7eac-4ecc-a924-be5c0e93b8c6"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:55:58Z [web] \n> 2025-06-26T14:55:58Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T14:59:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T14:59:48Z [web] Waiting for your web server to start serving\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T14:59:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T14:59:48Z [web] \n> 2025-06-26T14:59:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:03:07Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:03:07Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:03:08Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:03:08Z [web] \n> 2025-06-26T15:03:08Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:18:04Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:18:04Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:18:05Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:23:35Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:23:35Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:23:35Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "42a6915d-d514-42b3-bbdd-10cbd99ea8d4"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:18:05Z [web] \n> 2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:23:35Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:23:35Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:23:35Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:29:21Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:29:21Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:29:21Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:48:13Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:48:13Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:51:45Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:51:45Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:51:45Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] <Firebase Studio> ✘ Preview failed to startRolling back to version `7ef8adcc`",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T15:18:05Z [web] \n2025-06-26T15:18:05Z [web] Error: sh: line 1: next: command not found\n2025-06-26T15:18:05Z [web] \n2025-06-26T15:18:05Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-26T15:23:35Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version 7ef8adcc",
+                "status": "success"
+              }
+            ]
+          }
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "27433bfe-4a40-4199-8be6-9aa88ffdeb93"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "\n\n_What else can I help you with?_"
+        }
+      ],
+      "agentData": {},
+      "uuid": "70b757d8-1370-4122-af88-2fb18a84c42e"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:29:21Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:29:21Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:29:21Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:48:13Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:48:13Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:51:45Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:51:45Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:51:45Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:53:51Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:53:51Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:53:52Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T15:23:35Z [web] \n2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n2025-06-26T15:23:35Z [web] \n2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-26T15:29:21Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "57a9969d-8b76-4fa1-ba8f-ef62bc91ce75"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:23:35Z [web] \n> 2025-06-26T15:23:35Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:29:21Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:29:21Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:29:21Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:48:13Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:48:13Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:51:45Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:51:45Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:51:45Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:53:51Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:53:51Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:53:52Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "4272f5f6-0b62-4b88-a47f-609f7c1cdfa0"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:48:13Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:48:13Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:51:45Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:51:45Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:51:45Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:53:51Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:53:51Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:53:52Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:55:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:55:31Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:55:31Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-26T15:29:21Z [web] \n2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n2025-06-26T15:29:21Z [web] \n2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "05b19949-f27d-4b88-9c44-f8ecdbd1266f"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:29:21Z [web] \n> 2025-06-26T15:29:21Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:48:13Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:48:13Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:48:13Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:48:13Z [web] \n> 2025-06-26T15:48:13Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:51:45Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:51:45Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:51:45Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:51:45Z [web] \n> 2025-06-26T15:51:45Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:53:51Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:53:51Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:53:52Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:53:52Z [web] \n> 2025-06-26T15:53:52Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-26T15:55:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-26T15:55:31Z [web] Waiting for your web server to start serving\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] > bondzilla@0.1.0 dev\n> 2025-06-26T15:55:31Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] Error: sh: line 1: next: command not found\n> 2025-06-26T15:55:31Z [web] \n> 2025-06-26T15:55:31Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "6a7c53bf-08bf-4163-9ab2-5b68161c790c"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T07:16:52Z [web] \n> 2025-06-27T07:16:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:52Z [web] \n> 2025-06-27T07:16:52Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:16:55Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:16:55Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:16:56Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:18:44Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:18:44Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:18:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:20:32Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:20:32Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:20:32Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:21:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:21:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:21:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T07:16:52Z [web] \n2025-06-27T07:16:52Z [web] Error: sh: line 1: next: command not found\n2025-06-27T07:16:52Z [web] \n2025-06-27T07:16:52Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T07:16:55Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "4cd65998-f743-4771-9190-57135f8df4a3"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T07:16:52Z [web] \n> 2025-06-27T07:16:52Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:52Z [web] \n> 2025-06-27T07:16:52Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:16:55Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:16:55Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:16:56Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:18:44Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:18:44Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:18:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:20:32Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:20:32Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:20:32Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:21:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:21:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:21:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "2b0d5949-f8fa-49ca-ac9a-cc151b5f5a89"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:18:44Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:18:44Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:18:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:20:32Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:20:32Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:20:32Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:21:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:21:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:21:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:06:27Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:06:27Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:06:27Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:28Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T07:16:56Z [web] \n2025-06-27T07:16:56Z [web] Error: sh: line 1: next: command not found\n2025-06-27T07:16:56Z [web] \n2025-06-27T07:16:56Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T07:18:44Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "a71815eb-172b-4bed-877c-7e76a18c34dd"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826928) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:16:56Z [web] \n> 2025-06-27T07:16:56Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:18:44Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:18:44Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:18:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:18:44Z [web] \n> 2025-06-27T07:18:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:20:32Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:20:32Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:20:32Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:20:32Z [web] \n> 2025-06-27T07:20:32Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T07:21:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T07:21:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T07:21:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T07:21:54Z [web] \n> 2025-06-27T07:21:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:06:27Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:06:27Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:06:27Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:28Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        },
+        {
+          "type": "markdown",
+          "markdown": "Rolling back to version `a05e029c`"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version a05e029c",
+                "status": "success"
+              }
+            ]
+          }
+        },
+        {
+          "type": "markdown",
+          "markdown": "Rolling back to version `7ef8adcc`"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version 7ef8adcc",
+                "status": "success"
+              }
+            ]
+          }
+        }
+      ],
+      "agentData": {},
+      "uuid": "62cce9e5-dd4c-42ac-92f3-6c4ba3400977"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:28Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:17:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:17:31Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:17:31Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:40:02Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:40:02Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:40:02Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:56:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:56:48Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:56:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:59:22Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:59:22Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:59:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T08:06:27Z [web] \n2025-06-27T08:06:27Z [web] Error: sh: line 1: next: command not found\n2025-06-27T08:06:27Z [web] \n2025-06-27T08:06:28Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T08:17:31Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "735fc74d-3179-4f61-9588-7e22f1d8afe9"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:27Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:06:27Z [web] \n> 2025-06-27T08:06:28Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:17:31Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:17:31Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:17:31Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:17:31Z [web] \n> 2025-06-27T08:17:31Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:40:02Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:40:02Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:40:02Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:56:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:56:48Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:56:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:59:22Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:59:22Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:59:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "8dfbf13e-4ca7-4743-906b-df3f4405e8cf"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:56:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:56:48Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:56:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:59:22Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:59:22Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:59:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T09:04:19Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T09:04:19Z [web] Waiting for your web server to start serving\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T09:04:20Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T10:35:09Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T10:35:09Z [web] Waiting for your web server to start serving\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T10:35:09Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:10Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T08:40:02Z [web] \n2025-06-27T08:40:02Z [web] Error: sh: line 1: next: command not found\n2025-06-27T08:40:02Z [web] \n2025-06-27T08:40:02Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T08:56:48Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "44d8ab25-71fd-4cb0-bf87-646e5e89346b"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:40:02Z [web] \n> 2025-06-27T08:40:02Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:56:48Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:56:48Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:56:48Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:56:48Z [web] \n> 2025-06-27T08:56:48Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T08:59:22Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T08:59:22Z [web] Waiting for your web server to start serving\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T08:59:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T08:59:22Z [web] \n> 2025-06-27T08:59:22Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T09:04:19Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T09:04:19Z [web] Waiting for your web server to start serving\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T09:04:20Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T09:04:20Z [web] \n> 2025-06-27T09:04:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T10:35:09Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T10:35:09Z [web] Waiting for your web server to start serving\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T10:35:09Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:10Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "b7a7da69-c138-4419-aa63-ed7f7f4ee726"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:03:20Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:03:20Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:03:20Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:23:38Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:23:38Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:23:38Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T10:35:09Z [web] \n2025-06-27T10:35:09Z [web] Error: sh: line 1: next: command not found\n2025-06-27T10:35:09Z [web] \n2025-06-27T10:35:10Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T11:03:20Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "56eb1664-6524-44ca-be20-c39061b003a0"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:09Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T10:35:09Z [web] \n> 2025-06-27T10:35:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:03:20Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:03:20Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:03:20Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:23:38Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:23:38Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:23:38Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "1ec05dd9-4fa0-4558-8f6b-0e49667f5f1c"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:23:38Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:23:38Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:23:38Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:04:42Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:04:42Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T11:03:20Z [web] \n2025-06-27T11:03:20Z [web] Error: sh: line 1: next: command not found\n2025-06-27T11:03:20Z [web] \n2025-06-27T11:03:20Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T11:23:38Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "bc551568-abf5-49b8-889c-78c8ed5e2a7f"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:03:20Z [web] \n> 2025-06-27T11:03:20Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:23:38Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:23:38Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:23:38Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:04:42Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:04:42Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "d435cf2f-bdbf-407f-a9fb-1b073efe13ed"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:04:42Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:04:42Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:21:29Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:21:29Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:21:30Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T11:23:38Z [web] \n2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n2025-06-27T11:23:38Z [web] \n2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "fb667bc4-8790-480a-bcfc-7de6c1290421"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:23:38Z [web] \n> 2025-06-27T11:23:38Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T11:28:54Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T11:28:54Z [web] Waiting for your web server to start serving\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T11:28:55Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T11:28:55Z [web] \n> 2025-06-27T11:28:55Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T12:49:10Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T12:49:10Z [web] Waiting for your web server to start serving\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T12:49:10Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:04:42Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:04:42Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:21:29Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:21:29Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:21:30Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "2e3b89b3-738e-4fce-ae0d-18bb05328974"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T12:49:10Z [web] \n> 2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:04:42Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:04:42Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:04:42Z [web] \n> 2025-06-27T13:04:42Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T13:21:29Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T13:21:29Z [web] Waiting for your web server to start serving\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T13:21:30Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T13:21:30Z [web] \n> 2025-06-27T13:21:30Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:24:39Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:24:39Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:24:39Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:26:27Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:26:27Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:26:28Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T12:49:10Z [web] \n2025-06-27T12:49:10Z [web] Error: sh: line 1: next: command not found\n2025-06-27T12:49:10Z [web] \n2025-06-27T12:49:10Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T13:04:42Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "0be97799-7e3e-4360-b660-67c0def27f1b"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "Rolling back to version `377e35f9`"
+        },
+        {
+          "type": "markdown",
+          "markdown": "\n\n_What else can I help you with?_"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version 377e35f9",
+                "status": "success"
+              }
+            ]
+          }
+        }
+      ],
+      "agentData": {},
+      "uuid": "7a60bb2f-1d5a-455c-a22b-12022a72b7ba"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:26:27Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:26:27Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:26:28Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:41:25Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:41:25Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:41:25Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:45:12Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:45:12Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:45:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:46:00Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:46:00Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:46:00Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-06-27T14:24:39Z [web] \n2025-06-27T14:24:39Z [web] Error: sh: line 1: next: command not found\n2025-06-27T14:24:39Z [web] \n2025-06-27T14:24:39Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-06-27T14:26:27Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "c32ad4f8-40af-46b3-828d-e8b75afa6ee6"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826743) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:24:39Z [web] \n> 2025-06-27T14:24:39Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:26:27Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:26:27Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:26:28Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:26:28Z [web] \n> 2025-06-27T14:26:28Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:41:25Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:41:25Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:41:25Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:41:25Z [web] \n> 2025-06-27T14:41:25Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:45:12Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:45:12Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:45:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:45:12Z [web] \n> 2025-06-27T14:45:12Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-06-27T14:46:00Z [web] <Firebase Studio> Starting preview...\n> 2025-06-27T14:46:00Z [web] Waiting for your web server to start serving\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] > bondzilla@0.1.0 dev\n> 2025-06-27T14:46:00Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] Error: sh: line 1: next: command not found\n> 2025-06-27T14:46:00Z [web] \n> 2025-06-27T14:46:00Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "5c07e0a0-36f4-42f3-9219-5025e6ca1f32"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:22:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:35:11Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:35:12Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:35:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n2025-07-01T15:22:54Z [web] \n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "7794de50-4eb6-4e30-aa36-3f31f5b4b708"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826071) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:22:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:35:11Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:35:12Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:35:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "e0bb0a3e-628d-40ca-a6a7-679a40b94806"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:22:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:35:11Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:35:12Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:35:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:36:56Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:36:56Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:36:56Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] <Firebase Studio> ✘ Preview failed to start",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n2025-07-01T15:22:54Z [web] \n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "229bdf88-7d28-404e-bd62-5099c6f23a98"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1826376) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-01T15:22:50Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:50Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:53Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:22:53Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:22:54Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:22:54Z [web] \n> 2025-07-01T15:22:54Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:35:11Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:35:12Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:35:12Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:35:12Z [web] \n> 2025-07-01T15:35:12Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-01T15:36:56Z [web] <Firebase Studio> Starting preview...\n> 2025-07-01T15:36:56Z [web] Waiting for your web server to start serving\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] > bondzilla@0.1.0 dev\n> 2025-07-01T15:36:56Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] Error: sh: line 1: next: command not found\n> 2025-07-01T15:36:56Z [web] \n> 2025-07-01T15:36:56Z [web] <Firebase Studio> ✘ Preview failed to start"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        },
+        {
+          "type": "markdown",
+          "markdown": "Rolling back to version `23897a1f`"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version 23897a1f",
+                "status": "success"
+              }
+            ]
+          }
+        }
+      ],
+      "agentData": {},
+      "uuid": "e295cbf2-05b5-4e67-b7b3-07c85da83c0a"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-02T09:10:16Z [web] \n> 2025-07-02T09:10:16Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:10:16Z [web] \n> 2025-07-02T09:10:16Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:10:17Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:10:17Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:10:18Z [web] \n> 2025-07-02T09:10:18Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:10:18Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:10:18Z [web] \n> 2025-07-02T09:10:18Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:10:18Z [web] \n> 2025-07-02T09:10:18Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:11:26Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:11:26Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:11:26Z [web] \n> 2025-07-02T09:11:26Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:11:26Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:11:26Z [web] \n> 2025-07-02T09:11:26Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:11:26Z [web] \n> 2025-07-02T09:11:26Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:33:50Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:33:50Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:33:50Z [web] \n> 2025-07-02T09:33:50Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:33:50Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:33:50Z [web] \n> 2025-07-02T09:33:50Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:33:50Z [web] \n> 2025-07-02T09:33:50Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:43:37Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:43:37Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:43:37Z [web] \n> 2025-07-02T09:43:37Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:43:37Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:43:37Z [web] \n> 2025-07-02T09:43:37Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:43:37Z [web] \n> 2025-07-02T09:43:37Z [web] <Firebase Studio> ✘ Preview failed to startRolling back to version `7ef8adcc`",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-07-02T09:10:16Z [web] \n2025-07-02T09:10:16Z [web] Error: sh: line 1: next: command not found\n2025-07-02T09:10:16Z [web] \n2025-07-02T09:10:16Z [web] <Firebase Studio> ✘ Preview failed to start\n2025-07-02T09:10:17Z [web] <Firebase Studio> Starting preview...\n...\n```\n"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "stepProgressLabel",
+                "label": "Rolled back to version 7ef8adcc",
+                "status": "success"
+              }
+            ]
+          }
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "77f690ed-f36a-406c-868f-453c4beb9922"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "\n\n_What else can I help you with?_"
+        }
+      ],
+      "agentData": {},
+      "uuid": "817f1d43-d45e-418c-b061-031a5ef5e379"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-02T09:44:43Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:44:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:45:24Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:45:24Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:45:26Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:46:49Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:46:49Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:46:49Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T10:51:22Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T10:51:22Z [web] Waiting for your web server to start serving\n> 2025-07-02T10:51:22Z [web] \n> 2025-07-02T10:51:22Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T10:51:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T10:51:22Z [web] \n> 2025-07-02T10:51:24Z [web] <Firebase Studio> ▶️ Preview running\n> 2025-07-02T10:51:24Z [web]   ▲ Next.js 14.2.3\n> 2025-07-02T10:51:24Z [web]   - Local:        http://localhost:9002\n> 2025-07-02T10:51:24Z [web]   - Network:      http://0.0.0.0:9002\n> 2025-07-02T10:51:24Z [web] \n> 2025-07-02T10:51:24Z [web]  ✓ Starting...\n> 2025-07-02T10:51:31Z [web]  ✓ Ready in 6.9s\n> 2025-07-02T10:51:31Z [web]  ○ Compiling / ...",
+          "userVisibleMarkdown": "The app isn't starting. Please investigate what could be wrong based on these server logs:\n\n```\n2025-07-02T09:44:43Z [web] Waiting for your web server to start serving\n2025-07-02T09:44:44Z [web] \n2025-07-02T09:44:44Z [web] > bondzilla@0.1.0 dev\n2025-07-02T09:44:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n2025-07-02T09:44:44Z [web] \n...\n```\n"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "5af82be6-4a45-4596-b884-8222ec39ae63"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1858803) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "The NextJS app server is having trouble starting. Please identify what could be wrong and if there's an error, try fixing the problem based on the following server logs: \n\n> 2025-07-02T09:44:43Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:44:44Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:44:44Z [web] \n> 2025-07-02T09:44:44Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:45:24Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:45:24Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:45:26Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:45:26Z [web] \n> 2025-07-02T09:45:26Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T09:46:49Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T09:46:49Z [web] Waiting for your web server to start serving\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T09:46:49Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] Error: sh: line 1: next: command not found\n> 2025-07-02T09:46:49Z [web] \n> 2025-07-02T09:46:49Z [web] <Firebase Studio> ✘ Preview failed to start\n> 2025-07-02T10:51:22Z [web] <Firebase Studio> Starting preview...\n> 2025-07-02T10:51:22Z [web] Waiting for your web server to start serving\n> 2025-07-02T10:51:22Z [web] \n> 2025-07-02T10:51:22Z [web] > bondzilla@0.1.0 dev\n> 2025-07-02T10:51:22Z [web] > next dev --port 9002 --hostname 0.0.0.0\n> 2025-07-02T10:51:22Z [web] \n> 2025-07-02T10:51:24Z [web] <Firebase Studio> ▶️ Preview running\n> 2025-07-02T10:51:24Z [web]   ▲ Next.js 14.2.3\n> 2025-07-02T10:51:24Z [web]   - Local:        http://localhost:9002\n> 2025-07-02T10:51:24Z [web]   - Network:      http://0.0.0.0:9002\n> 2025-07-02T10:51:24Z [web] \n> 2025-07-02T10:51:24Z [web]  ✓ Starting...\n> 2025-07-02T10:51:31Z [web]  ✓ Ready in 6.9s\n> 2025-07-02T10:51:31Z [web]  ○ Compiling / ..."
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "7d0652a2-0258-436a-89c4-fb5a4af34bc3"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "I WANT ID IN TRAILER DASHBOARD TO BE SLIGHTLY BIGGER"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "4f893381-bade-40db-8e48-b8057bfc8053"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1857417) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "I WANT ID IN TRAILER DASHBOARD TO BE SLIGHTLY BIGGER"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "19911b20-7a00-4dd2-8b0e-c2684ca1e4fa"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "hi"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "3853d004-ba65-47fe-89d1-32cb8384b671"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1900291) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "hi"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "bcd9c572-ee84-4af1-9241-39bf19d5df7b"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "hiya"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "56e44ca0-3393-4f1c-b20e-0eb39f9fe378"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1920322) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "hiya"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "0d3a30b7-88ec-4537-a122-231660efbd95"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "fix it"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "ff789748-86e6-492b-b90c-4f1e8aed1e63"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro-preview-06-05:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1938988) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "fix it"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "5bd9c156-a201-485e-85cd-ce8ba13c13e9"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "hiya"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "ad42870d-6b4a-4b1c-a53b-5b3f72447725"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Prototyper",
+        "handle": "",
+        "icon": ""
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1940946) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "hiya"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "8477721b-c403-497f-ad1c-de0a64b165e7"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "lol"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "60aeb30d-449e-4766-b00d-262f4217bca1"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Gemini",
+        "handle": "",
+        "icon": ":gemini"
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (1948879) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "lol"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "fd8ccb5e-f534-4b84-8734-1b32e069c322"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "shortName": "Klaudia",
+        "displayName": "Klaudia Gardawska",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "save this on my desktop"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "9eb9c609-7f19-4a34-9955-15cb4b7007f2"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Gemini",
+        "handle": "",
+        "icon": ":gemini"
+      },
+      "body": [
+        {
+          "type": "error",
+          "message": "Sorry, I hit a snag. Please try again shortly or modify your prompt.",
+          "details": "[GoogleGenerativeAI Error]: Error fetching from https://monospace-pa.googleapis.com/v1/models/gemini-2.5-pro:streamGenerateContent?alt=sse: [400 Bad Request] The input token count (2151401) exceeds the maximum number of tokens allowed (1048576).",
+          "actions": [
+            [
+              "Try Again",
+              {
+                "action": "retry-prompt",
+                "args": {
+                  "originalPrompt": {
+                    "type": "text",
+                    "content": "save this on my desktop"
+                  }
+                }
+              }
+            ]
+          ],
+          "severity": "error"
+        }
+      ],
+      "agentData": {},
+      "uuid": "cc8f38ac-15e5-4cad-a749-03faeff09dfd"
     }
   ],
+  "status": "ready",
+  "title": "thread.title",
+  "lastEditTimestamp": 1760369057701,
+  "thinkingText": "",
   "suggestedPrompts": []
 }
