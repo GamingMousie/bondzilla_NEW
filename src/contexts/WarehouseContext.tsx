@@ -1,23 +1,28 @@
 
-// @ts-nocheck
 'use client';
 
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useCallback } from 'react';
-import type { Trailer, Shipment, TrailerStatus, ShipmentUpdateData, TrailerUpdateData, LocationInfo, QuizReport } from '@/types';
+import type { Trailer, Shipment, TrailerStatus, ShipmentUpdateData, TrailerUpdateData, LocationInfo, QuizReport, TrailerFormData, ShipmentFormData } from '@/types';
 import useLocalStorageState from '@/hooks/useLocalStorageState';
 import { v4 as uuidv4 } from 'uuid'; // Using uuid for unique shipment IDs
-import { addDays, subDays } from 'date-fns';
+import { addDays } from 'date-fns';
+
+type AddShipmentContextData = Omit<Shipment, 'id' | 'locations' | 'releasedAt' | 'clearanceDate'> & {
+    initialLocationName?: string;
+    initialLocationPallets?: number;
+};
+
 
 interface WarehouseContextType {
   trailers: Trailer[];
-  addTrailer: (trailer: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName' | 'sprattJobNumber'> & { status?: TrailerStatus; company?: string; sprattJobNumber?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => void;
+  addTrailer: (trailerData: TrailerFormData) => void;
   updateTrailerStatus: (trailerId: string, status: TrailerStatus) => void;
   updateTrailer: (trailerId: string, data: TrailerUpdateData) => void;
   deleteTrailer: (trailerId: string) => void;
   shipments: Shipment[];
   getShipmentsByTrailerId: (trailerId: string) => Shipment[];
-  addShipment: (shipment: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate' | 'comments'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string, comments?: string }) => void;
+  addShipment: (shipment: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { trailerId: string }) => void;
   deleteShipment: (shipmentId: string) => void;
   getTrailerById: (trailerId: string) => Trailer | undefined;
   getShipmentById: (shipmentId: string) => Shipment | undefined;
@@ -136,16 +141,16 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   const [shipments, setShipments] = useLocalStorageState<Shipment[]>('shipments', newInitialShipments);
   const [quizReports, setQuizReports] = useLocalStorageState<QuizReport[]>('quizReports', initialQuizReports);
 
-  const addTrailer = useCallback((trailerData: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName' | 'sprattJobNumber'> & { status?: TrailerStatus; company?: string; sprattJobNumber?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => {
+  const addTrailer = useCallback((trailerData: TrailerFormData) => {
     const newTrailer: Trailer = {
       id: trailerData.id,
       name: trailerData.name,
       status: trailerData.status || 'Scheduled',
       company: trailerData.company || undefined,
       sprattJobNumber: trailerData.sprattJobNumber || undefined,
-      arrivalDate: trailerData.arrivalDate || undefined,
-      storageExpiryDate: trailerData.storageExpiryDate || undefined,
-      weight: trailerData.weight || undefined,
+      arrivalDate: trailerData.arrivalDate ? trailerData.arrivalDate.toISOString() : undefined,
+      storageExpiryDate: trailerData.storageExpiryDate ? trailerData.storageExpiryDate.toISOString() : undefined,
+      weight: trailerData.weight ?? undefined,
       customField1: trailerData.customField1 || undefined,
       customField2: trailerData.customField2 || undefined,
       outturnReportDocumentName: undefined,
@@ -179,20 +184,21 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
     return shipments.filter((s) => s.trailerId === trailerId);
   }, [shipments]);
 
-  const addShipment = useCallback((shipmentData: Omit<Shipment, 'id' | 'locations' | 'released' | 'cleared' | 'importer' | 'exporter' | 'stsJob' | 'customerJobNumber' | 'releasedAt' | 'emptyPalletRequired' | 'mrn' | 'clearanceDate' | 'comments'> & { stsJob: number; customerJobNumber?: string; importer: string; exporter: string; initialLocationName?: string, initialLocationPallets?: number, releaseDocumentName?: string, clearanceDocumentName?: string, released?:boolean, cleared?: boolean, weight?: number, palletSpace?: number, emptyPalletRequired?: number, mrn?: string, comments?: string }) => {
+  const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { trailerId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
 
     let initialLocations: LocationInfo[];
     if (shipmentData.initialLocationName) {
-      initialLocations = [{ name: shipmentData.initialLocationName, pallets: shipmentData.initialLocationPallets }];
+      initialLocations = [{ name: shipmentData.initialLocationName, pallets: shipmentData.initialLocationPallets ?? undefined }];
     } else {
       initialLocations = [{ name: 'Pending Assignment' }];
     }
 
     const newShipment: Shipment = {
-      ...shipmentData,
       id: uuidv4(),
+      trailerId: shipmentData.trailerId,
       stsJob: shipmentData.stsJob,
       customerJobNumber: shipmentData.customerJobNumber || undefined,
+      quantity: shipmentData.quantity,
       importer: shipmentData.importer,
       exporter: shipmentData.exporter,
       locations: initialLocations,
@@ -200,8 +206,8 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       clearanceDocumentName: shipmentData.clearanceDocumentName,
       released: shipmentData.released ?? false,
       cleared: shipmentData.cleared ?? false,
-      weight: shipmentData.weight,
-      palletSpace: shipmentData.palletSpace,
+      weight: shipmentData.weight ?? undefined,
+      palletSpace: shipmentData.palletSpace ?? undefined,
       releasedAt: undefined,
       emptyPalletRequired: shipmentData.emptyPalletRequired ?? 0,
       mrn: shipmentData.mrn || undefined,
