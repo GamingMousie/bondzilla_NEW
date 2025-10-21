@@ -11,6 +11,7 @@ export interface Trailer {
   name: string; // Optional descriptive name
   status: TrailerStatus;
   company?: string; // Optional: Company associated with the trailer
+  sprattJobNumber?: string; // Optional: Spratt's internal job number
   arrivalDate?: string; // Optional: Date of arrival, ISO string format
   storageExpiryDate?: string; // Optional: Date when storage expires, ISO string format
   weight?: number; // Optional: Weight of the trailer in kg
@@ -90,6 +91,7 @@ export interface ShipmentUpdateData {
 export interface TrailerUpdateData {
   name?: string;
   company?: string;
+  sprattJobNumber?: string;
   status?: TrailerStatus;
   arrivalDate?: string | null;
   storageExpiryDate?: string | null;
@@ -107,6 +109,7 @@ export interface TrailerFormData {
   id: string;
   name: string;
   company?: string;
+  sprattJobNumber?: string;
   status: TrailerStatus;
   arrivalDate?: Date | null;
   storageExpiryDate?: Date | null;

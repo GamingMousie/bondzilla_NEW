@@ -19,7 +19,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Edit, Weight, Tag, FileText, UploadCloud, BookOpen, FileBadge, FileSignature } from "lucide-react"; // Added FileSignature
+import { CalendarIcon, Edit, Weight, Tag, FileText, UploadCloud, BookOpen, FileBadge, FileSignature, Hash } from "lucide-react"; // Added FileSignature
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +28,7 @@ import { useToast } from '@/hooks/use-toast';
 type EditTrailerFormDataInternal = {
   name: string;
   company?: string;
+  sprattJobNumber?: string;
   status: TrailerStatus;
   arrivalDate?: Date | null;
   storageExpiryDate?: Date | null;
@@ -45,6 +46,7 @@ const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloa
 const editTrailerSchema = z.object({
   name: z.string().min(1, 'Trailer Name is required').max(50, 'Trailer Name too long'),
   company: z.string().max(50, 'Company name too long').optional(),
+  sprattJobNumber: z.string().max(50, 'Spratt job number too long').optional(),
   status: z.enum(allStatuses as [TrailerStatus, ...TrailerStatus[]]),
   arrivalDate: z.date().nullable().optional(),
   storageExpiryDate: z.date().nullable().optional(),
@@ -86,6 +88,7 @@ export default function EditTrailerDialog({ isOpen, setIsOpen, trailerToEdit }: 
       reset({
         name: trailerToEdit.name,
         company: trailerToEdit.company || '',
+        sprattJobNumber: trailerToEdit.sprattJobNumber || '',
         status: trailerToEdit.status,
         arrivalDate: trailerToEdit.arrivalDate ? parseISO(trailerToEdit.arrivalDate) : null,
         storageExpiryDate: trailerToEdit.storageExpiryDate ? parseISO(trailerToEdit.storageExpiryDate) : null,
@@ -148,6 +151,7 @@ export default function EditTrailerDialog({ isOpen, setIsOpen, trailerToEdit }: 
     const updateData: TrailerUpdateData = {
       name: data.name,
       company: data.company || undefined,
+      sprattJobNumber: data.sprattJobNumber || undefined,
       status: data.status,
       arrivalDate: data.arrivalDate ? data.arrivalDate.toISOString() : null,
       storageExpiryDate: data.storageExpiryDate ? data.storageExpiryDate.toISOString() : null,
@@ -174,6 +178,7 @@ export default function EditTrailerDialog({ isOpen, setIsOpen, trailerToEdit }: 
       reset({
         name: trailerToEdit.name,
         company: trailerToEdit.company || '',
+        sprattJobNumber: trailerToEdit.sprattJobNumber || '',
         status: trailerToEdit.status,
         arrivalDate: trailerToEdit.arrivalDate ? parseISO(trailerToEdit.arrivalDate) : null,
         storageExpiryDate: trailerToEdit.storageExpiryDate ? parseISO(trailerToEdit.storageExpiryDate) : null,
@@ -213,6 +218,13 @@ export default function EditTrailerDialog({ isOpen, setIsOpen, trailerToEdit }: 
             <Label htmlFor="company">Company (Optional)</Label>
             <Input id="company" {...register('company')} placeholder="e.g., Logistics Inc." />
             {errors.company && <p className="text-sm text-destructive mt-1">{errors.company.message}</p>}
+          </div>
+           <div>
+            <Label htmlFor="sprattJobNumber" className="flex items-center">
+              <Hash className="mr-2 h-4 w-4 text-muted-foreground" /> Spratt Job Number (Optional)
+            </Label>
+            <Input id="sprattJobNumber" {...register('sprattJobNumber')} placeholder="e.g., SJN-12345" />
+            {errors.sprattJobNumber && <p className="text-sm text-destructive mt-1">{errors.sprattJobNumber.message}</p>}
           </div>
            <div>
             <Label htmlFor="weight" className="flex items-center">

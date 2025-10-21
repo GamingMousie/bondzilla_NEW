@@ -5,7 +5,7 @@ import type { Trailer, TrailerStatus } from '@/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Truck, Package, Edit, Trash2, MoreVertical, ChevronRight, Briefcase, CalendarDays, Boxes, Weight, Tag } from 'lucide-react';
+import { Truck, Package, Edit, Trash2, MoreVertical, ChevronRight, Briefcase, CalendarDays, Boxes, Weight, Tag, Hash } from 'lucide-react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import {
   DropdownMenu,
@@ -123,6 +123,17 @@ export default function TrailerCard({ trailer, viewMode, onDelete, onStatusChang
           </div>
         ) : (
           <Skeleton className="h-3 w-2/3" />
+        )
+      ) : null}
+
+      {trailer.sprattJobNumber ? (
+        isMounted ? (
+          <div className="flex items-center text-xs text-muted-foreground mt-1">
+            <Hash className="mr-1.5 h-3.5 w-3.5" />
+            <span>SJN: {trailer.sprattJobNumber}</span>
+          </div>
+        ) : (
+          <Skeleton className="h-3 w-1/2 mt-1" />
         )
       ) : null}
 
@@ -266,6 +277,17 @@ export default function TrailerCard({ trailer, viewMode, onDelete, onStatusChang
                   )
                 ) : null}
 
+                {trailer.sprattJobNumber ? (
+                  isMounted ? (
+                    <div className="flex items-center text-xs text-muted-foreground mt-1">
+                      <Hash className="mr-1.5 h-3.5 w-3.5" />
+                      <span>SJN: {trailer.sprattJobNumber}</span>
+                    </div>
+                  ) : (
+                    <Skeleton className="h-3 w-1/2 mt-1" />
+                  )
+                ) : null}
+                
                 {trailer.storageExpiryDate ? (
                   isMounted ? (
                     <DateDisplay label="Storage Exp" dateString={trailer.storageExpiryDate} icon={CalendarDays} />

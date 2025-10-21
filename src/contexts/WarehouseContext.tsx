@@ -11,7 +11,7 @@ import { addDays, subDays } from 'date-fns';
 
 interface WarehouseContextType {
   trailers: Trailer[];
-  addTrailer: (trailer: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName'> & { status?: TrailerStatus; company?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => void;
+  addTrailer: (trailer: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName' | 'sprattJobNumber'> & { status?: TrailerStatus; company?: string; sprattJobNumber?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => void;
   updateTrailerStatus: (trailerId: string, status: TrailerStatus) => void;
   updateTrailer: (trailerId: string, data: TrailerUpdateData) => void;
   deleteTrailer: (trailerId: string) => void;
@@ -84,6 +84,7 @@ baseTrailerIds.forEach((trailerId, index) => {
     name: `${getRandomElement(TRAILER_NAMES_PREFIX)} Hauler ${index + 1}`,
     status: getRandomElement(TRAILER_STATUSES),
     company: getRandomElement(COMPANIES),
+    sprattJobNumber: getRandomBoolean() ? `SJN-${getRandomNumber(10000, 99999)}` : undefined,
     arrivalDate: arrivalDate,
     storageExpiryDate: getRandomBoolean() ? getRandomDate(15, 45) : undefined,
     weight: getRandomNumber(2500, 5500, false),
@@ -135,12 +136,13 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   const [shipments, setShipments] = useLocalStorageState<Shipment[]>('shipments', newInitialShipments);
   const [quizReports, setQuizReports] = useLocalStorageState<QuizReport[]>('quizReports', initialQuizReports);
 
-  const addTrailer = useCallback((trailerData: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName'> & { status?: TrailerStatus; company?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => {
+  const addTrailer = useCallback((trailerData: Omit<Trailer, 'status' | 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'company' | 'customField1' | 'customField2' | 'outturnReportDocumentName' | 't1SummaryDocumentName' | 'manifestDocumentName' | 'acpDocumentName' | 'sprattJobNumber'> & { status?: TrailerStatus; company?: string; sprattJobNumber?: string; arrivalDate?: string; storageExpiryDate?: string; weight?: number; customField1?: string; customField2?: string; }) => {
     const newTrailer: Trailer = {
       id: trailerData.id,
       name: trailerData.name,
       status: trailerData.status || 'Scheduled',
       company: trailerData.company || undefined,
+      sprattJobNumber: trailerData.sprattJobNumber || undefined,
       arrivalDate: trailerData.arrivalDate || undefined,
       storageExpiryDate: trailerData.storageExpiryDate || undefined,
       weight: trailerData.weight || undefined,

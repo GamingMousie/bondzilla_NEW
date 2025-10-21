@@ -11,7 +11,7 @@ import EditTrailerDialog from '@/components/trailer/EditTrailerDialog';
 import AttachTrailerDocumentDialog from '@/components/trailer/AttachTrailerDocumentDialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, PlusCircle, Package, Truck, Briefcase, CalendarDays, Weight, Tag, Printer, FileText, Eye, Edit, UploadCloud, BookOpen, FileBadge, Mail, FileSignature, Download } from 'lucide-react';
+import { ArrowLeft, PlusCircle, Package, Truck, Briefcase, CalendarDays, Weight, Tag, Printer, FileText, Eye, Edit, UploadCloud, BookOpen, FileBadge, Mail, FileSignature, Download, Hash } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 
@@ -297,6 +297,12 @@ export default function TrailerShipmentsPage() {
                   Company: <span className="font-semibold ml-1">{trailer.company}</span>
                 </CardDescription>
               )}
+               {trailer.sprattJobNumber && (
+                <CardDescription className="mt-1 flex items-center">
+                  <Hash className="mr-2 h-4 w-4 text-muted-foreground" />
+                  Spratt Job: <span className="font-semibold ml-1">{trailer.sprattJobNumber}</span>
+                </CardDescription>
+              )}
               {trailer.weight !== undefined && trailer.weight !== null && (
                 <CardDescription className="mt-1 flex items-center">
                   <Weight className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -414,4 +420,3 @@ export default function TrailerShipmentsPage() {
     </div>
   );
 }
-

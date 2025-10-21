@@ -18,7 +18,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Weight, Tag } from "lucide-react";
+import { CalendarIcon, Weight, Tag, Hash } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
@@ -30,6 +30,7 @@ type TrailerFormData = Omit<ExternalTrailerFormData, 'arrivalDate' | 'storageExp
   weight?: number | null;
   customField1?: string;
   customField2?: string;
+  sprattJobNumber?: string;
 };
 
 const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
@@ -38,6 +39,7 @@ const trailerSchema = z.object({
   id: z.string().min(1, 'Trailer ID is required').max(20, 'Trailer ID too long'),
   name: z.string().min(1, 'Trailer Name is required').max(50, 'Trailer Name too long'),
   company: z.string().max(50, 'Company name too long').optional(),
+  sprattJobNumber: z.string().max(50, 'Spratt job number too long').optional(),
   status: z.enum(allStatuses as [TrailerStatus, ...TrailerStatus[]]).default('Scheduled'),
   arrivalDate: z.date().nullable().optional(),
   storageExpiryDate: z.date().nullable().optional(),
@@ -69,6 +71,7 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
     defaultValues: {
       status: 'Scheduled', 
       company: '',
+      sprattJobNumber: '',
       arrivalDate: null,
       storageExpiryDate: null,
       weight: null,
@@ -96,6 +99,7 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
       id: data.id,
       name: data.name,
       company: data.company,
+      sprattJobNumber: data.sprattJobNumber,
       status: data.status,
       arrivalDate: data.arrivalDate ? data.arrivalDate.toISOString() : undefined,
       storageExpiryDate: data.storageExpiryDate ? data.storageExpiryDate.toISOString() : undefined,
@@ -135,6 +139,13 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
             <Label htmlFor="company">Company (Optional)</Label>
             <Input id="company" {...register('company')} placeholder="e.g., Logistics Inc." />
             {errors.company && <p className="text-sm text-destructive mt-1">{errors.company.message}</p>}
+          </div>
+          <div>
+            <Label htmlFor="sprattJobNumber" className="flex items-center">
+              <Hash className="mr-2 h-4 w-4 text-muted-foreground" /> Spratt Job Number (Optional)
+            </Label>
+            <Input id="sprattJobNumber" {...register('sprattJobNumber')} placeholder="e.g., SJN-12345" />
+            {errors.sprattJobNumber && <p className="text-sm text-destructive mt-1">{errors.sprattJobNumber.message}</p>}
           </div>
           <div>
             <Label htmlFor="weight" className="flex items-center">

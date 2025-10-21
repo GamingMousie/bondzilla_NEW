@@ -1,0 +1,49 @@
+{
+  "type": "thread",
+  "uuid": "1d1132ab-e507-488d-9c44-9f78adec586b",
+  "agentId": "classic",
+  "state": {},
+  "history": [
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "shortName": "Klaudia",
+        "displayName": "Klaudia Gardawska",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "npm install firebase-admin --save"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "eb4c0fdb-d70b-4815-8dff-c3851f0d60b9"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "classic",
+        "displayName": "Gemini",
+        "handle": "",
+        "icon": ":gemini"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "I can add the `firebase-admin` dependency to your `package.json` file. Would you like me to do that?"
+        }
+      ],
+      "agentData": {},
+      "uuid": "7027d104-f091-4181-a7ea-87ad23a56ac1"
+    }
+  ],
+  "status": "ready",
+  "title": "Installing Firebase Admin npm",
+  "lastEditTimestamp": 1761057293275,
+  "thinkingText": "",
+  "suggestedPrompts": []
+}

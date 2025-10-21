@@ -1,0 +1,127 @@
+{
+  "type": "thread",
+  "uuid": "1a900640-5d9a-4733-8dc5-670d4829caa9",
+  "agentId": "superchat",
+  "state": {},
+  "history": [
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "shortName": "Klaudia",
+        "displayName": "Klaudia Gardawska",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "hi"
+        }
+      ],
+      "attachments": [],
+      "agentData": {},
+      "uuid": "8a20f7bd-bfe5-4da2-8d78-db562b9eab1d"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "superchat",
+        "displayName": "Gemini",
+        "handle": "",
+        "icon": ":gemini"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "Hello! How can I help you today? I see you're working on a shipment and trailer tracking application. I can help you with a variety of tasks, such as:\n\n*   **Answering questions about your code:** If you have any questions about your code, feel free to ask.\n*   **Generating code:** I can generate code for you, such as components, functions, and pages.\n*   **Running terminal commands:** I can run terminal commands for you, such as installing dependencies or running tests.\n*   **Deploying your application:** I can help you deploy your application to Firebase Hosting.\n\nJust let me know what you need"
+        }
+      ],
+      "agentData": {
+        "internalMessages": [
+          {
+            "role": "user",
+            "parts": [
+              {
+                "text": "Please list project files."
+              }
+            ]
+          },
+          {
+            "role": "model",
+            "parts": [
+              {
+                "functionCall": {
+                  "name": "list_project_files",
+                  "args": {
+                    "path": "."
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "functionResponse": {
+                  "name": "list_project_files",
+                  "response": {
+                    "status": "succeeded",
+                    "result": "[\"README.md\",\"components.json\",\"next.config.mjs\",\"package-lock.json\",\"package.json\",\"postcss.config.mjs\",\"tailwind.config.ts\",\"tsconfig.json\",\".idx/dev.nix\",\".idx/integrations.json\",\".idx/mcp.json\",\"docs/blueprint.md\",\"studio/README.md\",\"studio/components.json\",\"studio/next.config.ts\",\"studio/package-lock.json\",\"studio/package.json\",\"studio/postcss.config.mjs\",\"studio/tailwind.config.ts\",\"studio/tsconfig.json\",\".idx/ai/capra-context-state.json\",\".idx/ai/prototyper-thread.json\",\"src/ai/dev.ts\",\"src/ai/genkit.ts\",\"src/app/LabelDate.tsx\",\"src/app/favicon.ico\",\"src/app/globals.css\",\"src/app/layout.tsx\",\"src/app/page.tsx\",\"src/contexts/WarehouseContext.tsx\",\"src/hooks/use-mobile.tsx\",\"src/hooks/use-toast.ts\",\"src/hooks/useLocalStorageState.ts\",\"src/lib/dom-to-image-style-utils.ts\",\"src/lib/utils.ts\",\"src/types/index.ts\",\"studio/.idx/dev.nix\",\"studio/docs/blueprint.md\",\".idx/ai/threads/1a900640-5d9a-4733-8dc5-670d4829caa9.json\",\".idx/ai/threads/1d1132ab-e507-488d-9c44-9f78adec586b.json\",\"src/app/calendar/page.tsx\",\"src/app/reports/page.tsx\",\"src/app/shipments/page.tsx\",\"src/components/icons/ShipShapeLogo.tsx\",\"src/components/label/ShipmentLabel.tsx\",\"src/components/layout/Header.tsx\",\"src/components/shared/ConfirmationDialog.tsx\",\"src/components/shipment/AddShipmentDialog.tsx\",\"src/components/shipment/AttachDocumentDialog.tsx\",\"src/components/shipment/EditShipmentDialog.tsx\",\"src/components/shipment/ManageCommentDialog.tsx\",\"src/components/shipment/ManageLocationsDialog.tsx\",\"src/components/shipment/ShipmentCard.tsx\",\"src/components/trailer/AddTrailerDialog.tsx\",\"src/components/trailer/AttachTrailerDocumentDialog.tsx\",\"src/components/trailer/EditTrailerDialog.tsx\",\"src/components/trailer/TrailerCard.tsx\",\"src/components/ui/accordion.tsx\",\"src/components/ui/alert-dialog.tsx\",\"src/components/ui/alert.tsx\",\"src/components/ui/avatar.tsx\",\"src/components/ui/badge.tsx\",\"src/components/ui/button.tsx\",\"src/components/ui/calendar.tsx\",\"src/components/ui/card.tsx\",\"src/components/ui/chart.tsx\",\"src/components/ui/checkbox.tsx\",\"src/components/ui/dialog.tsx\",\"src/components/ui/dropdown-menu.tsx\",\"src/components/ui/form.tsx\",\"src/components/ui/input.tsx\",\"src/components/ui/label.tsx\",\"src/components/ui/menubar.tsx\",\"src/components/ui/popover.tsx\",\"src/components/ui/progress.tsx\",\"src/components/ui/radio-group.tsx\",\"src/components/ui/scroll-area.tsx\",\"src/components/ui/select.tsx\",\"src/components/ui/separator.tsx\",\"src/components/ui/sheet.tsx\",\"src/components/ui/sidebar.tsx\",\"src/components/ui/skeleton.tsx\",\"src/components/ui/slider.tsx\",\"src/components/ui/switch.tsx\",\"src/components/ui/table.tsx\",\"src/components/ui/tabs.tsx\",\"src/components/ui/textarea.tsx\",\"src/components/ui/toast.tsx\",\"src/components/ui/toaster.tsx\",\"src/components/ui/tooltip.tsx\",\"studio/src/ai/dev.ts\",\"studio/src/ai/genkit.ts\",\"studio/src/app/LabelDate.tsx\",\"studio/src/app/favicon.ico\",\"studio/src/app/globals.css\",\"studio/src/app/layout.tsx\",\"studio/src/app/page.tsx\",\"studio/src/contexts/WarehouseContext.tsx\",\"studio/src/hooks/use-mobile.tsx\",\"studio/src/hooks/use-toast.ts\",\"studio/src/hooks/useLocalStorageState.ts\",\"studio/src/lib/dom-to-image-style-utils.ts\",\"studio/src/lib/utils.ts\",\"studio/src/types/index.ts\",\"src/app/labels/generate-shipment-labels/page.tsx\",\"src/app/quiz/reports/page.tsx\",\"src/app/quiz/stock-check/page.tsx\",\"src/app/reports/monthly-company-trailers/page.tsx\",\"src/app/reports/monthly-overdue-released/page.tsx\",\"src/app/reports/unreleased-stock-locations/page.tsx\",\"src/app/reports/weekly-released/page.tsx\",\"src/app/shipments/[shipmentId]/page.tsx\",\"src/app/trailers/[trailerId]/page.tsx\",\"studio/src/app/calendar/page.tsx\",\"studio/src/app/reports/page.tsx\",\"studio/src/app/shipments/page.tsx\",\"studio/src/components/icons/ShipShapeLogo.tsx\",\"studio/src/components/label/ShipmentLabel.tsx\",\"studio/src/components/layout/Header.tsx\",\"studio/src/components/shared/ConfirmationDialog.tsx\",\"studio/src/components/shipment/AddShipmentDialog.tsx\",\"studio/src/components/shipment/AttachDocumentDialog.tsx\",\"studio/src/components/shipment/EditShipmentDialog.tsx\",\"studio/src/components/shipment/ManageCommentDialog.tsx\",\"studio/src/components/shipment/ManageLocationsDialog.tsx\",\"studio/src/components/shipment/ShipmentCard.tsx\",\"studio/src/components/trailer/AddTrailerDialog.tsx\",\"studio/src/components/trailer/AttachTrailerDocumentDialog.tsx\",\"studio/src/components/trailer/EditTrailerDialog.tsx\",\"studio/src/components/trailer/TrailerCard.tsx\",\"studio/src/components/ui/accordion.tsx\",\"studio/src/components/ui/alert-dialog.tsx\",\"studio/src/components/ui/alert.tsx\",\"studio/src/components/ui/avatar.tsx\",\"studio/src/components/ui/badge.tsx\",\"studio/src/components/ui/button.tsx\",\"studio/src/components/ui/calendar.tsx\",\"studio/src/components/ui/card.tsx\",\"studio/src/components/ui/chart.tsx\",\"studio/src/components/ui/checkbox.tsx\",\"studio/src/components/ui/dialog.tsx\",\"studio/src/components/ui/dropdown-menu.tsx\",\"studio/src/components/ui/form.tsx\",\"studio/src/components/ui/input.tsx\",\"studio/src/components/ui/label.tsx\",\"studio/src/components/ui/menubar.tsx\",\"studio/src/components/ui/popover.tsx\",\"studio/src/components/ui/progress.tsx\",\"studio/src/components/ui/radio-group.tsx\",\"studio/src/components/ui/scroll-area.tsx\",\"studio/src/components/ui/select.tsx\",\"studio/src/components/ui/separator.tsx\",\"studio/src/components/ui/sheet.tsx\",\"studio/src/components/ui/sidebar.tsx\",\"studio/src/components/ui/skeleton.tsx\",\"studio/src/components/ui/slider.tsx\",\"studio/src/components/ui/switch.tsx\",\"studio/src/components/ui/table.tsx\",\"studio/src/components/ui/tabs.tsx\",\"studio/src/components/ui/textarea.tsx\",\"studio/src/components/ui/toast.tsx\",\"studio/src/components/ui/toaster.tsx\",\"studio/src/components/ui/tooltip.tsx\",\"src/app/quiz/reports/[reportId]/page.tsx\",\"src/app/trailers/[trailerId]/print/page.tsx\",\"studio/src/app/labels/generate-shipment-labels/page.tsx\",\"studio/src/app/quiz/reports/page.tsx\",\"studio/src/app/quiz/stock-check/page.tsx\",\"studio/src/app/reports/monthly-company-trailers/page.tsx\",\"studio/src/app/reports/monthly-overdue-released/page.tsx\",\"studio/src/app/reports/unreleased-stock-locations/page.tsx\",\"studio/src/app/reports/weekly-released/page.tsx\",\"studio/src/app/trailers/[trailerId]/page.tsx\",\"studio/src/app/shipments/[shipmentId]/page.tsx\",\"studio/src/app/quiz/reports/[reportId]/page.tsx\",\"studio/src/app/trailers/[trailerId]/print/page.tsx\"]"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "role": "model",
+            "parts": [
+              {
+                "text": "The project files are: README.md, components.json, next.config.mjs, package-lock.json, package.json, postcss.config.mjs, tailwind.config.ts, tsconfig.json, .idx/dev.nix, .idx/integrations.json, .idx/mcp.json, docs/blueprint.md, studio/README.md, studio/components.json, studio/next.config.ts, studio/package-lock.json, studio/package.json, studio/postcss.config.mjs, studio/tailwind.config.ts, studio/tsconfig.json, .idx/ai/capra-context-state.json, .idx/ai/prototyper-thread.json, src/ai/dev.ts, src/ai/genkit.ts, src/app/LabelDate.tsx, src/app/favicon.ico, src/app/globals.css, src/app/layout.tsx, src/app/page.tsx, src/contexts/WarehouseContext.tsx, src/hooks/use-mobile.tsx, src/hooks/use-toast.ts, src/hooks/useLocalStorageState.ts, src/lib/dom-to-image-style-utils.ts, src/lib/utils.ts, src/types/index.ts, studio/.idx/dev.nix, studio/docs/blueprint.md, .idx/ai/threads/1a900640-5d9a-4733-8dc5-670d4829caa9.json, .idx/ai/threads/1d1132ab-e507-488d-9c44-9f78adec586b.json, src/app/calendar/page.tsx, src/app/reports/page.tsx, src/app/shipments/page.tsx, src/components/icons/ShipShapeLogo.tsx, src/components/label/ShipmentLabel.tsx, src/components/layout/Header.tsx, src/components/shared/ConfirmationDialog.tsx, src/components/shipment/AddShipmentDialog.tsx, src/components/shipment/AttachDocumentDialog.tsx, src/components/shipment/EditShipmentDialog.tsx, src/components/shipment/ManageCommentDialog.tsx, src/components/shipment/ManageLocationsDialog.tsx, src/components/shipment/ShipmentCard.tsx, src/components/trailer/AddTrailerDialog.tsx, src/components/trailer/AttachTrailerDocumentDialog.tsx, src/components/trailer/EditTrailerDialog.tsx, src/components/trailer/TrailerCard.tsx, src/components/ui/accordion.tsx, src/components/ui/alert-dialog.tsx, src/components/ui/alert.tsx, src/components/ui/avatar.tsx, src/components/ui/badge.tsx, src/components/ui/button.tsx, src/components/ui/calendar.tsx, src/components/ui/card.tsx, src/components/ui/chart.tsx, src/components/ui/checkbox.tsx, src/components/ui/dialog.tsx, src/components/ui/dropdown-menu.tsx, src/components/ui/form.tsx, src/components/ui/input.tsx, src/components/ui/label.tsx, src/components/ui/menubar.tsx, src/components/ui/popover.tsx, src/components/ui/progress.tsx, src/components/ui/radio-group.tsx, src/components/ui/scroll-area.tsx, src/components/ui/select.tsx, src/components/ui/separator.tsx, src/components/ui/sheet.tsx, src/components/ui/sidebar.tsx, src/components/ui/skeleton.tsx, src/components/ui/slider.tsx, src/components/ui/switch.tsx, src/components/ui/table.tsx, src/components/ui/tabs.tsx, src/components/ui/textarea.tsx, src/components/ui/toast.tsx, src/components/ui/toaster.tsx, src/components/ui/tooltip.tsx, studio/src/ai/dev.ts, studio/src/ai/genkit.ts, studio/src/app/LabelDate.tsx, studio/src/app/favicon.ico, studio/src/app/globals.css, studio/src/app/layout.tsx, studio/src/app/page.tsx, studio/src/contexts/WarehouseContext.tsx, studio/src/hooks/use-mobile.tsx, studio/src/hooks/use-toast.ts, studio/src/hooks/useLocalStorageState.ts, studio/src/lib/dom-to-image-style-utils.ts, studio/src/lib/utils.ts, studio/src/types/index.ts, src/app/labels/generate-shipment-labels/page.tsx, src/app/quiz/reports/page.tsx, src/app/quiz/stock-check/page.tsx, src/app/reports/monthly-company-trailers/page.tsx, src/app/reports/monthly-overdue-released/page.tsx, src/app/reports/unreleased-stock-locations/page.tsx, src/app/reports/weekly-released/page.tsx, src/app/shipments/[shipmentId]/page.tsx, src/app/trailers/[trailerId]/page.tsx, studio/src/app/calendar/page.tsx, studio/src/app/reports/page.tsx, studio/src/app/shipments/page.tsx, studio/src/components/icons/ShipShapeLogo.tsx, studio/src/components/label/ShipmentLabel.tsx, studio/src/components/layout/Header.tsx, studio/src/components/shared/ConfirmationDialog.tsx, studio/src/components/shipment/AddShipmentDialog.tsx, studio/src/components/shipment/AttachDocumentDialog.tsx, studio/src/components/shipment/EditShipmentDialog.tsx, studio/src/components/shipment/ManageCommentDialog.tsx, studio/src/components/shipment/ManageLocationsDialog.tsx, studio/src/components/shipment/ShipmentCard.tsx, studio/src/components/trailer/AddTrailerDialog.tsx, studio/src/components/trailer/AttachTrailerDocumentDialog.tsx, studio/src/components/trailer/EditTrailerDialog.tsx, studio/src/components/trailer/TrailerCard.tsx, studio/src/components/ui/accordion.tsx, studio/src/components/ui/alert-dialog.tsx, studio/src/components/ui/alert.tsx, studio/src/components/ui/avatar.tsx, studio/src/components/ui/badge.tsx, studio/src/components/ui/button.tsx, studio/src/components/ui/calendar.tsx, studio/src/components/ui/card.tsx, studio/src/components/ui/chart.tsx, studio/src/components/ui/checkbox.tsx, studio/src/components/ui/dialog.tsx, studio/src/components/ui/dropdown-menu.tsx, studio/src/components/ui/form.tsx, studio/src/components/ui/input.tsx, studio/src/components/ui/label.tsx, studio/src/components/ui/menubar.tsx, studio/src/components/ui/popover.tsx, studio/src/components/ui/progress.tsx, studio/src/components/ui/radio-group.tsx, studio/src/components/ui/scroll-area.tsx, studio/src/components/ui/select.tsx, studio/src/components/ui/separator.tsx, studio/src/components/ui/sheet.tsx, studio/src/components/ui/sidebar.tsx, studio/src/components/ui/skeleton.tsx, studio/src/components/ui/slider.tsx, studio/src/components/ui/switch.tsx, studio/src/components/ui/table.tsx, studio/src/components/ui/tabs.tsx, studio/src/components/ui/textarea.tsx, studio/src/components/ui/toast.tsx, studio/src/components/ui/toaster.tsx, studio/src/components/ui/tooltip.tsx, src/app/quiz/reports/[reportId]/page.tsx, src/app/trailers/[trailerId]/print/page.tsx, studio/src/app/labels/generate-shipment-labels/page.tsx, studio/src/app/quiz/reports/page.tsx, studio/src/app/quiz/stock-check/page.tsx, studio/src/app/reports/monthly-company-trailers/page.tsx, studio/src/app/reports/monthly-overdue-released/page.tsx, studio/src/app/reports/unreleased-stock-locations/page.tsx, studio/src/app/reports/weekly-released/page.tsx, studio/src/app/trailers/[trailerId]/page.tsx, studio/src/app/shipments/[shipmentId]/page.tsx, studio/src/app/quiz/reports/[reportId]/page.tsx, studio/src/app/trailers/[trailerId]/print/page.tsx"
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "parts": [
+              {
+                "text": "hi"
+              }
+            ]
+          },
+          {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Hello! How can I help you today? I see you're working on a shipment and trailer tracking application. I can help you with a variety of tasks, such as:\n\n*   **Answering questions about your code:** If you have any questions about your code, feel free to ask.\n*   **"
+              }
+            ]
+          },
+          {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Generating code:** I can generate code for you, such as components, functions, and pages.\n*   **Running terminal commands:** I can run terminal commands for you, such as installing dependencies or running tests.\n*   **Deploying your application:** I can help you deploy your application to Firebase Hosting.\n\nJust"
+              }
+            ]
+          },
+          {
+            "role": "model",
+            "parts": [
+              {
+                "text": " let me know what you need"
+              }
+            ]
+          }
+        ]
+      },
+      "uuid": "6ac652cf-7a53-4e2b-a45d-bc59f2a04818"
+    }
+  ],
+  "status": "ready",
+  "title": "Short Chat",
+  "lastEditTimestamp": 1761057349001,
+  "thinkingText": "",
+  "suggestedPrompts": []
+}
