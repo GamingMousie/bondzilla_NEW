@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -9,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText, Users, Weight, Box, Truck, Hash, Eye, Send, Briefcase, CalendarCheck, Archive, Edit3, Fingerprint, CalendarClock, Mail, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Printer, Package, MapPin, CheckCircle2, CircleOff, FileText, Users, Weight, Box, Truck, Hash, Eye, Send, Briefcase, CalendarCheck, Archive, Edit3, Fingerprint, CalendarClock, Mail, MessageSquare, ShieldAlert } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import EditShipmentDialog from '@/components/shipment/EditShipmentDialog'; 
 import ConfirmationDialog from '@/components/shared/ConfirmationDialog';
@@ -28,6 +29,7 @@ export default function SingleShipmentPage() {
   const [isEditShipmentDialogOpen, setIsEditShipmentDialogOpen] = useState(false); 
   const [isReprintConfirmOpen, setIsReprintConfirmOpen] = useState(false);
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
+  const [isHoldInfoOpen, setIsHoldInfoOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -47,12 +49,12 @@ export default function SingleShipmentPage() {
         setPrintedDateTime(null);
       }
     }
-  }, [isClient, shipmentId, getShipmentById, shipment?.releasedAt, shipment?.stsJob, shipment?.mrn, shipment?.clearanceDate, shipment?.comments]);
+  }, [isClient, shipmentId, getShipmentById, shipment?.releasedAt, shipment?.stsJob, shipment?.mrn, shipment?.clearanceDate, shipment?.comments, shipment?.onHold]);
 
 
   const trailer = shipment?.trailerId ? getTrailerById(shipment.trailerId) : null;
 
-  const canPrint = shipment?.cleared && shipment?.released;
+  const canPrint = shipment?.cleared && shipment?.released && !shipment?.onHold;
 
   const proceedWithPrint = () => {
     if (!canPrint || !shipment) return;
@@ -67,6 +69,11 @@ export default function SingleShipmentPage() {
   };
   
   const handlePrint = () => {
+    if (shipment?.onHold) {
+        setIsHoldInfoOpen(true);
+        return;
+    }
+
     if (canPrint && shipment) {
       if (shipment.releasedAt) {
         setIsReprintConfirmOpen(true);
@@ -200,12 +207,22 @@ export default function SingleShipmentPage() {
               <Mail className="mr-2 h-4 w-4" /> Notify Missing Docs
             </Button>
           )}
-          <Button onClick={handlePrint} disabled={!canPrint} size="sm">
+          <Button onClick={handlePrint} disabled={!canPrint && !shipment.onHold} size="sm">
             <Printer className="mr-2 h-4 w-4" /> Print Shipment
-            {!canPrint && <span className="ml-2 text-xs">(Requires Cleared & Permitted)</span>}
+            {!canPrint && !shipment.onHold && <span className="ml-2 text-xs">(Requires Cleared & Permitted)</span>}
+             {shipment.onHold && <span className="ml-2 text-xs">(On Hold)</span>}
           </Button>
         </div>
       </div>
+
+      {shipment.onHold && (
+        <Card className="bg-destructive/10 border-destructive">
+          <CardHeader className="flex-row items-center gap-4 space-y-0">
+             <ShieldAlert className="h-6 w-6 text-destructive" />
+             <CardTitle className="text-destructive">Shipment On Hold</CardTitle>
+          </CardHeader>
+        </Card>
+      )}
 
       <Card className="printable-area shadow-lg">
         <CardHeader className="border-b pb-4">
@@ -456,6 +473,17 @@ export default function SingleShipmentPage() {
           title="Reprint Shipment?"
           description={`This shipment was already released on ${printedDateTime}. Are you sure you want to print it again? This will update the release date to now.`}
           confirmText="Yes, Reprint"
+        />
+      )}
+
+      {isHoldInfoOpen && (
+         <ConfirmationDialog
+            isOpen={isHoldInfoOpen}
+            setIsOpen={setIsHoldInfoOpen}
+            onConfirm={() => setIsHoldInfoOpen(false)}
+            title="Shipment On Hold"
+            description="This shipment is currently on hold and cannot be printed. Please remove the hold status before proceeding."
+            confirmText="OK"
         />
       )}
     </div>

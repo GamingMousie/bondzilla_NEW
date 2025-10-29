@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Weight, Box, Users, MapPin, Send, Briefcase, Archive, Fingerprint, MessageSquare } from 'lucide-react';
+import { FileText, Weight, Box, Users, MapPin, Send, Briefcase, Archive, Fingerprint, MessageSquare, ShieldAlert } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 
 const shipmentSchema = z.object({
@@ -31,6 +31,7 @@ const shipmentSchema = z.object({
   clearanceDocument: z.any().optional(),
   released: z.boolean().optional(),
   cleared: z.boolean().optional(),
+  onHold: z.boolean().optional(),
   weight: z.coerce.number().positive('Weight must be positive').optional().nullable(),
   palletSpace: z.coerce.number().int('Pallet space must be an integer').positive('Pallet space must be positive').optional().nullable(),
   emptyPalletRequired: z.coerce.number().int("Must be a whole number").min(0, 'Cannot be negative').optional().nullable(),
@@ -54,6 +55,7 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
     defaultValues: {
       released: false,
       cleared: false,
+      onHold: false,
       weight: null,
       palletSpace: null,
       initialLocationName: '',
@@ -82,6 +84,7 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
       clearanceDocumentName,
       released: data.released,
       cleared: data.cleared,
+      onHold: data.onHold,
       weight: data.weight ?? undefined,
       palletSpace: data.palletSpace ?? undefined,
       emptyPalletRequired: data.emptyPalletRequired ?? 0,
@@ -229,6 +232,12 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
               <Label htmlFor="cleared" className="font-normal">Mark as Cleared</Label>
             </div>
           </div>
+           <div className="flex items-center space-x-2">
+              <input type="checkbox" id="onHold" {...register('onHold')} className="h-4 w-4 rounded border-destructive text-destructive focus:ring-destructive"/>
+              <Label htmlFor="onHold" className="font-normal flex items-center gap-2 text-destructive">
+                <ShieldAlert className="h-4 w-4" /> Place On Hold
+              </Label>
+            </div>
 
           <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={() => { setIsOpen(false); reset(); }}>Cancel</Button>

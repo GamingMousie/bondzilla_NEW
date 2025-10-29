@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { FileText, Weight, Box, Edit, Users, Send, Briefcase, Archive, Fingerprint, CalendarIcon, CalendarClock, MessageSquare } from 'lucide-react';
+import { FileText, Weight, Box, Edit, Users, Send, Briefcase, Archive, Fingerprint, CalendarIcon, CalendarClock, MessageSquare, ShieldAlert } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format, parseISO } from "date-fns";
@@ -35,6 +35,7 @@ const editShipmentSchema = z.object({
   clearanceDocument: z.any().optional(), // Keep as any for FileList or File
   released: z.boolean().optional(),
   cleared: z.boolean().optional(),
+  onHold: z.boolean().optional(),
   weight: z.coerce.number().positive('Weight must be positive').optional().nullable(),
   palletSpace: z.coerce.number().int('Pallet space must be an integer').positive('Pallet space must be positive').optional().nullable(),
   emptyPalletRequired: z.coerce.number().int("Must be a whole number").min(0, 'Cannot be negative').optional().nullable(),
@@ -67,6 +68,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
       exporter: '',
       released: false,
       cleared: false,
+      onHold: false,
       weight: null,
       palletSpace: null,
       releaseDocument: null,
@@ -88,6 +90,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
         exporter: shipmentToEdit.exporter,
         released: shipmentToEdit.released,
         cleared: shipmentToEdit.cleared,
+        onHold: shipmentToEdit.onHold,
         weight: shipmentToEdit.weight ?? null,
         palletSpace: shipmentToEdit.palletSpace ?? null,
         releaseDocument: null, // File inputs are not reset with previous files typically
@@ -115,6 +118,7 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
       clearanceDocumentName: newClearanceDocumentFile ? newClearanceDocumentFile.name : shipmentToEdit.clearanceDocumentName,
       released: data.released ?? false,
       cleared: data.cleared ?? false,
+      onHold: data.onHold ?? false,
       weight: data.weight ?? undefined,
       palletSpace: data.palletSpace ?? undefined,
       emptyPalletRequired: data.emptyPalletRequired ?? 0,
@@ -303,6 +307,18 @@ export default function EditShipmentDialog({ isOpen, setIsOpen, shipmentToEdit }
               <Label htmlFor="clearedEdit" className="font-normal">Mark as Cleared</Label>
             </div>
           </div>
+          <div className="flex items-center space-x-2">
+              <Controller
+                name="onHold"
+                control={control}
+                render={({ field }) => (
+                    <input type="checkbox" id="onHoldEdit" checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} className="h-4 w-4 rounded border-destructive text-destructive focus:ring-destructive" />
+                )}
+              />
+              <Label htmlFor="onHoldEdit" className="font-normal flex items-center gap-2 text-destructive">
+                <ShieldAlert className="h-4 w-4" /> Place On Hold
+              </Label>
+            </div>
           
           <DialogFooter className="pt-4">
             <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>

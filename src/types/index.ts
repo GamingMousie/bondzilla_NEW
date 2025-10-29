@@ -36,6 +36,7 @@ export interface Shipment {
   clearanceDocumentName?: string; // Optional: Name of the clearance document
   released: boolean; // Indicates if the shipment has permission to be released
   cleared: boolean; // Indicates if the shipment is cleared
+  onHold?: boolean; // Indicates if the shipment is on hold
   weight?: number; // Optional: Weight of the shipment in kg
   palletSpace?: number; // Optional: Pallet spaces occupied by the shipment (overall for shipment)
   releasedAt?: string; // Optional: Timestamp for when the shipment was printed/officially released
@@ -58,6 +59,7 @@ export interface ShipmentFormData {
   clearanceDocument?: FileList | File | null;
   released?: boolean;
   cleared?: boolean;
+  onHold?: boolean;
   weight?: number | null;
   palletSpace?: number | null;
   emptyPalletRequired?: number | null;
@@ -78,6 +80,7 @@ export interface ShipmentUpdateData {
   clearanceDocumentName?: string;
   released?: boolean;
   cleared?: boolean;
+  onHold?: boolean;
   weight?: number;
   palletSpace?: number;
   releasedAt?: string;

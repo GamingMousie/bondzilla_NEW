@@ -27,8 +27,6 @@ interface WarehouseContextType {
   deleteShipment: (shipmentId: string) => void;
   getTrailerById: (trailerId: string) => Trailer | undefined;
   getShipmentById: (shipmentId: string) => Shipment | undefined;
-  updateShipmentReleasedStatus: (shipmentId: string, released: boolean) => void;
-  updateShipmentClearedStatus: (shipmentId: string, cleared: boolean) => void;
   updateShipment: (shipmentId: string, data: ShipmentUpdateData) => void;
   markShipmentAsPrinted: (shipmentId: string) => void;
   quizReports: QuizReport[];
@@ -52,7 +50,7 @@ const getRandomNumber = (min: number, max: number, isInt = true): number => {
   const num = Math.random() * (max - min) + min;
   return isInt ? Math.floor(num) : parseFloat(num.toFixed(2));
 };
-const getRandomBoolean = (): boolean => Math.random() < 0.5;
+const getRandomBoolean = (trueProbability = 0.5): boolean => Math.random() < trueProbability;
 const getRandomDate = (startOffsetDays: number, endOffsetDays: number): string => {
   const today = new Date();
   const offset = getRandomNumber(startOffsetDays, endOffsetDays);
@@ -121,6 +119,7 @@ baseTrailerIds.forEach((trailerId, index) => {
       clearanceDocumentName: isCleared ? `clearance_doc_${stsJobCounter}_${uuidv4().substring(0,4)}.pdf` : undefined,
       released: isReleased,
       cleared: isCleared,
+      onHold: getRandomBoolean(0.1), // 10% chance of being on hold
       weight: getRandomNumber(100, 2000, false),
       palletSpace: getRandomNumber(1, 20),
       releasedAt: isReleased ? getRandomDate(-1, 0) : undefined,
@@ -207,6 +206,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       clearanceDocumentName: shipmentData.clearanceDocumentName,
       released: shipmentData.released ?? false,
       cleared: shipmentData.cleared ?? false,
+      onHold: shipmentData.onHold ?? false,
       weight: shipmentData.weight ?? undefined,
       palletSpace: shipmentData.palletSpace ?? undefined,
       releasedAt: undefined,
@@ -216,27 +216,6 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       comments: shipmentData.comments || undefined,
     };
     setShipments((prev) => [...prev, newShipment]);
-  }, [setShipments]);
-
-  const updateShipmentReleasedStatus = useCallback((shipmentId: string, released: boolean) => {
-    setShipments((prev) =>
-      prev.map((s) => (s.id === shipmentId ? { ...s, released } : s))
-    );
-  }, [setShipments]);
-
-  const updateShipmentClearedStatus = useCallback((shipmentId: string, cleared: boolean) => {
-     setShipments((prev) =>
-      prev.map((s) => {
-        if (s.id === shipmentId) {
-          return {
-            ...s,
-            cleared,
-            clearanceDate: cleared ? (s.clearanceDate || new Date().toISOString()) : null,
-          };
-        }
-        return s;
-      })
-    );
   }, [setShipments]);
 
   const updateShipment = useCallback((shipmentId: string, data: ShipmentUpdateData) => {
@@ -329,28 +308,26 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
     setQuizReports(prev => [newReport, ...prev]); // Add to the beginning for recency
   }, [setQuizReports]);
 
+  const value = {
+    trailers,
+    addTrailer,
+    updateTrailerStatus,
+    updateTrailer,
+    deleteTrailer,
+    shipments,
+    getShipmentsByTrailerId,
+    addShipment,
+    updateShipment,
+    deleteShipment,
+    getTrailerById,
+    getShipmentById,
+    markShipmentAsPrinted,
+    quizReports,
+    addQuizReport,
+  }
+
   return (
-    <WarehouseContext.Provider
-      value={{
-        trailers,
-        addTrailer,
-        updateTrailerStatus,
-        updateTrailer,
-        deleteTrailer,
-        shipments,
-        getShipmentsByTrailerId,
-        addShipment,
-        updateShipment,
-        deleteShipment,
-        getTrailerById,
-        getShipmentById,
-        updateShipmentReleasedStatus,
-        updateShipmentClearedStatus,
-        markShipmentAsPrinted,
-        quizReports,
-        addQuizReport,
-      }}
-    >
+    <WarehouseContext.Provider value={value}>
       {children}
     </WarehouseContext.Provider>
   );

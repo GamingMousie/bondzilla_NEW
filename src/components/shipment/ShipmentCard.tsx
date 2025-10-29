@@ -5,7 +5,7 @@ import type { Shipment } from '@/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, MapPin, Edit3, Trash2, MoreVertical, FileText, CheckCircle2, CircleOff, Weight, Box, Pencil, FileUp, Users, Hash, Send, Briefcase, Truck, Archive, Fingerprint, CalendarClock, Mail, MessageSquare } from 'lucide-react';
+import { Package, MapPin, Edit3, Trash2, MoreVertical, FileText, CheckCircle2, CircleOff, Weight, Box, Pencil, FileUp, Users, Hash, Send, Briefcase, Truck, Archive, Fingerprint, CalendarClock, Mail, MessageSquare, ShieldAlert } from 'lucide-react';
 import ManageLocationsDialog from './ManageLocationsDialog';
 import EditShipmentDialog from './EditShipmentDialog';
 import AttachDocumentDialog from './AttachDocumentDialog';
@@ -59,6 +59,16 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
       updateShipment(shipment.id, { cleared: false, clearanceDocumentName: undefined, clearanceDate: null });
       toast({ title: "Shipment Updated", description: `${shipmentIdentifier} marked as not cleared. Clearance document & date removed.` });
     }
+  };
+
+    const handleToggleOnHold = () => {
+    const newOnHoldStatus = !shipment.onHold;
+    updateShipment(shipment.id, { onHold: newOnHoldStatus });
+    toast({
+      title: "Shipment Updated",
+      description: `${shipmentIdentifier} has been ${newOnHoldStatus ? 'placed on hold' : 'taken off hold'}.`,
+      variant: newOnHoldStatus ? 'destructive' : 'default',
+    });
   };
 
   const handleDocumentAttached = (
@@ -139,6 +149,11 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
               <MapPin className="mr-2 h-4 w-4" />
               Manage Locations
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleToggleOnHold}>
+                <ShieldAlert className="mr-2 h-4 w-4" />
+                {shipment.onHold ? 'Take Off Hold' : 'Place On Hold'}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleMarkAsPermitted}>
               {shipment.released ? <CircleOff className="mr-2 h-4 w-4" /> : <FileUp className="mr-2 h-4 w-4 text-green-600" />}
               {shipment.released ? 'Mark as Not Permitted' : 'Permit (Attach Doc)'}
@@ -239,6 +254,12 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
           <span className="font-medium text-muted-foreground">Cleared:</span>
           <span className="ml-1.5 font-semibold">{shipment.cleared ? 'Yes' : 'No'}</span>
         </div>
+         {shipment.onHold && (
+          <div className="flex items-center text-destructive">
+            <ShieldAlert className="mr-1.5 h-3.5 w-3.5" />
+            <span className="font-semibold">ON HOLD</span>
+          </div>
+        )}
         {shipment.cleared && shipment.clearanceDate && (
            <div className="flex items-center text-xs text-muted-foreground">
             <CalendarClock className="mr-1.5 h-3 w-3" />
@@ -285,7 +306,11 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
         {viewMode === 'grid' ? (
           <>
             <CardHeader className="pb-2">
-              {/* Grid view doesn't typically have its own header for title etc. Title is part of content. */}
+              {shipment.onHold && (
+                <Badge variant="destructive" className="self-start text-xs">
+                  <ShieldAlert className="mr-1 h-3 w-3" /> ON HOLD
+                </Badge>
+              )}
             </CardHeader>
             <CardContent className="text-sm flex-grow p-4 space-y-2">
               {cardContent}
