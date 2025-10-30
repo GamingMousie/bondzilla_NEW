@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import React, { createContext, useContext, useCallback } from 'react';
 import type { Load, Shipment, LoadStatus, ShipmentUpdateData, LoadUpdateData, LocationInfo, QuizReport, LoadFormData, ShipmentFormData } from '@/types';
 import useLocalStorageState from '@/hooks/useLocalStorageState';
-import { v4 as uuidv4 } from 'uuid'; // Using uuid for unique shipment IDs
+import { v4 as uuidv4 } from 'uuid';
 import { addDays } from 'date-fns';
 
 type AddShipmentContextData = Omit<Shipment, 'id' | 'locations' | 'releasedAt' | 'clearanceDate'> & {
@@ -147,8 +147,8 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       status: loadData.status || 'Scheduled',
       company: loadData.company || undefined,
       sprattJobNumber: loadData.sprattJobNumber || undefined,
-      arrivalDate: loadData.arrivalDate ? (loadData.arrivalDate as unknown as Date).toISOString() : undefined,
-      storageExpiryDate: loadData.storageExpiryDate ? (loadData.storageExpiryDate as unknown as Date).toISOString() : undefined,
+      arrivalDate: loadData.arrivalDate ? loadData.arrivalDate.toISOString() : undefined,
+      storageExpiryDate: loadData.storageExpiryDate ? loadData.storageExpiryDate.toISOString() : undefined,
       weight: loadData.weight ?? undefined,
       customField1: loadData.customField1 || undefined,
       customField2: loadData.customField2 || undefined,

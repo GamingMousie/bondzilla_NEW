@@ -119,7 +119,6 @@ export interface LoadFormData {
   weight?: number | null;
   customField1?: string;
   customField2?: string;
-  // Document fields are typically handled in Edit Dialog for simplicity of add flow
 }
 
 // For Stock Check Quiz

@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import LoadCard from '@/components/load/LoadCard';
 import AddLoadDialog from '@/components/load/AddLoadDialog';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, ListFilter, LayoutGrid, Search, Briefcase } from 'lucide-react'; // Added Briefcase
+import { PlusCircle, ListFilter, LayoutGrid, Search, Briefcase } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { LoadStatus } from '@/types';
@@ -21,12 +21,11 @@ export default function HomePage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<LoadStatus | 'all'>('all');
-  const [companyFilter, setCompanyFilter] = useState<string>('all'); // New state for company filter
+  const [companyFilter, setCompanyFilter] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   useEffect(() => {
     setIsClient(true);
-    // If user is a customer, force filter by their company
     if (user?.companyFilter) {
       setCompanyFilter(user.companyFilter.toLowerCase());
     }
@@ -35,7 +34,6 @@ export default function HomePage() {
   const uniqueCompanies = useMemo(() => {
     if (!isClient || !loads) return [];
     let relevantLoads = loads;
-    // If the user has a company filter, only show that company in the dropdown.
     if (user?.companyFilter) {
       return [user.companyFilter];
     }
@@ -50,7 +48,6 @@ export default function HomePage() {
 
   const filteredLoads = useMemo(() => {
     let companyFilteredLoads = loads || [];
-    // Apply role-based filter first
     if(user?.companyFilter) {
       companyFilteredLoads = companyFilteredLoads.filter(t => t.company === user.companyFilter);
     }
