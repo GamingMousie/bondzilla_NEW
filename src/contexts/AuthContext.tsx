@@ -77,11 +77,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return true;
     }
 
-    // Allow access to dynamic sub-routes (e.g., /trailers/[id], /shipments/[id], /quiz/reports/[id])
+    // Allow access to dynamic sub-routes (e.g., /loads/[id], /shipments/[id], /quiz/reports/[id])
     // Check if the path starts with a permitted base path that implies dynamic children.
-    const allowedBasePathsWithDynamicChildren = ['/trailers', '/shipments', '/quiz/reports', '/reports'];
+    const allowedBasePathsWithDynamicChildren = ['/loads', '/shipments', '/quiz/reports', '/reports'];
     for (const basePath of allowedBasePathsWithDynamicChildren) {
-      // Check if user has permission for the base path (e.g., has '/trailers' to access '/trailers/123')
+      // Check if user has permission for the base path (e.g., has '/loads' to access '/loads/123')
       // and if the current path starts with that base path followed by a '/'.
       if (user.permissions.includes(basePath) && path.startsWith(`${basePath}/`)) {
         return true;
