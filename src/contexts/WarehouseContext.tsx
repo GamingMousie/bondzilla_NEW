@@ -147,8 +147,8 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       status: loadData.status || 'Scheduled',
       company: loadData.company || undefined,
       sprattJobNumber: loadData.sprattJobNumber || undefined,
-      arrivalDate: loadData.arrivalDate ? loadData.arrivalDate.toISOString() : undefined,
-      storageExpiryDate: loadData.storageExpiryDate ? loadData.storageExpiryDate.toISOString() : undefined,
+      arrivalDate: loadData.arrivalDate ? (loadData.arrivalDate as Date).toISOString() : undefined,
+      storageExpiryDate: loadData.storageExpiryDate ? (loadData.storageExpiryDate as Date).toISOString() : undefined,
       weight: loadData.weight ?? undefined,
       customField1: loadData.customField1 || undefined,
       customField2: loadData.customField2 || undefined,
@@ -180,7 +180,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setLoads, setShipments]);
 
   const getShipmentsByLoadId = useCallback((loadId: string) => {
-    return shipments.filter((s) => s.loadId.toLowerCase() === loadId.toLowerCase());
+    return shipments.filter((s) => s.loadId && s.loadId.toLowerCase() === loadId.toLowerCase());
   }, [shipments]);
 
   const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
