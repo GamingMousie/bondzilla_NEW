@@ -1,4 +1,5 @@
 
+'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { Load, LoadStatus } from '@/types';
@@ -11,8 +12,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -54,7 +53,7 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
     const currentShipments = getShipmentsByLoadId(load.id);
     setShipmentCount(currentShipments.length);
     setTotalPieces(currentShipments.reduce((acc, s) => acc + s.quantity, 0));
-  }, [load.id, getShipmentsByLoadId, load]); // Added load to dependency array for potential updates
+  }, [load.id, getShipmentsByLoadId, load]);
 
 
   const formatDate = (dateString?: string) => {
@@ -68,6 +67,7 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
   };
 
   const DateDisplay = ({ label, dateString, icon: Icon }: { label: string, dateString?: string, icon: React.ElementType }) => {
+    if (!dateString) return null;
     return (
       <div className="flex items-center text-xs text-muted-foreground mt-1">
         <Icon className="mr-1.5 h-3.5 w-3.5" />
@@ -113,89 +113,44 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
   );
 
 
-  const GridViewContent = () => (
+  const CardMainContent = () => (
     <>
       <div className="flex items-start justify-between">
         <CardTitle className="text-xl group-hover:text-primary transition-colors mb-1">
-          <Link href={`/loads/${load.id}`}>ID: {load.id}</Link>
+           {load.id}
         </CardTitle>
         <Truck className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
       </div>
 
-      {load.arrivalDate ? (
-        isMounted ? (
-          <div className="flex items-center text-sm text-foreground mt-0.5 mb-2 font-semibold">
-            <CalendarDays className="mr-1.5 h-4 w-4 text-primary" />
-            <span>Arrived: {formatDate(load.arrivalDate)}</span>
-          </div>
-        ) : (
-          <Skeleton className="h-4 w-3/4 mt-1 mb-2" />
-        )
-      ) : null}
+       <DateDisplay label="Arrived" dateString={load.arrivalDate} icon={CalendarDays} />
 
-      {load.name ? (
-        isMounted ? (
-          <CardDescription className="text-xs text-muted-foreground mb-0.5">Name: {load.name}</CardDescription>
-        ) : (
-          <Skeleton className="h-3 w-1/2 mb-0.5" />
-        )
-      ) : null}
+      {load.name && <CardDescription className="text-xs text-muted-foreground mb-0.5">Name: {load.name}</CardDescription>}
 
-      {load.company ? (
-        isMounted ? (
-          <div className="flex items-center text-xs text-muted-foreground">
+      {load.company && (
+        <div className="flex items-center text-xs text-muted-foreground">
             <Briefcase className="mr-1.5 h-3.5 w-3.5" />
             <span>{load.company}</span>
-          </div>
-        ) : (
-          <Skeleton className="h-3 w-2/3" />
-        )
-      ) : null}
-
-      {load.sprattJobNumber ? (
-        isMounted ? (
-          <div className="flex items-center text-xs text-muted-foreground mt-1">
+        </div>
+      )}
+      
+      {load.sprattJobNumber && (
+        <div className="flex items-center text-xs text-muted-foreground mt-1">
             <Hash className="mr-1.5 h-3.5 w-3.5" />
             <span>SJN: {load.sprattJobNumber}</span>
-          </div>
-        ) : (
-          <Skeleton className="h-3 w-1/2 mt-1" />
-        )
-      ) : null}
-
-      {load.storageExpiryDate ? (
-        isMounted ? (
-          <DateDisplay label="Storage Exp" dateString={load.storageExpiryDate} icon={CalendarDays} />
-        ) : (
-          <Skeleton className="h-3 w-1/2 mt-1" />
-        )
-      ) : null}
+        </div>
+      )}
+      
+      <DateDisplay label="Storage Exp" dateString={load.storageExpiryDate} icon={CalendarDays} />
 
       {load.weight !== undefined && load.weight !== null && (
-        isMounted ? (
           <div className="flex items-center text-xs text-muted-foreground mt-1">
             <Weight className="mr-1.5 h-3.5 w-3.5" />
             <span>Weight: {load.weight} kg</span>
           </div>
-        ) : (
-           <Skeleton className="h-3 w-1/3 mt-1" />
-        )
       )}
 
-      {load.customField1 && (
-        isMounted ? (
-          <CustomFieldDisplay label="T1.1" value={load.customField1} icon={Tag} />
-        ) : (
-          <Skeleton className="h-3 w-1/3 mt-1" />
-        )
-      )}
-      {load.customField2 && (
-        isMounted ? (
-          <CustomFieldDisplay label="T1.2" value={load.customField2} icon={Tag} />
-        ) : (
-          <Skeleton className="h-3 w-1/3 mt-1" />
-        )
-      )}
+      <CustomFieldDisplay label="T1.1" value={load.customField1} icon={Tag} />
+      <CustomFieldDisplay label="T1.2" value={load.customField2} icon={Tag} />
 
       <div className="mt-4 space-y-2">
         <div className="flex items-center justify-between text-sm">
@@ -242,23 +197,14 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
       <>
         <Card className="group transition-all hover:shadow-lg w-full">
           <div className="p-4 flex items-center justify-between">
-            <div className="flex-grow">
-               <GridViewContent />
+            <div className="flex-grow cursor-pointer">
+              <Link href={`/loads/${load.id}`} legacyBehavior>
+                <a className="block">
+                  <CardMainContent />
+                </a>
+              </Link>
             </div>
-            <div className="flex items-center gap-2 pl-4">
-              <Select value={load.status} onValueChange={(newStatus) => onStatusChange(newStatus as LoadStatus)}>
-                <SelectTrigger className="h-9 text-xs w-[130px] hidden sm:flex">
-                  <SelectValue placeholder="Change status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {allStatuses.map(status => (
-                    <SelectItem key={status} value={status} className="text-xs">
-                      <Badge className={`${statusColors[status]} text-white mr-2 w-3 h-3 p-0 inline-block rounded-full`} />
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex items-center gap-2 pl-4 flex-shrink-0">
               {cardActions}
             </div>
           </div>
@@ -289,11 +235,13 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
   return (
     <>
       <Card className="group transition-all hover:shadow-lg flex flex-col h-full">
-        <CardHeader className="pb-2">
+         <CardHeader className="pb-2">
             <Badge className={`${statusColors[load.status]} text-white text-xs px-1.5 py-0.5 self-start`}>{load.status}</Badge>
         </CardHeader>
         <CardContent className="flex-grow">
-            <GridViewContent />
+            <Link href={`/loads/${load.id}`} className="block">
+                <CardMainContent />
+            </Link>
         </CardContent>
         <CardFooter className="pt-4">
           {cardActions}

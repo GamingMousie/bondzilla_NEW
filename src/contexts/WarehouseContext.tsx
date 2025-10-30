@@ -147,8 +147,8 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       status: loadData.status || 'Scheduled',
       company: loadData.company || undefined,
       sprattJobNumber: loadData.sprattJobNumber || undefined,
-      arrivalDate: loadData.arrivalDate ? new Date(loadData.arrivalDate).toISOString() : undefined,
-      storageExpiryDate: loadData.storageExpiryDate ? new Date(loadData.storageExpiryDate).toISOString() : undefined,
+      arrivalDate: loadData.arrivalDate ? loadData.arrivalDate.toISOString() : undefined,
+      storageExpiryDate: loadData.storageExpiryDate ? loadData.storageExpiryDate.toISOString() : undefined,
       weight: loadData.weight ?? undefined,
       customField1: loadData.customField1 || undefined,
       customField2: loadData.customField2 || undefined,
@@ -180,10 +180,11 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setLoads, setShipments]);
 
   const getShipmentsByLoadId = useCallback((loadId: string) => {
+    if (!loadId) return [];
     return shipments.filter((s) => s.loadId && s.loadId.toLowerCase() === loadId.toLowerCase());
-  }, [shipments]);
+}, [shipments]);
 
-  const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
+  const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string }) => {
 
     let initialLocations: LocationInfo[];
     if (shipmentData.initialLocationName) {
@@ -201,8 +202,8 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       importer: shipmentData.importer,
       exporter: shipmentData.exporter,
       locations: initialLocations,
-      releaseDocumentName: shipmentData.releaseDocumentName,
-      clearanceDocumentName: shipmentData.clearanceDocumentName,
+      releaseDocumentName: (shipmentData as any).releaseDocumentName,
+      clearanceDocumentName: (shipmentData as any).clearanceDocumentName,
       released: shipmentData.released ?? false,
       cleared: shipmentData.cleared ?? false,
       onHold: shipmentData.onHold ?? false,
@@ -211,7 +212,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
       releasedAt: undefined,
       emptyPalletRequired: shipmentData.emptyPalletRequired ?? 0,
       mrn: shipmentData.mrn || undefined,
-      clearanceDate: (shipmentData.cleared || shipmentData.clearanceDocumentName) ? new Date().toISOString() : null,
+      clearanceDate: (shipmentData.cleared || (shipmentData as any).clearanceDocumentName) ? new Date().toISOString() : null,
       comments: shipmentData.comments || undefined,
     };
     setShipments((prev) => [...prev, newShipment]);
@@ -292,8 +293,9 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setShipments]);
 
   const getLoadById = useCallback((loadId: string) => {
+    if (!loadId) return undefined;
     return loads.find(t => t.id.toLowerCase() === loadId.toLowerCase());
-  }, [loads]);
+}, [loads]);
 
   const getShipmentById = useCallback((shipmentId: string) => {
     return shipments.find(s => s.id === shipmentId);
@@ -323,7 +325,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
     markShipmentAsPrinted,
     quizReports,
     addQuizReport,
-  }
+  };
 
   return (
     <WarehouseContext.Provider value={value}>

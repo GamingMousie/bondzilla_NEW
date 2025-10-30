@@ -1,5 +1,4 @@
 
-
 export type LoadStatus = 'Scheduled' | 'Arrived' | 'Loading' | 'Offloading' | 'Devanned';
 
 export interface LocationInfo {
@@ -115,8 +114,8 @@ export interface LoadFormData {
   company?: string;
   sprattJobNumber?: string;
   status: LoadStatus;
-  arrivalDate?: Date | string | null; // Can be Date from picker or string
-  storageExpiryDate?: Date | string | null;
+  arrivalDate?: Date | null;
+  storageExpiryDate?: Date | null;
   weight?: number | null;
   customField1?: string;
   customField2?: string;

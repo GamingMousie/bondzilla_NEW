@@ -1,10 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm, type SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useWarehouse } from '@/contexts/WarehouseContext';
-import type { LoadStatus, LoadFormData as ExternalLoadFormData } from '@/types';
+import type { LoadStatus, LoadFormData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,16 +23,6 @@ import { CalendarIcon, Weight, Tag, Hash } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
-
-// Internal form data type to handle Date objects from picker and new custom fields
-type LoadFormData = Omit<ExternalLoadFormData, 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'customField1' | 'customField2'> & {
-  arrivalDate?: Date | null;
-  storageExpiryDate?: Date | null;
-  weight?: number | null;
-  customField1?: string;
-  customField2?: string;
-  sprattJobNumber?: string;
-};
 
 const allStatuses: LoadStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 
@@ -97,11 +87,7 @@ export default function AddLoadDialog({ isOpen, setIsOpen }: AddLoadDialogProps)
       return;
     }
     // The context will handle converting Date to ISO string
-    addLoad({
-      ...data,
-      arrivalDate: data.arrivalDate || undefined,
-      storageExpiryDate: data.storageExpiryDate || undefined,
-    });
+    addLoad(data);
     toast({
       title: "Success!",
       description: `Load "${data.name}" (ID: ${data.id}) added.`,
