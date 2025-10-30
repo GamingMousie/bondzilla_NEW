@@ -33,12 +33,11 @@ export default function HomePage() {
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient || !loads) return [];
-    let relevantLoads = loads;
     if (user?.companyFilter) {
       return [user.companyFilter];
     }
     const companies = new Set<string>();
-    relevantLoads.forEach(load => {
+    loads.forEach(load => {
       if (load.company) {
         companies.add(load.company);
       }
@@ -47,9 +46,11 @@ export default function HomePage() {
   }, [loads, isClient, user]);
 
   const filteredLoads = useMemo(() => {
-    let companyFilteredLoads = loads || [];
+    if (!loads) return [];
+
+    let companyFilteredLoads = loads;
     if(user?.companyFilter) {
-      companyFilteredLoads = companyFilteredLoads.filter(t => t.company === user.companyFilter);
+      companyFilteredLoads = companyFilteredLoads.filter(load => load.company === user.companyFilter);
     }
     
     return companyFilteredLoads.filter(load => {
@@ -57,9 +58,11 @@ export default function HomePage() {
       const matchesSearch =
         load.id.toLowerCase().includes(searchLower) ||
         load.name.toLowerCase().includes(searchLower) ||
-        (load.company && load.company.toLowerCase().includes(searchLower));
+        (load.company || '').toLowerCase().includes(searchLower);
+
       const matchesStatus = statusFilter === 'all' || load.status === statusFilter;
-      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || (load.company && load.company.toLowerCase() === companyFilter));
+      
+      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || (load.company || '').toLowerCase() === companyFilter);
 
       return matchesSearch && matchesStatus && finalCompanyMatch;
     });
