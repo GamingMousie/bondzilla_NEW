@@ -28,7 +28,7 @@ interface UnreleasedStockLocationItem {
 }
 
 export default function UnreleasedStockLocationsReportPage() {
-  const { shipments, getTrailerById } = useWarehouse();
+  const { shipments, getTrailerById, trailers } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [clientGeneratedDate, setClientGeneratedDate] = useState<string | null>(null);
@@ -52,7 +52,7 @@ export default function UnreleasedStockLocationsReportPage() {
 
     let filteredShipments = shipments;
     if(user?.companyFilter) {
-      const companyTrailerIds = new Set(getTrailerById.trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+      const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
       filteredShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
     }
 
@@ -104,7 +104,7 @@ export default function UnreleasedStockLocationsReportPage() {
       // Quaternary sort by stsJob (ascending)
       return a.stsJob - b.stsJob;
     });
-  }, [shipments, getTrailerById, isClient, user]);
+  }, [shipments, getTrailerById, isClient, user, trailers]);
 
   const handlePrintReport = () => {
     window.print();
