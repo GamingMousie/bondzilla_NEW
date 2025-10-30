@@ -13,24 +13,24 @@ interface User {
   startPage: string;
 }
 
-const ROLES: Record<UserProfile, User> = {
-  Warehouse: {
+const ROLES: Record<string, User> = {
+  warehouse: {
     profile: 'Warehouse',
-    permissions: ['/','/shipments', '/calendar', '/quiz/stock-check', '/quiz/reports'],
+    permissions: ['/', '/shipments', '/calendar', '/quiz/stock-check'],
     startPage: '/calendar',
   },
-  Office: {
+  office: {
     profile: 'Office',
     permissions: ['/','/shipments', '/calendar', '/reports', '/labels/generate-shipment-labels', '/quiz/stock-check', '/quiz/reports'],
     startPage: '/',
   },
-  TCB: {
+  tcb: {
     profile: 'TCB',
     permissions: ['/', '/shipments', '/reports'],
     companyFilter: 'TCB',
     startPage: '/',
   },
-  Cardinal: {
+  cardinal: {
     profile: 'Cardinal',
     permissions: ['/', '/shipments', '/reports'],
     companyFilter: 'Cardinal Maritime',
@@ -65,13 +65,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const hasAccess = (path: string): boolean => {
+    if (!user) return path === '/login';
+    // Allow access to dynamic sub-paths if the base path is permitted
+    // e.g., if '/trailers' is allowed, so is '/trailers/123'
+    return user.permissions.some(p => path.startsWith(p));
+  };
+
   useEffect(() => {
     const isLoginPage = pathname === '/login';
-    const isAllowedPage = hasAccess(pathname);
-
+    
     if (!user && !isLoginPage) {
       router.push('/login');
-    } else if (user && (isLoginPage || !isAllowedPage)) {
+    } else if (user) {
+      const isAllowedPage = hasAccess(pathname);
       if (isLoginPage) {
         router.push(user.startPage);
       } else if (!isAllowedPage) {
@@ -82,11 +89,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [user, pathname, router]);
 
   const login = (username: string, pass: string): User => {
-    const profileKey = Object.keys(ROLES).find(
-      (key) => key.toLowerCase() === username.toLowerCase()
-    ) as UserProfile | undefined;
+    const profileKey = username.toLowerCase();
 
-    if (profileKey && username.toLowerCase() === pass.toLowerCase()) {
+    if (ROLES[profileKey] && profileKey === pass.toLowerCase()) {
       const userData = ROLES[profileKey];
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
@@ -100,14 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     router.push('/login');
   };
-
-  const hasAccess = (path: string): boolean => {
-    if (!user) return path === '/login';
-    // Allow access to dynamic sub-paths if the base path is permitted
-    // e.g., if '/trailers' is allowed, so is '/trailers/123'
-    return user.permissions.some(p => path.startsWith(p));
-  };
-
 
   const value = { user, isAuthenticated: !!user, login, logout, hasAccess };
 

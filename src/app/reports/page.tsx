@@ -54,6 +54,7 @@ export default function ReportsPage() {
     if (!isClient) return [];
 
     let userShipments = shipments;
+    // Customer roles should only see data related to their company
     if (user?.companyFilter) {
         const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
         userShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
@@ -105,6 +106,9 @@ export default function ReportsPage() {
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
+    if(user?.companyFilter) {
+        return [user.companyFilter];
+    }
     const companies = new Set<string>();
     rawBondCheckReportData.forEach(item => {
       if (item.company) {
@@ -112,7 +116,7 @@ export default function ReportsPage() {
       }
     });
     return Array.from(companies).sort();
-  }, [rawBondCheckReportData, isClient]);
+  }, [rawBondCheckReportData, isClient, user]);
 
   const filteredBondCheckReportData = useMemo(() => {
     if (companyFilter === 'all' || user?.companyFilter) {

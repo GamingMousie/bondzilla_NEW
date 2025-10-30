@@ -34,14 +34,19 @@ export default function HomePage() {
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
+    let relevantTrailers = trailers;
+    // If the user has a company filter, only show that company in the dropdown.
+    if (user?.companyFilter) {
+      return [user.companyFilter];
+    }
     const companies = new Set<string>();
-    trailers.forEach(trailer => {
+    relevantTrailers.forEach(trailer => {
       if (trailer.company) {
         companies.add(trailer.company);
       }
     });
     return Array.from(companies).sort();
-  }, [trailers, isClient]);
+  }, [trailers, isClient, user]);
 
   const filteredTrailers = useMemo(() => {
     let companyFilteredTrailers = trailers;
@@ -56,8 +61,6 @@ export default function HomePage() {
                             trailer.name.toLowerCase().includes(searchLower) ||
                             (trailer.company && trailer.company.toLowerCase().includes(searchLower));
       const matchesStatus = statusFilter === 'all' || trailer.status === statusFilter;
-      // If user has a company filter, this component's own filter is either "all" or their specific company.
-      const matchesCompany = companyFilter === 'all' || !user?.companyFilter ? (trailer.company?.toLowerCase() === companyFilter.toLowerCase()) : true;
       const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || trailer.company?.toLowerCase() === companyFilter);
 
       return matchesSearch && matchesStatus && finalCompanyMatch;
@@ -139,7 +142,7 @@ export default function HomePage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-card rounded-lg shadow">
         <h1 className="text-3xl font-bold text-foreground">Trailer Dashboard</h1>
-        {user?.profile !== 'Customer' && (
+        {user && !user.companyFilter && (
           <Button onClick={() => setIsAddDialogOpen(true)} className="w-full sm:w-auto">
             <PlusCircle className="mr-2 h-5 w-5" /> Add New Trailer
           </Button>
@@ -217,7 +220,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {user?.profile !== 'Customer' && <AddTrailerDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
+      {user && !user.companyFilter && <AddTrailerDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
     </div>
   );
 }
