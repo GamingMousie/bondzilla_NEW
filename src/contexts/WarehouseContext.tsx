@@ -137,7 +137,7 @@ const initialQuizReports: QuizReport[] = [];
 
 
 export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
-  const [loads, setLoads] = useLocalStorageState<Load[]>('trailers', newInitialLoads);
+  const [loads, setLoads] = useLocalStorageState<Load[]>('loads', newInitialLoads);
   const [shipments, setShipments] = useLocalStorageState<Shipment[]>('shipments', newInitialShipments);
   const [quizReports, setQuizReports] = useLocalStorageState<QuizReport[]>('quizReports', initialQuizReports);
 
