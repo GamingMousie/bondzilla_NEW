@@ -115,8 +115,8 @@ export interface LoadFormData {
   company?: string;
   sprattJobNumber?: string;
   status: LoadStatus;
-  arrivalDate?: Date | null;
-  storageExpiryDate?: Date | null;
+  arrivalDate?: Date | string | null; // Can be Date from picker or string
+  storageExpiryDate?: Date | string | null;
   weight?: number | null;
   customField1?: string;
   customField2?: string;
