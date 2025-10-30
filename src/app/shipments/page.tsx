@@ -11,11 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 import { PackageSearch, Search, ListFilter, LayoutGrid, Package as PackageIcon, Truck } from 'lucide-react';
-import type { Shipment } from '@/types';
+import type { Shipment, Load as Trailer } from '@/types';
 import { Badge } from '@/components/ui/badge';
 
 export default function AllShipmentsPage() {
-  const { shipments, trailers, deleteShipment } = useWarehouse();
+  const { shipments, loads: trailers, deleteShipment } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,30 +27,32 @@ export default function AllShipmentsPage() {
   }, []);
 
   const filteredShipments = useMemo(() => {
+    if (!shipments) return [];
     let userShipments = shipments;
     if (user?.companyFilter) {
         const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
-        userShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+        userShipments = shipments.filter(s => companyTrailerIds.has(s.loadId));
     }
 
     return userShipments.filter(shipment => {
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch =
         shipment.id.toLowerCase().includes(searchLower) || 
-        shipment.trailerId.toLowerCase().includes(searchLower) || 
+        shipment.loadId.toLowerCase().includes(searchLower) || 
         shipment.stsJob.toString().toLowerCase().includes(searchLower) ||
         (shipment.customerJobNumber && shipment.customerJobNumber.toLowerCase().includes(searchLower)) ||
         shipment.importer.toLowerCase().includes(searchLower) ||
         shipment.exporter.toLowerCase().includes(searchLower) || 
         (shipment.locations && shipment.locations.some(loc => loc.name.toLowerCase().includes(searchLower)));
 
-      const matchesTrailerId = trailerIdFilter === 'all' || shipment.trailerId === trailerIdFilter;
+      const matchesTrailerId = trailerIdFilter === 'all' || shipment.loadId === trailerIdFilter;
 
       return matchesSearch && matchesTrailerId;
     });
   }, [shipments, trailers, searchTerm, trailerIdFilter, user]);
 
   const availableTrailersForFilter = useMemo(() => {
+    if (!trailers) return [];
     if (user?.companyFilter) {
         return trailers.filter(t => t.company === user.companyFilter);
     }
@@ -147,7 +149,7 @@ export default function AllShipmentsPage() {
           <div className="relative flex-grow">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Search by ID, STS Job, Cust. Job, Trailer ID, Importer, Exporter, Location..."
+              placeholder="Search by ID, STS Job, Cust. Job, Load ID, Importer, Exporter, Location..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -157,11 +159,11 @@ export default function AllShipmentsPage() {
             <SelectTrigger className="w-full md:w-[220px]">
               <div className="flex items-center">
                 <Truck className="mr-2 h-4 w-4 text-muted-foreground" />
-                <SelectValue placeholder="Filter by trailer ID" />
+                <SelectValue placeholder="Filter by load ID" />
               </div>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Trailers</SelectItem>
+              <SelectItem value="all">All Loads</SelectItem>
               {isClient && availableTrailersForFilter.map(trailer => (
                 <SelectItem key={trailer.id} value={trailer.id}>
                   {trailer.name} ({trailer.id})
