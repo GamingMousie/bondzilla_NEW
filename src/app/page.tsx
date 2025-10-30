@@ -33,7 +33,7 @@ export default function HomePage() {
   }, [user]);
 
   const uniqueCompanies = useMemo(() => {
-    if (!isClient) return [];
+    if (!isClient || !loads) return [];
     let relevantLoads = loads;
     // If the user has a company filter, only show that company in the dropdown.
     if (user?.companyFilter) {

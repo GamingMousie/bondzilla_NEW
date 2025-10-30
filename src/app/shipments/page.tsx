@@ -38,7 +38,7 @@ export default function AllShipmentsPage() {
     if (!shipments) return [];
     let userShipments = shipments;
     if (user?.companyFilter) {
-        const companyLoadIds = new Set(loads.filter(t => t.company === user.companyFilter).map(t => t.id));
+        const companyLoadIds = new Set((loads || []).filter(t => t.company === user.companyFilter).map(t => t.id));
         userShipments = shipments.filter(s => companyLoadIds.has(s.loadId));
     }
 
