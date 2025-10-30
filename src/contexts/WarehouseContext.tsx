@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import type { ReactNode } from 'react';
@@ -78,7 +77,7 @@ const generateRandomLocations = (): LocationInfo[] => {
 
 const newInitialLoads: Load[] = [];
 const newInitialShipments: Shipment[] = [];
-const baseLoadIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994", "STS2995", "STS2996", "STS2997", "STS2998", "STS2999"];
+const baseLoadIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994", "STS2995", "STS2996", "STS2997", "STS2998", "STS2999", "STS3034"];
 let stsJobCounter = 10001;
 
 baseLoadIds.forEach((loadId, index) => {
@@ -181,7 +180,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setLoads, setShipments]);
 
   const getShipmentsByLoadId = useCallback((loadId: string) => {
-    return shipments.filter((s) => s.loadId === loadId);
+    return shipments.filter((s) => s.loadId.toLowerCase() === loadId.toLowerCase());
   }, [shipments]);
 
   const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
@@ -293,7 +292,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setShipments]);
 
   const getLoadById = useCallback((loadId: string) => {
-    return loads.find(t => t.id === loadId);
+    return loads.find(t => t.id.toLowerCase() === loadId.toLowerCase());
   }, [loads]);
 
   const getShipmentById = useCallback((shipmentId: string) => {

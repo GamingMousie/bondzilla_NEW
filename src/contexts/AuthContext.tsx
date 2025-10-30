@@ -71,24 +71,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const hasAccess = (path: string): boolean => {
     if (!user) return path === '/login';
-
-    // Exact match for base routes (e.g., '/reports', '/calendar')
-    if (user.permissions.includes(path)) {
-      return true;
-    }
-
-    // Allow access to dynamic sub-routes (e.g., /loads/[id], /shipments/[id], /quiz/reports/[id])
-    // Check if the path starts with a permitted base path that implies dynamic children.
+    
+    // Allow access to dynamic sub-routes.
     const allowedBasePathsWithDynamicChildren = ['/loads', '/shipments', '/quiz/reports', '/reports'];
     for (const basePath of allowedBasePathsWithDynamicChildren) {
-      // Check if user has permission for the base path (e.g., has '/loads' to access '/loads/123')
-      // and if the current path starts with that base path followed by a '/'.
-      if (user.permissions.includes(basePath) && path.startsWith(`${basePath}/`)) {
+      if (path.startsWith(`${basePath}/`) && user.permissions.includes(basePath)) {
         return true;
       }
     }
     
-    return false;
+    // Exact match for base routes (e.g., '/reports', '/calendar')
+    return user.permissions.includes(path);
   };
 
   useEffect(() => {

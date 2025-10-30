@@ -29,15 +29,14 @@ export default function LoadShipmentsPage() {
   const {
     getShipmentsByLoadId,
     deleteShipment,
-    loads: loadsFromContext,
+    getLoadById,
     updateLoad,
   } = useWarehouse();
 
-  const [load, setLoad] = useState<Load | null>(null);
+  const [load, setLoad] = useState<Load | null | undefined>(undefined);
   const [isAddShipmentDialogOpen, setIsAddShipmentDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isLoadFound, setIsLoadFound] = useState<boolean | null>(null);
-
+  
   const [isAttachLoadDocDialogOpen, setIsAttachLoadDocDialogOpen] = useState(false);
   const [documentToManageInfo, setDocumentToManageInfo] = useState<{
     field: LoadDocumentField;
@@ -47,25 +46,16 @@ export default function LoadShipmentsPage() {
 
 
   useEffect(() => {
-    if (typeof loadId === 'string' && loadId.trim() !== '') {
-      const currentLoad = loadsFromContext.find(t => t.id === loadId);
-      if (currentLoad) {
-        setLoad(currentLoad);
-        setIsLoadFound(true);
-      } else {
-        setIsLoadFound(false);
-        setLoad(null);
-      }
-    } else {
-      setIsLoadFound(false);
-      setLoad(null);
+    if (loadId) {
+      const currentLoad = getLoadById(loadId);
+      setLoad(currentLoad);
     }
-  }, [loadId, loadsFromContext]);
+  }, [loadId, getLoadById]);
 
   const shipmentsForCurrentLoad = useMemo(() => {
-    if (!loadId || !isLoadFound || !load) return [];
-    return getShipmentsByLoadId(loadId);
-  }, [loadId, isLoadFound, load, getShipmentsByLoadId]);
+    if (!load) return [];
+    return getShipmentsByLoadId(load.id);
+  }, [load, getShipmentsByLoadId]);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -180,7 +170,7 @@ export default function LoadShipmentsPage() {
   };
 
 
-  if (isLoadFound === null) {
+  if (load === undefined) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-200px)]">
         <p className="text-xl text-muted-foreground">Loading load details...</p>
@@ -188,7 +178,7 @@ export default function LoadShipmentsPage() {
     );
   }
 
-  if (isLoadFound === false || !load) {
+  if (load === null) {
      return (
         <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] space-y-4">
           <Truck className="h-16 w-16 text-muted-foreground" />
