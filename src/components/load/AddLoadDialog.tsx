@@ -96,17 +96,11 @@ export default function AddLoadDialog({ isOpen, setIsOpen }: AddLoadDialogProps)
       });
       return;
     }
+    // The context will handle converting Date to ISO string
     addLoad({
-      id: data.id,
-      name: data.name,
-      company: data.company,
-      sprattJobNumber: data.sprattJobNumber,
-      status: data.status,
-      arrivalDate: data.arrivalDate ? data.arrivalDate.toISOString() : undefined,
-      storageExpiryDate: data.storageExpiryDate ? data.storageExpiryDate.toISOString() : undefined,
-      weight: data.weight ?? undefined,
-      customField1: data.customField1 || undefined,
-      customField2: data.customField2 || undefined,
+      ...data,
+      arrivalDate: data.arrivalDate || undefined,
+      storageExpiryDate: data.storageExpiryDate || undefined,
     });
     toast({
       title: "Success!",
