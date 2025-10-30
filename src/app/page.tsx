@@ -57,11 +57,12 @@ export default function HomePage() {
     
     return companyFilteredLoads.filter(load => {
       const searchLower = searchTerm.toLowerCase();
-      const matchesSearch = load.id.toLowerCase().includes(searchLower) ||
-                            load.name.toLowerCase().includes(searchLower) ||
-                            (load.company && load.company.toLowerCase().includes(searchLower));
+      const matchesSearch =
+        load.id.toLowerCase().includes(searchLower) ||
+        load.name.toLowerCase().includes(searchLower) ||
+        (load.company && load.company.toLowerCase().includes(searchLower));
       const matchesStatus = statusFilter === 'all' || load.status === statusFilter;
-      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || load.company?.toLowerCase() === companyFilter);
+      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || (load.company && load.company.toLowerCase() === companyFilter));
 
       return matchesSearch && matchesStatus && finalCompanyMatch;
     });

@@ -123,7 +123,7 @@ export default function ReportsPage() {
       return rawBondCheckReportData;
     }
     return rawBondCheckReportData.filter(item =>
-      item.company?.toLowerCase() === companyFilter.toLowerCase()
+      item.company?.toLowerCase() === companyFilter
     );
   }, [rawBondCheckReportData, companyFilter, user]);
 

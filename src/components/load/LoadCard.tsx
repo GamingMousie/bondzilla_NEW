@@ -277,7 +277,7 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
                   )
                 ) : null}
 
-                {load.sprattJobNumber ? (
+                {load.sprattJobNumber && (
                   isMounted ? (
                     <div className="flex items-center text-xs text-muted-foreground mt-1">
                       <Hash className="mr-1.5 h-3.5 w-3.5" />
@@ -286,7 +286,7 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
                   ) : (
                     <Skeleton className="h-3 w-1/2 mt-1" />
                   )
-                ) : null}
+                )}
                 
                 {load.storageExpiryDate ? (
                   isMounted ? (
