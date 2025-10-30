@@ -280,6 +280,7 @@ export default function ReportsPage() {
                 <CardTitle className="text-xl sm:text-2xl text-primary">Current Warehouse Stock (Unreleased)</CardTitle>
                 <CardDescription>
                 This report lists all shipments currently in the warehouse that have not been marked as "Released".
+                {user?.companyFilter && ` This view is filtered for ${user.companyFilter}.`}
                 </CardDescription>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">

@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Trailer } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -45,6 +46,7 @@ const generateChartColors = (numColors: number): string[] => {
 
 export default function MonthlyCompanyTrailersReportPage() {
   const { trailers } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date()); // Date to determine the month to display
   const [clientGeneratedDate, setClientGeneratedDate] = useState<string | null>(null);
@@ -62,7 +64,12 @@ export default function MonthlyCompanyTrailersReportPage() {
 
     const companyCounts: { [companyName: string]: number } = {};
 
-    trailers.forEach(trailer => {
+    let filteredTrailers = trailers;
+    if (user?.companyFilter) {
+        filteredTrailers = trailers.filter(t => t.company === user.companyFilter);
+    }
+
+    filteredTrailers.forEach(trailer => {
       if (trailer.arrivalDate) {
         try {
           const arrival = parseISO(trailer.arrivalDate);
@@ -79,7 +86,7 @@ export default function MonthlyCompanyTrailersReportPage() {
     return Object.entries(companyCounts)
       .map(([companyName, trailerCount]) => ({ companyName, trailerCount }))
       .sort((a, b) => b.trailerCount - a.trailerCount); // Sort by most trailers first
-  }, [trailers, isClient, currentMonthStart, currentMonthEnd]);
+  }, [trailers, isClient, currentMonthStart, currentMonthEnd, user]);
   
   const chartColors = useMemo(() => generateChartColors(reportData.length), [reportData.length]);
 
@@ -168,12 +175,16 @@ export default function MonthlyCompanyTrailersReportPage() {
       <Card className="shadow-lg printable-area">
         <CardHeader className="no-print">
           <CardTitle className="text-xl sm:text-2xl text-primary">{cardTitleText}</CardTitle>
-          <CardDescription>{cardDescriptionText}</CardDescription>
+          <CardDescription>
+            {cardDescriptionText}
+            {user?.companyFilter && ` This view is filtered for ${user.companyFilter}.`}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="print-only-block mb-4">
             <h2 className="text-xl font-semibold text-foreground">{printTitleText}</h2>
             <p className="text-sm text-muted-foreground">{printPeriodText}</p>
+            {user?.companyFilter && <p className="text-sm text-muted-foreground">Company: {user.companyFilter}</p>}
             {clientGeneratedDate && <p className="text-xs text-muted-foreground">Date Generated: {clientGeneratedDate}</p>}
           </div>
 
@@ -249,4 +260,3 @@ export default function MonthlyCompanyTrailersReportPage() {
     </div>
   );
 }
-

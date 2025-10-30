@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Shipment, Trailer } from '@/types'; // LocationInfo is part of Shipment
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -28,6 +29,7 @@ interface UnreleasedStockLocationItem {
 
 export default function UnreleasedStockLocationsReportPage() {
   const { shipments, getTrailerById } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [clientGeneratedDate, setClientGeneratedDate] = useState<string | null>(null);
 
@@ -48,9 +50,15 @@ export default function UnreleasedStockLocationsReportPage() {
   const reportData = useMemo((): UnreleasedStockLocationItem[] => {
     if (!isClient) return [];
 
+    let filteredShipments = shipments;
+    if(user?.companyFilter) {
+      const companyTrailerIds = new Set(getTrailerById.trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+      filteredShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+    }
+
     const expandedReportItems: UnreleasedStockLocationItem[] = [];
 
-    shipments
+    filteredShipments
       .filter(shipment => !shipment.releasedAt) // Filter for unreleased shipments
       .forEach(shipment => {
         const trailer = getTrailerById(shipment.trailerId);
@@ -96,7 +104,7 @@ export default function UnreleasedStockLocationsReportPage() {
       // Quaternary sort by stsJob (ascending)
       return a.stsJob - b.stsJob;
     });
-  }, [shipments, getTrailerById, isClient]);
+  }, [shipments, getTrailerById, isClient, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -158,11 +166,15 @@ export default function UnreleasedStockLocationsReportPage() {
       <Card className="shadow-lg printable-area">
         <CardHeader className="no-print">
           <CardTitle className="text-xl sm:text-2xl text-primary">{pageTitle}</CardTitle>
-          <CardDescription>{cardDescriptionText}</CardDescription>
+          <CardDescription>
+            {cardDescriptionText}
+             {user?.companyFilter && ` This view is filtered for ${user.companyFilter}.`}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="print-only-block mb-4">
             <h2 className="text-xl font-semibold text-foreground">{printTitleText}</h2>
+            {user?.companyFilter && <p className="text-sm text-muted-foreground">Company: {user.companyFilter}</p>}
             {clientGeneratedDate && <p className="text-xs text-muted-foreground">Date Generated: {clientGeneratedDate}</p>}
           </div>
 
@@ -230,4 +242,3 @@ export default function UnreleasedStockLocationsReportPage() {
     </div>
   );
 }
-

@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Shipment, Trailer } from '@/types'; 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -38,6 +39,7 @@ interface OverdueReleasedReportItem {
 
 export default function MonthlyOverdueReleasedReportPage() {
   const { shipments, getTrailerById, trailers: allTrailers } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date());
   const [companyFilter, setCompanyFilter] = useState<string>('all');
@@ -46,7 +48,10 @@ export default function MonthlyOverdueReleasedReportPage() {
   useEffect(() => {
     setIsClient(true);
     setClientGeneratedDate(new Date().toLocaleDateString());
-  }, []);
+    if (user?.companyFilter) {
+      setCompanyFilter(user.companyFilter.toLowerCase());
+    }
+  }, [user]);
   
   const currentMonthStart = useMemo(() => startOfMonth(displayDate), [displayDate]);
   const currentMonthEnd = useMemo(() => endOfMonth(displayDate), [displayDate]);
@@ -62,6 +67,9 @@ export default function MonthlyOverdueReleasedReportPage() {
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
+    if(user?.companyFilter){
+        return [user.companyFilter];
+    }
     const companies = new Set<string>();
     allTrailers.forEach(trailer => {
       if (trailer.company) {
@@ -69,10 +77,12 @@ export default function MonthlyOverdueReleasedReportPage() {
       }
     });
     return Array.from(companies).sort();
-  }, [allTrailers, isClient]);
+  }, [allTrailers, isClient, user]);
 
   const reportData = useMemo((): OverdueReleasedReportItem[] => {
     if (!isClient) return [];
+    
+    const companyFilterToUse = user?.companyFilter?.toLowerCase() || companyFilter;
 
     return shipments
       .filter(shipment => {
@@ -90,7 +100,7 @@ export default function MonthlyOverdueReleasedReportPage() {
           return null; 
         }
         
-        if (companyFilter !== 'all' && trailer.company?.toLowerCase() !== companyFilter.toLowerCase()) {
+        if (companyFilterToUse !== 'all' && trailer.company?.toLowerCase() !== companyFilterToUse) {
           return null;
         }
 
@@ -122,7 +132,7 @@ export default function MonthlyOverdueReleasedReportPage() {
       })
       .filter((item): item is OverdueReleasedReportItem => item !== null) 
       .sort((a, b) => b.daysOverdue - a.daysOverdue); 
-  }, [shipments, getTrailerById, isClient, currentMonthStart, currentMonthEnd, companyFilter]);
+  }, [shipments, getTrailerById, isClient, currentMonthStart, currentMonthEnd, companyFilter, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -197,6 +207,7 @@ export default function MonthlyOverdueReleasedReportPage() {
           <Button variant="outline" onClick={handleNextMonth} aria-label="Next month">
              <span className="hidden sm:inline">Next Month</span><ArrowRight className="h-4 w-4 ml-0 sm:ml-2" />
           </Button>
+          {!user?.companyFilter && (
            <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
             <SelectTrigger className="w-full sm:w-auto min-w-[180px]">
                <div className="flex items-center">
@@ -212,6 +223,7 @@ export default function MonthlyOverdueReleasedReportPage() {
               {!isClient && <Skeleton className="h-8 w-full my-1" />}
             </SelectContent>
           </Select>
+          )}
           <Button onClick={handlePrintReport} variant="outline">
             <Printer className="mr-2 h-4 w-4" />
             Print Report
@@ -299,4 +311,3 @@ export default function MonthlyOverdueReleasedReportPage() {
     </div>
   );
 }
-

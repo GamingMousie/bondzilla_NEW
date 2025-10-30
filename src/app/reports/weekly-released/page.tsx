@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Shipment } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -38,6 +39,7 @@ interface MonthlyReleasedReportItem {
 
 export default function MonthlyReleasedReportPage() {
   const { shipments, getTrailerById } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date()); // Date to determine the month to display
   const [clientGeneratedDate, setClientGeneratedDate] = useState<string | null>(null);
@@ -68,7 +70,14 @@ export default function MonthlyReleasedReportPage() {
   const reportData = useMemo((): MonthlyReleasedReportItem[] => {
     if (!isClient) return [];
 
-    return shipments
+    let filteredShipments = shipments;
+    if(user?.companyFilter) {
+        const companyTrailerIds = new Set(getTrailerById.trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+        filteredShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+    }
+
+
+    return filteredShipments
       .filter(shipment => {
         if (!shipment.releasedAt) return false;
         try {
@@ -97,7 +106,7 @@ export default function MonthlyReleasedReportPage() {
         };
       })
       .sort((a, b) => parseISO(b.releasedAt).getTime() - parseISO(a.releasedAt).getTime()); // Sort by most recent first
-  }, [shipments, getTrailerById, isClient, currentPeriodStart, currentPeriodEnd]);
+  }, [shipments, getTrailerById, isClient, currentPeriodStart, currentPeriodEnd, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -186,6 +195,7 @@ export default function MonthlyReleasedReportPage() {
           <CardTitle className="text-xl sm:text-2xl text-primary">{cardTitleText}</CardTitle>
           <CardDescription>
             {cardDescriptionText}
+             {user?.companyFilter && ` This view is filtered for ${user.companyFilter}.`}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -194,6 +204,7 @@ export default function MonthlyReleasedReportPage() {
             <p className="text-sm text-muted-foreground">
               {printPeriodText}
             </p>
+             {user?.companyFilter && <p className="text-sm text-muted-foreground">Company: {user.companyFilter}</p>}
              {clientGeneratedDate && <p className="text-xs text-muted-foreground">Date Generated: {clientGeneratedDate}</p>}
           </div>
 
@@ -262,4 +273,3 @@ export default function MonthlyReleasedReportPage() {
     </div>
   );
 }
-
