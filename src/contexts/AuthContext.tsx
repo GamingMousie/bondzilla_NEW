@@ -13,6 +13,9 @@ interface User {
   startPage: string;
 }
 
+// Defines the roles and their specific permissions and configurations.
+// Note: Customer roles (TCB, Cardinal) have a `companyFilter` which is used
+// to restrict the data they can see.
 const ROLES: Record<string, User> = {
   warehouse: {
     profile: 'Warehouse',
@@ -37,6 +40,7 @@ const ROLES: Record<string, User> = {
     startPage: '/',
   },
 };
+
 
 interface AuthContextType {
   user: User | null;
@@ -67,9 +71,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const hasAccess = (path: string): boolean => {
     if (!user) return path === '/login';
-    // Allow access to dynamic sub-paths if the base path is permitted
-    // e.g., if '/trailers' is allowed, so is '/trailers/123'
-    return user.permissions.some(p => path.startsWith(p));
+
+    // Exact match for base routes (e.g., '/reports', '/calendar')
+    if (user.permissions.includes(path)) {
+      return true;
+    }
+
+    // Allow access to dynamic sub-routes (e.g., /trailers/[id], /shipments/[id], /quiz/reports/[id])
+    // Check if the path starts with a permitted base path that implies dynamic children.
+    const allowedBasePathsWithDynamicChildren = ['/trailers', '/shipments', '/quiz/reports', '/reports'];
+    for (const basePath of allowedBasePathsWithDynamicChildren) {
+      // Check if user has permission for the base path (e.g., has '/trailers' to access '/trailers/123')
+      // and if the current path starts with that base path followed by a '/'.
+      if (user.permissions.includes(basePath) && path.startsWith(`${basePath}/`)) {
+        return true;
+      }
+    }
+    
+    return false;
   };
 
   useEffect(() => {
@@ -91,6 +110,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (username: string, pass: string): User => {
     const profileKey = username.toLowerCase();
 
+    // Password is the same as the profile name (case-insensitive)
     if (ROLES[profileKey] && profileKey === pass.toLowerCase()) {
       const userData = ROLES[profileKey];
       localStorage.setItem('user', JSON.stringify(userData));
@@ -108,6 +128,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const value = { user, isAuthenticated: !!user, login, logout, hasAccess };
 
+  // This prevents a flash of the login-required content while the app is booting
+  // and checking for a stored user session.
   return (
     <AuthContext.Provider value={value}>
         {!user && pathname !== '/login' ? null : children}
