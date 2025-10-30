@@ -29,7 +29,7 @@ interface ShipmentCardProps {
 }
 
 export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: ShipmentCardProps) {
-  const { updateShipment, getTrailerById } = useWarehouse();
+  const { updateShipment, getLoadById } = useWarehouse();
   const { toast } = useToast();
 
   const [isManageLocationsOpen, setIsManageLocationsOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
   const [isShipmentDeleteDialogOpen, setIsShipmentDeleteDialogOpen] = useState(false);
 
   const shipmentIdentifier = `STS Job: ${shipment.stsJob}`; 
-  const trailer = getTrailerById(shipment.trailerId);
+  const load = getLoadById(shipment.loadId);
 
   const handleMarkAsPermitted = () => {
     if (!shipment.released) {
@@ -94,8 +94,8 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
     }
 
     const missingSubjectPart = missingParts.join(" & ");
-    const subject = `Missing ${missingSubjectPart} for Trailer ${shipment.trailerId} / Job ${shipment.stsJob}`;
-    const body = `Good Morning,\n\nWe have a driver waiting to collect "${shipment.trailerId} / Job ${shipment.stsJob}" but we are missing files for above shipment.\n\nCan you be able to update us ASAP please?`;
+    const subject = `Missing ${missingSubjectPart} for Load ${shipment.loadId} / Job ${shipment.stsJob}`;
+    const body = `Good Morning,\n\nWe have a driver waiting to collect "${shipment.loadId} / Job ${shipment.stsJob}" but we are missing files for above shipment.\n\nCan you be able to update us ASAP please?`;
     const mailtoLink = `mailto:klaudia@mail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoLink;
   };
@@ -120,7 +120,7 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
           <CardTitle className={viewMode === 'list' ? "text-base font-semibold" : "text-lg"}>
             <Link href={`/shipments/${shipment.id}`} className="hover:underline text-primary flex items-center group">
               <Package className="mr-2 h-5 w-5 text-primary group-hover:animate-pulse" />
-              Trailer {shipment.trailerId} Job: {shipment.stsJob}
+              Load {shipment.loadId} Job: {shipment.stsJob}
             </Link>
           </CardTitle>
           <CardDescription className="text-xs mt-0.5">
@@ -376,3 +376,5 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
     </>
   );
 }
+
+    
