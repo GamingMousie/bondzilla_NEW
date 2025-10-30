@@ -376,5 +376,3 @@ export default function ShipmentCard({ shipment, onDelete, viewMode = 'grid' }: 
     </>
   );
 }
-
-    

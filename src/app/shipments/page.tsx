@@ -11,27 +11,35 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 import { PackageSearch, Search, ListFilter, LayoutGrid, Package as PackageIcon, Truck } from 'lucide-react';
-import type { Shipment, Load as Trailer } from '@/types';
+import type { Shipment, Load } from '@/types';
 import { Badge } from '@/components/ui/badge';
 
 export default function AllShipmentsPage() {
-  const { shipments, loads: trailers, deleteShipment } = useWarehouse();
+  const { shipments, loads, deleteShipment } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [trailerIdFilter, setTrailerIdFilter] = useState<string | 'all'>('all');
+  const [loadIdFilter, setLoadIdFilter] = useState<string | 'all'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  const availableLoadsForFilter = useMemo(() => {
+    if (!loads) return [];
+    if (user?.companyFilter) {
+        return loads.filter(t => t.company === user.companyFilter);
+    }
+    return loads;
+  }, [loads, user]);
+
   const filteredShipments = useMemo(() => {
     if (!shipments) return [];
     let userShipments = shipments;
     if (user?.companyFilter) {
-        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
-        userShipments = shipments.filter(s => companyTrailerIds.has(s.loadId));
+        const companyLoadIds = new Set(loads.filter(t => t.company === user.companyFilter).map(t => t.id));
+        userShipments = shipments.filter(s => companyLoadIds.has(s.loadId));
     }
 
     return userShipments.filter(shipment => {
@@ -45,19 +53,11 @@ export default function AllShipmentsPage() {
         shipment.exporter.toLowerCase().includes(searchLower) || 
         (shipment.locations && shipment.locations.some(loc => loc.name.toLowerCase().includes(searchLower)));
 
-      const matchesTrailerId = trailerIdFilter === 'all' || shipment.loadId === trailerIdFilter;
+      const matchesLoadId = loadIdFilter === 'all' || shipment.loadId === loadIdFilter;
 
-      return matchesSearch && matchesTrailerId;
+      return matchesSearch && matchesLoadId;
     });
-  }, [shipments, trailers, searchTerm, trailerIdFilter, user]);
-
-  const availableTrailersForFilter = useMemo(() => {
-    if (!trailers) return [];
-    if (user?.companyFilter) {
-        return trailers.filter(t => t.company === user.companyFilter);
-    }
-    return trailers;
-  }, [trailers, user]);
+  }, [shipments, loads, searchTerm, loadIdFilter, user]);
 
   const ShipmentListSkeleton = () => (
     <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
@@ -68,7 +68,7 @@ export default function AllShipmentsPage() {
               <div className="flex items-start justify-between">
                 <div className='space-y-1'>
                   <Skeleton className="h-5 w-3/4" /> {/* STS Job */}
-                  <Skeleton className="h-4 w-1/2" /> {/* Trailer ID */}
+                  <Skeleton className="h-4 w-1/2" /> {/* Load ID */}
                 </div>
                 <Skeleton className="h-7 w-7 rounded-md" />
               </div>
@@ -102,7 +102,7 @@ export default function AllShipmentsPage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex-grow space-y-1.5">
                 <Skeleton className="h-5 w-3/5" /> {/* STS Job */}
-                <Skeleton className="h-4 w-2/5" /> {/* Trailer ID */}
+                <Skeleton className="h-4 w-2/5" /> {/* Load ID */}
                 <Skeleton className="h-3 w-1/2" /> {/* Shipment ID */}
                 <Skeleton className="h-3 w-1/3 mb-1" /> {/* Customer Job No. */}
                 <div className="flex items-center gap-4 text-sm">
@@ -155,7 +155,7 @@ export default function AllShipmentsPage() {
               className="pl-10"
             />
           </div>
-          <Select value={trailerIdFilter} onValueChange={(value) => setTrailerIdFilter(value)}>
+          <Select value={loadIdFilter} onValueChange={(value) => setLoadIdFilter(value)}>
             <SelectTrigger className="w-full md:w-[220px]">
               <div className="flex items-center">
                 <Truck className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -164,9 +164,9 @@ export default function AllShipmentsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Loads</SelectItem>
-              {isClient && availableTrailersForFilter.map(trailer => (
-                <SelectItem key={trailer.id} value={trailer.id}>
-                  {trailer.name} ({trailer.id})
+              {isClient && availableLoadsForFilter.map(load => (
+                <SelectItem key={load.id} value={load.id}>
+                  {load.name} ({load.id})
                 </SelectItem>
               ))}
               {!isClient && <Skeleton className="h-8 w-full my-1" />}
