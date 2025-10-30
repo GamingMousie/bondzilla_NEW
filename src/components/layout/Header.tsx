@@ -29,10 +29,17 @@ const Header = () => {
   return (
     <header className="bg-card border-b border-border shadow-sm no-print">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
-          <ShipShapeLogo className="h-8 w-8" />
-          <span>Bondzilla</span>
-        </Link>
+        <div>
+          <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
+            <ShipShapeLogo className="h-8 w-8" />
+            <span>Bondzilla</span>
+          </Link>
+           {user && (
+            <p className="text-sm text-muted-foreground mt-1">
+              Welcome, <span className="font-semibold text-foreground">{user.profile}</span>! Good to see you again.
+            </p>
+          )}
+        </div>
         <div className="flex items-center gap-4">
           <nav className="flex items-center gap-1 sm:gap-2 flex-wrap justify-end">
             {navLinks.filter(link => hasAccess(link.permissionKey)).map(link => (
