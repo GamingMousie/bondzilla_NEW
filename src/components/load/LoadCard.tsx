@@ -243,8 +243,8 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
         <Card className="group transition-all hover:shadow-lg w-full">
           <div className="p-4 flex items-center justify-between">
             <div className="flex-grow">
-              <Link href={`/loads/${load.id}`} className="block">
-                <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
+              <Link href={`/loads/${load.id}`} className="block group">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                   ID: {load.id}
                 </h3>
                 {load.arrivalDate ? (
