@@ -138,9 +138,9 @@ export default function QuizReportDetailsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="whitespace-nowrap"><MapPin className="inline-block mr-1 h-4 w-4 print:hidden"/>Location</TableHead>
-                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Identifier (Tr / Job)</TableHead>
+                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Identifier (Load / Job)</TableHead>
                     <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Company</TableHead>
-                    <TableHead className="whitespace-nowrap"><CalendarIcon className="inline-block mr-1 h-4 w-4 print:hidden"/>Trailer Arrival</TableHead>
+                    <TableHead className="whitespace-nowrap"><CalendarIcon className="inline-block mr-1 h-4 w-4 print:hidden"/>Load Arrival</TableHead>
                     <TableHead className="text-right whitespace-nowrap"><BoxIcon className="inline-block mr-1 h-4 w-4 print:hidden"/>Pieces</TableHead>
                     <TableHead className="text-center whitespace-nowrap">Answer</TableHead>
                   </TableRow>
@@ -153,12 +153,12 @@ export default function QuizReportDetailsPage() {
                         {item.locationPallets !== undefined ? ` (${item.locationPallets} plts)` : ''}
                       </TableCell>
                       <TableCell>
-                        <Link href={`/trailers/${item.trailerId}`} className="text-primary hover:underline print:text-foreground print:no-underline">{item.trailerId}</Link>
+                        <Link href={`/loads/${item.loadId}`} className="text-primary hover:underline print:text-foreground print:no-underline">{item.loadId}</Link>
                         {' / '}
                         <Link href={`/shipments/${item.shipmentId}`} className="text-primary hover:underline print:text-foreground print:no-underline">{item.stsJob}</Link>
                       </TableCell>
-                      <TableCell>{item.trailerCompany || 'N/A'}</TableCell>
-                      <TableCell>{item.trailerArrivalDateFormatted}</TableCell>
+                      <TableCell>{item.loadCompany || 'N/A'}</TableCell>
+                      <TableCell>{item.loadArrivalDateFormatted}</TableCell>
                       <TableCell className="text-right font-semibold">{item.shipmentQuantity}</TableCell>
                       <TableCell className="text-center">
                         {item.userAnswer === 'yes' ? (
