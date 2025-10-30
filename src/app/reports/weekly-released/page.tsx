@@ -25,9 +25,9 @@ interface MonthlyReleasedReportItem {
   shipmentId: string;
   stsJob: number;
   customerJobNumber?: string;
-  trailerId: string;
-  trailerName?: string;
-  trailerCompany?: string;
+  loadId: string;
+  loadName?: string;
+  loadCompany?: string;
   releasedAt: string; // ISO string
   releasedAtFormatted: string;
   importer: string;
@@ -38,7 +38,7 @@ interface MonthlyReleasedReportItem {
 }
 
 export default function MonthlyReleasedReportPage() {
-  const { shipments, getTrailerById, trailers } = useWarehouse();
+  const { shipments, getLoadById, loads } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date()); // Date to determine the month to display
@@ -72,8 +72,8 @@ export default function MonthlyReleasedReportPage() {
 
     let filteredShipments = shipments;
     if(user?.companyFilter) {
-        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
-        filteredShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+        const companyLoadIds = new Set(loads.filter(t => t.company === user.companyFilter).map(t => t.id));
+        filteredShipments = shipments.filter(s => companyLoadIds.has(s.loadId));
     }
 
 
@@ -88,14 +88,14 @@ export default function MonthlyReleasedReportPage() {
         }
       })
       .map(shipment => {
-        const trailer = getTrailerById(shipment.trailerId);
+        const load = getLoadById(shipment.loadId);
         return {
           shipmentId: shipment.id,
           stsJob: shipment.stsJob,
           customerJobNumber: shipment.customerJobNumber,
-          trailerId: shipment.trailerId,
-          trailerName: trailer?.name,
-          trailerCompany: trailer?.company,
+          loadId: shipment.loadId,
+          loadName: load?.name,
+          loadCompany: load?.company,
           releasedAt: shipment.releasedAt!,
           releasedAtFormatted: formatDateSafe(shipment.releasedAt),
           importer: shipment.importer,
@@ -106,7 +106,7 @@ export default function MonthlyReleasedReportPage() {
         };
       })
       .sort((a, b) => parseISO(b.releasedAt).getTime() - parseISO(a.releasedAt).getTime()); // Sort by most recent first
-  }, [shipments, getTrailerById, trailers, isClient, currentPeriodStart, currentPeriodEnd, user]);
+  }, [shipments, getLoadById, loads, isClient, currentPeriodStart, currentPeriodEnd, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -137,9 +137,9 @@ export default function MonthlyReleasedReportPage() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Trailer ID</TableHead>
+          <TableHead>Load ID</TableHead>
           <TableHead>STS Job</TableHead>
-          <TableHead>Trailer Name</TableHead>
+          <TableHead>Load Name</TableHead>
           <TableHead>Customer Job No.</TableHead>
           <TableHead>Importer</TableHead>
           <TableHead>Exporter</TableHead>
@@ -225,9 +225,9 @@ export default function MonthlyReleasedReportPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Trailer ID</TableHead>
+                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Load ID</TableHead>
                     <TableHead className="whitespace-nowrap"><Hash className="inline-block mr-1 h-4 w-4 print:hidden"/>STS Job</TableHead>
-                    <TableHead className="whitespace-nowrap">Trailer Name</TableHead>
+                    <TableHead className="whitespace-nowrap">Load Name</TableHead>
                     <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Cust. Job No.</TableHead>
                     <TableHead className="whitespace-nowrap"><Users className="inline-block mr-1 h-4 w-4 print:hidden"/>Importer</TableHead>
                     <TableHead className="whitespace-nowrap"><Send className="inline-block mr-1 h-4 w-4 print:hidden"/>Exporter</TableHead>
@@ -240,8 +240,8 @@ export default function MonthlyReleasedReportPage() {
                   {reportData.map((item) => (
                     <TableRow key={item.shipmentId}>
                        <TableCell>
-                        <Link href={`/trailers/${item.trailerId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
-                          {item.trailerId}
+                        <Link href={`/loads/${item.loadId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
+                          {item.loadId}
                         </Link>
                       </TableCell>
                       <TableCell className="font-medium">
@@ -249,7 +249,7 @@ export default function MonthlyReleasedReportPage() {
                           {item.stsJob}
                         </Link>
                       </TableCell>
-                      <TableCell>{item.trailerName || 'N/A'}</TableCell>
+                      <TableCell>{item.loadName || 'N/A'}</TableCell>
                       <TableCell>{item.customerJobNumber || 'N/A'}</TableCell>
                       <TableCell>{item.importer}</TableCell>
                       <TableCell>{item.exporter}</TableCell>

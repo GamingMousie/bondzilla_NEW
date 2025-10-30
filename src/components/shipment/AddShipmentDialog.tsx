@@ -44,10 +44,10 @@ type ShipmentFormData = z.infer<typeof shipmentSchema>;
 interface AddShipmentDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  trailerId: string;
+  loadId: string;
 }
 
-export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddShipmentDialogProps) {
+export default function AddShipmentDialog({ isOpen, setIsOpen, loadId }: AddShipmentDialogProps) {
   const { addShipment } = useWarehouse();
   const { toast } = useToast();
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ShipmentFormData>({
@@ -72,7 +72,7 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
     const clearanceDocumentName = data.clearanceDocument && data.clearanceDocument.length > 0 ? data.clearanceDocument[0]?.name : undefined;
 
     addShipment({
-      trailerId,
+      loadId,
       stsJob: data.stsJob,
       customerJobNumber: data.customerJobNumber || undefined,
       quantity: data.quantity,
@@ -93,7 +93,7 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
     });
     toast({
       title: "Success!",
-      description: `Shipment with STS Job "${data.stsJob}" added to trailer ${trailerId}.`,
+      description: `Shipment with STS Job "${data.stsJob}" added to load ${loadId}.`,
     });
     reset();
     setIsOpen(false);
@@ -105,7 +105,7 @@ export default function AddShipmentDialog({ isOpen, setIsOpen, trailerId }: AddS
         <DialogHeader>
           <DialogTitle>Add New Shipment</DialogTitle>
           <DialogDescription>
-            Enter details for the new shipment to be added to trailer ID: {trailerId}.
+            Enter details for the new shipment to be added to load ID: {loadId}.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4 max-h-[70vh] overflow-y-auto pr-2">

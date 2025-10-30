@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Shipment, Trailer } from '@/types';
+import type { Shipment, Load } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,8 +15,8 @@ import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 
 interface BondCheckReportItem {
-  trailerId: string;
-  trailerName?: string;
+  loadId: string;
+  loadName?: string;
   company?: string;
   arrivalDate?: string;
   stsJob: number;
@@ -26,7 +26,7 @@ interface BondCheckReportItem {
 }
 
 export default function ReportsPage() {
-  const { shipments, getTrailerById, trailers } = useWarehouse();
+  const { shipments, getLoadById, loads } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [companyFilter, setCompanyFilter] = useState<string>('all');
@@ -56,14 +56,14 @@ export default function ReportsPage() {
     let userShipments = shipments;
     // Customer roles should only see data related to their company
     if (user?.companyFilter) {
-        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
-        userShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+        const companyLoadIds = new Set(loads.filter(t => t.company === user.companyFilter).map(t => t.id));
+        userShipments = shipments.filter(s => companyLoadIds.has(s.loadId));
     }
 
     return userShipments
       .filter(shipment => !shipment.releasedAt)
       .map(shipment => {
-        const trailer = getTrailerById(shipment.trailerId);
+        const load = getLoadById(shipment.loadId);
         const locations = shipment.locations || [{ name: 'Pending Assignment' }];
         const isPendingAssignment = locations.length === 1 && locations[0].name === 'Pending Assignment';
 
@@ -75,10 +75,10 @@ export default function ReportsPage() {
         }
 
         return {
-          trailerId: shipment.trailerId,
-          trailerName: trailer?.name,
-          company: trailer?.company,
-          arrivalDate: trailer?.arrivalDate,
+          loadId: shipment.loadId,
+          loadName: load?.name,
+          company: load?.company,
+          arrivalDate: load?.arrivalDate,
           stsJob: shipment.stsJob,
           shipmentId: shipment.id,
           customerJobNumber: shipment.customerJobNumber,
@@ -86,7 +86,7 @@ export default function ReportsPage() {
         };
       })
       .sort((a, b) => {
-        // Primary sort by company, then trailerId, then stsJob
+        // Primary sort by company, then loadId, then stsJob
         if (a.company && b.company) {
           if (a.company.toLowerCase() < b.company.toLowerCase()) return -1;
           if (a.company.toLowerCase() > b.company.toLowerCase()) return 1;
@@ -96,13 +96,13 @@ export default function ReportsPage() {
           return 1; // b has company, a doesn't
         }
 
-        if (a.trailerId < b.trailerId) return -1;
-        if (a.trailerId > b.trailerId) return 1;
+        if (a.loadId < b.loadId) return -1;
+        if (a.loadId > b.loadId) return 1;
         if (a.stsJob < b.stsJob) return -1;
         if (a.stsJob > b.stsJob) return 1;
         return 0;
       });
-  }, [shipments, getTrailerById, isClient, user, trailers]);
+  }, [shipments, getLoadById, isClient, user, loads]);
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
@@ -136,9 +136,9 @@ export default function ReportsPage() {
       <TableHeader>
         <TableRow>
           <TableHead>Company</TableHead>
-          <TableHead>Trailer ID</TableHead>
+          <TableHead>Load ID</TableHead>
           <TableHead>STS Job</TableHead>
-          <TableHead>Trailer Name</TableHead>
+          <TableHead>Load Name</TableHead>
           <TableHead>Customer Job No.</TableHead>
           <TableHead>
             <div className="flex items-center">
@@ -237,10 +237,10 @@ export default function ReportsPage() {
             <CardHeader>
               <CardTitle className="flex items-center text-xl text-primary">
                 <BarChart3 className="mr-2 h-6 w-6" />
-                Monthly Trailer Arrivals by Company
+                Monthly Load Arrivals by Company
               </CardTitle>
               <CardDescription>
-                Summary of trailer arrivals per company for the current month.
+                Summary of load arrivals per company for the current month.
               </CardDescription>
             </CardHeader>
             <CardFooter>
@@ -334,9 +334,9 @@ export default function ReportsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Company</TableHead>
-                    <TableHead className="whitespace-nowrap">Trailer ID</TableHead>
+                    <TableHead className="whitespace-nowrap">Load ID</TableHead>
                     <TableHead className="whitespace-nowrap"><Hash className="inline-block mr-1 h-4 w-4 print:hidden"/>STS Job</TableHead>
-                    <TableHead className="whitespace-nowrap">Trailer Name</TableHead>
+                    <TableHead className="whitespace-nowrap">Load Name</TableHead>
                     <TableHead className="whitespace-nowrap">Customer Job No.</TableHead>
                     <TableHead className="whitespace-nowrap">
                       <div className="flex items-center">
@@ -353,12 +353,12 @@ export default function ReportsPage() {
                     <TableRow key={item.shipmentId}>
                       <TableCell>{item.company || 'N/A'}</TableCell>
                       <TableCell className="font-medium">
-                        <Link href={`/trailers/${item.trailerId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
-                          {item.trailerId}
+                        <Link href={`/loads/${item.loadId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
+                          {item.loadId}
                         </Link>
                       </TableCell>
                       <TableCell>{item.stsJob}</TableCell>
-                      <TableCell>{item.trailerName || 'N/A'}</TableCell>
+                      <TableCell>{item.loadName || 'N/A'}</TableCell>
                       <TableCell>{item.customerJobNumber || 'N/A'}</TableCell>
                       <TableCell>{formatDateSafe(item.arrivalDate)}</TableCell>
                       <TableCell>{item.locationsDisplay}</TableCell>

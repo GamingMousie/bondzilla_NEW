@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Shipment, Trailer } from '@/types'; 
+import type { Shipment, Load } from '@/types'; 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,9 +27,9 @@ interface OverdueReleasedReportItem {
   shipmentId: string;
   stsJob: number;
   customerJobNumber?: string;
-  trailerId: string;
-  trailerName?: string;
-  trailerCompany?: string;
+  loadId: string;
+  loadName?: string;
+  loadCompany?: string;
   storageExpiryDate: string; 
   storageExpiryDateFormatted: string;
   releasedAt: string; 
@@ -38,7 +38,7 @@ interface OverdueReleasedReportItem {
 }
 
 export default function MonthlyOverdueReleasedReportPage() {
-  const { shipments, getTrailerById, trailers: allTrailers } = useWarehouse();
+  const { shipments, getLoadById, loads: allLoads } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date());
@@ -71,13 +71,13 @@ export default function MonthlyOverdueReleasedReportPage() {
         return [user.companyFilter];
     }
     const companies = new Set<string>();
-    allTrailers.forEach(trailer => {
-      if (trailer.company) {
-        companies.add(trailer.company);
+    allLoads.forEach(load => {
+      if (load.company) {
+        companies.add(load.company);
       }
     });
     return Array.from(companies).sort();
-  }, [allTrailers, isClient, user]);
+  }, [allLoads, isClient, user]);
 
   const reportData = useMemo((): OverdueReleasedReportItem[] => {
     if (!isClient) return [];
@@ -95,18 +95,18 @@ export default function MonthlyOverdueReleasedReportPage() {
         }
       })
       .map(shipment => {
-        const trailer = getTrailerById(shipment.trailerId);
-        if (!trailer || !trailer.storageExpiryDate || !shipment.releasedAt) {
+        const load = getLoadById(shipment.loadId);
+        if (!load || !load.storageExpiryDate || !shipment.releasedAt) {
           return null; 
         }
         
-        if (companyFilterToUse !== 'all' && trailer.company?.toLowerCase() !== companyFilterToUse) {
+        if (companyFilterToUse !== 'all' && load.company?.toLowerCase() !== companyFilterToUse) {
           return null;
         }
 
         try {
           const releasedDate = parseISO(shipment.releasedAt);
-          const expiryDate = parseISO(trailer.storageExpiryDate);
+          const expiryDate = parseISO(load.storageExpiryDate);
 
           if (releasedDate > expiryDate) {
             const daysOverdue = differenceInDays(releasedDate, expiryDate);
@@ -114,11 +114,11 @@ export default function MonthlyOverdueReleasedReportPage() {
               shipmentId: shipment.id,
               stsJob: shipment.stsJob,
               customerJobNumber: shipment.customerJobNumber,
-              trailerId: shipment.trailerId,
-              trailerName: trailer.name,
-              trailerCompany: trailer.company,
-              storageExpiryDate: trailer.storageExpiryDate,
-              storageExpiryDateFormatted: formatDateSafe(trailer.storageExpiryDate),
+              loadId: shipment.loadId,
+              loadName: load.name,
+              loadCompany: load.company,
+              storageExpiryDate: load.storageExpiryDate,
+              storageExpiryDateFormatted: formatDateSafe(load.storageExpiryDate),
               releasedAt: shipment.releasedAt,
               releasedAtFormatted: formatDateSafe(shipment.releasedAt, 'PPpp'),
               daysOverdue,
@@ -132,7 +132,7 @@ export default function MonthlyOverdueReleasedReportPage() {
       })
       .filter((item): item is OverdueReleasedReportItem => item !== null) 
       .sort((a, b) => b.daysOverdue - a.daysOverdue); 
-  }, [shipments, getTrailerById, isClient, currentMonthStart, currentMonthEnd, companyFilter, user]);
+  }, [shipments, getLoadById, isClient, currentMonthStart, currentMonthEnd, companyFilter, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -156,7 +156,7 @@ export default function MonthlyOverdueReleasedReportPage() {
 
   const pageTitle = 'Monthly Overdue Released Shipments';
   const cardTitleText = `Overdue Shipments Released in ${displayedMonthFormatted}`;
-  const cardDescriptionText = `Shipments released in ${displayedMonthFormatted} after their trailer's storage expiry date. ${companyFilter !== 'all' ? `Filtered by company: ${selectedCompanyName}.` : ''}`;
+  const cardDescriptionText = `Shipments released in ${displayedMonthFormatted} after their load's storage expiry date. ${companyFilter !== 'all' ? `Filtered by company: ${selectedCompanyName}.` : ''}`;
   const printTitleText = 'Monthly Overdue Released Shipments Report';
   const printPeriodText = `For month: ${displayedMonthFormatted}`;
 
@@ -165,9 +165,9 @@ export default function MonthlyOverdueReleasedReportPage() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Trailer ID</TableHead>
+          <TableHead>Load ID</TableHead>
           <TableHead>STS Job</TableHead>
-          <TableHead>Trailer Name</TableHead>
+          <TableHead>Load Name</TableHead>
           <TableHead>Company</TableHead>
           <TableHead>Free Storage Expiry</TableHead>
           <TableHead>Released At</TableHead>
@@ -265,10 +265,10 @@ export default function MonthlyOverdueReleasedReportPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Trailer ID</TableHead>
+                    <TableHead className="whitespace-nowrap"><Truck className="inline-block mr-1 h-4 w-4 print:hidden"/>Load ID</TableHead>
                     <TableHead className="whitespace-nowrap"><Hash className="inline-block mr-1 h-4 w-4 print:hidden"/>STS Job</TableHead>
-                    <TableHead className="whitespace-nowrap">Trailer Name</TableHead>
-                    <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Trailer Company</TableHead>
+                    <TableHead className="whitespace-nowrap">Load Name</TableHead>
+                    <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Load Company</TableHead>
                     <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Cust. Job No.</TableHead>
                     <TableHead className="whitespace-nowrap"><CalendarDays className="inline-block mr-1 h-4 w-4 print:hidden"/>Free Storage Expiry</TableHead>
                     <TableHead className="whitespace-nowrap"><CalendarDays className="inline-block mr-1 h-4 w-4 print:hidden"/>Released At</TableHead>
@@ -279,8 +279,8 @@ export default function MonthlyOverdueReleasedReportPage() {
                   {reportData.map((item) => (
                     <TableRow key={item.shipmentId}>
                        <TableCell>
-                        <Link href={`/trailers/${item.trailerId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
-                          {item.trailerId}
+                        <Link href={`/loads/${item.loadId}`} className="text-primary hover:underline print:text-foreground print:no-underline">
+                          {item.loadId}
                         </Link>
                       </TableCell>
                       <TableCell className="font-medium">
@@ -288,8 +288,8 @@ export default function MonthlyOverdueReleasedReportPage() {
                           {item.stsJob}
                         </Link>
                       </TableCell>
-                      <TableCell>{item.trailerName || 'N/A'}</TableCell>
-                      <TableCell>{item.trailerCompany || 'N/A'}</TableCell>
+                      <TableCell>{item.loadName || 'N/A'}</TableCell>
+                      <TableCell>{item.loadCompany || 'N/A'}</TableCell>
                       <TableCell>{item.customerJobNumber || 'N/A'}</TableCell>
                       <TableCell className="text-destructive font-medium">{item.storageExpiryDateFormatted}</TableCell>
                       <TableCell>{item.releasedAtFormatted}</TableCell>

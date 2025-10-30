@@ -164,7 +164,7 @@ export default function AllShipmentsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Loads</SelectItem>
-              {isClient && availableLoadsForFilter.map(load => (
+              {isClient && (availableLoadsForFilter || []).map(load => (
                 <SelectItem key={load.id} value={load.id}>
                   {load.name} ({load.id})
                 </SelectItem>

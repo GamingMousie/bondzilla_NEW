@@ -27,7 +27,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 
 export default function StockCheckQuizPage() {
-  const { shipments, getTrailerById, addQuizReport } = useWarehouse();
+  const { shipments, getLoadById, addQuizReport } = useWarehouse();
   const { toast } = useToast();
   const [isClient, setIsClient] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,7 +57,7 @@ export default function StockCheckQuizPage() {
       shipments
         .filter(shipment => !shipment.releasedAt)
         .forEach(shipment => {
-          const trailer = getTrailerById(shipment.trailerId);
+          const load = getLoadById(shipment.loadId);
           const shipmentLocations = shipment.locations && shipment.locations.length > 0
             ? shipment.locations
             : []; // If no locations, it's effectively pending, treat as empty for quiz item generation
@@ -68,9 +68,9 @@ export default function StockCheckQuizPage() {
                 id: `${shipment.id}-${loc.name}-${index}`, 
                 shipmentId: shipment.id,
                 stsJob: shipment.stsJob,
-                trailerId: shipment.trailerId,
-                trailerCompany: trailer?.company,
-                trailerArrivalDateFormatted: formatDateSafe(trailer?.arrivalDate),
+                loadId: shipment.loadId,
+                loadCompany: load?.company,
+                loadArrivalDateFormatted: formatDateSafe(load?.arrivalDate),
                 shipmentQuantity: shipment.quantity,
                 locationName: loc.name,
                 locationPallets: loc.pallets,
@@ -83,18 +83,18 @@ export default function StockCheckQuizPage() {
         // "Pending Assignment" items are already filtered out, so no need for specific sorting for them.
         if (a.locationName.toLowerCase() < b.locationName.toLowerCase()) return -1;
         if (a.locationName.toLowerCase() > b.locationName.toLowerCase()) return 1;
-        const dateAVal = a.trailerArrivalDateFormatted;
-        const dateBVal = b.trailerArrivalDateFormatted;
+        const dateAVal = a.loadArrivalDateFormatted;
+        const dateBVal = b.loadArrivalDateFormatted;
         const dateA = dateAVal !== 'N/A' && dateAVal !== 'Invalid Date' ? parseISO(formatDateSafe(dateAVal, 'yyyy-MM-dd')).getTime() : 0;
         const dateB = dateBVal !== 'N/A' && dateBVal !== 'Invalid Date' ? parseISO(formatDateSafe(dateBVal, 'yyyy-MM-dd')).getTime() : 0;
         if (dateB !== dateA) return dateB - dateA; // Sort by date descending (newest first)
-        if (a.trailerId.toLowerCase() < b.trailerId.toLowerCase()) return -1;
-        if (a.trailerId.toLowerCase() > b.trailerId.toLowerCase()) return 1;
+        if (a.loadId.toLowerCase() < b.loadId.toLowerCase()) return -1;
+        if (a.loadId.toLowerCase() > b.loadId.toLowerCase()) return 1;
         return a.stsJob - b.stsJob;
       });
       setSessionQuizItems(sortedInitialItems);
     }
-  }, [isClient, shipments, getTrailerById]);
+  }, [isClient, shipments, getLoadById]);
 
 
   const currentItem = sessionQuizItems[currentIndex];
@@ -135,7 +135,7 @@ export default function StockCheckQuizPage() {
         shipments
             .filter(shipment => !shipment.releasedAt)
             .forEach(shipment => {
-            const trailer = getTrailerById(shipment.trailerId);
+            const load = getLoadById(shipment.loadId);
             const shipmentLocations = shipment.locations && shipment.locations.length > 0
                 ? shipment.locations
                 : [];
@@ -146,9 +146,9 @@ export default function StockCheckQuizPage() {
                     id: `${shipment.id}-${loc.name}-${index}`,
                     shipmentId: shipment.id,
                     stsJob: shipment.stsJob,
-                    trailerId: shipment.trailerId,
-                    trailerCompany: trailer?.company,
-                    trailerArrivalDateFormatted: formatDateSafe(trailer?.arrivalDate),
+                    loadId: shipment.loadId,
+                    loadCompany: load?.company,
+                    loadArrivalDateFormatted: formatDateSafe(load?.arrivalDate),
                     shipmentQuantity: shipment.quantity,
                     locationName: loc.name,
                     locationPallets: loc.pallets,
@@ -159,13 +159,13 @@ export default function StockCheckQuizPage() {
         const sortedInitialItems = initialItems.sort((a, b) => {
             if (a.locationName.toLowerCase() < b.locationName.toLowerCase()) return -1;
             if (a.locationName.toLowerCase() > b.locationName.toLowerCase()) return 1;
-            const dateAVal = a.trailerArrivalDateFormatted;
-            const dateBVal = b.trailerArrivalDateFormatted;
+            const dateAVal = a.loadArrivalDateFormatted;
+            const dateBVal = b.loadArrivalDateFormatted;
             const dateA = dateAVal !== 'N/A' && dateAVal !== 'Invalid Date' ? parseISO(formatDateSafe(dateAVal, 'yyyy-MM-dd')).getTime() : 0;
             const dateB = dateBVal !== 'N/A' && dateBVal !== 'Invalid Date' ? parseISO(formatDateSafe(dateBVal, 'yyyy-MM-dd')).getTime() : 0;
             if (dateB !== dateA) return dateB - dateA; // Sort by date descending (newest first)
-            if (a.trailerId.toLowerCase() < b.trailerId.toLowerCase()) return -1;
-            if (a.trailerId.toLowerCase() > b.trailerId.toLowerCase()) return 1;
+            if (a.loadId.toLowerCase() < b.loadId.toLowerCase()) return -1;
+            if (a.loadId.toLowerCase() > b.loadId.toLowerCase()) return 1;
             return a.stsJob - b.stsJob;
         });
         setSessionQuizItems(sortedInitialItems);
@@ -278,19 +278,19 @@ export default function StockCheckQuizPage() {
             <div className="flex items-center text-xl font-semibold">
               <Truck className="mr-2 h-6 w-6 text-muted-foreground" />
               <strong className="mr-2">Identifier:</strong>
-              <span>Trailer <Link href={`/trailers/${currentItem.trailerId}`} className="text-primary hover:underline">{currentItem.trailerId}</Link> / Job <Link href={`/shipments/${currentItem.shipmentId}`} className="text-primary hover:underline">{currentItem.stsJob}</Link></span>
+              <span>Load <Link href={`/loads/${currentItem.loadId}`} className="text-primary hover:underline">{currentItem.loadId}</Link> / Job <Link href={`/shipments/${currentItem.shipmentId}`} className="text-primary hover:underline">{currentItem.stsJob}</Link></span>
             </div>
-             {currentItem.trailerCompany && (
+             {currentItem.loadCompany && (
               <div className="flex items-center">
                 <Briefcase className="mr-2 h-5 w-5 text-muted-foreground" />
                 <strong className="mr-2">Company:</strong>
-                <span>{currentItem.trailerCompany}</span>
+                <span>{currentItem.loadCompany}</span>
               </div>
             )}
             <div className="flex items-center">
               <CalendarDays className="mr-2 h-5 w-5 text-muted-foreground" />
-              <strong className="mr-2">Trailer Arrival:</strong>
-              <span>{currentItem.trailerArrivalDateFormatted}</span>
+              <strong className="mr-2">Load Arrival:</strong>
+              <span>{currentItem.loadArrivalDateFormatted}</span>
             </div>
             <div className="flex items-center">
               <BoxIcon className="mr-2 h-5 w-5 text-muted-foreground" />
@@ -380,4 +380,3 @@ export default function StockCheckQuizPage() {
     </div>
   );
 }
-

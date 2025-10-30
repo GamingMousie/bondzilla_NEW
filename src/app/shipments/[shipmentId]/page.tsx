@@ -21,7 +21,7 @@ export default function SingleShipmentPage() {
   const params = useParams();
   const shipmentId = params.shipmentId as string;
 
-  const { getShipmentById, getTrailerById, markShipmentAsPrinted, updateShipment } = useWarehouse();
+  const { getShipmentById, getLoadById, markShipmentAsPrinted, updateShipment } = useWarehouse();
 
   const [shipment, setShipment] = useState<Shipment | null | undefined>(undefined);
   const [isClient, setIsClient] = useState(false);
@@ -52,7 +52,7 @@ export default function SingleShipmentPage() {
   }, [isClient, shipmentId, getShipmentById, shipment?.releasedAt, shipment?.stsJob, shipment?.mrn, shipment?.clearanceDate, shipment?.comments, shipment?.onHold]);
 
 
-  const trailer = shipment?.trailerId ? getTrailerById(shipment.trailerId) : null;
+  const load = shipment?.loadId ? getLoadById(shipment.loadId) : null;
 
   const canPrint = shipment?.cleared && shipment?.released && !shipment?.onHold;
 
@@ -136,8 +136,8 @@ export default function SingleShipmentPage() {
     if (missingParts.length === 0) return; // Should not happen if button is visible
 
     const missingSubjectPart = missingParts.join(" & ");
-    const subject = `Missing ${missingSubjectPart} for Trailer ${shipment.trailerId} / Job ${shipment.stsJob}`;
-    const body = `Good Morning,\n\nWe have a driver waiting to collect "${shipment.trailerId} / Job ${shipment.stsJob}" but we are missing files for above shipment.\n\nCan you be able to update us ASAP please?`;
+    const subject = `Missing ${missingSubjectPart} for Load ${shipment.loadId} / Job ${shipment.stsJob}`;
+    const body = `Good Morning,\n\nWe have a driver waiting to collect "${shipment.loadId} / Job ${shipment.stsJob}" but we are missing files for above shipment.\n\nCan you be able to update us ASAP please?`;
     const mailtoLink = `mailto:klaudia@mail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoLink;
   };
@@ -237,11 +237,11 @@ export default function SingleShipmentPage() {
                 {shipment.customerJobNumber && ` | Cust. Job: ${shipment.customerJobNumber}`}
               </CardDescription>
             </div>
-             {trailer && (
-              <Link href={`/trailers/${trailer.id}`} className="no-print-in-area">
+             {load && (
+              <Link href={`/loads/${load.id}`} className="no-print-in-area">
                 <Badge variant="secondary" className="whitespace-nowrap hover:bg-primary/10">
                   <Truck className="mr-1.5 h-4 w-4"/>
-                  Trailer: {trailer.id}
+                  Load: {load.id}
                 </Badge>
               </Link>
             )}
@@ -249,12 +249,12 @@ export default function SingleShipmentPage() {
         </CardHeader>
         <CardContent className="pt-6 grid grid-cols-1 print:grid-cols-2 md:grid-cols-2 print:gap-x-4 print:gap-y-3 gap-x-8 gap-y-6 text-sm card-content-print">
 
-          {trailer && (
+          {load && (
             <div className="space-y-1">
-              <h3 className="font-semibold text-muted-foreground flex items-center"><Truck className="mr-2 h-4 w-4" />Associated Trailer ID</h3>
+              <h3 className="font-semibold text-muted-foreground flex items-center"><Truck className="mr-2 h-4 w-4" />Associated Load ID</h3>
               <p className="text-2xl font-bold text-foreground">
-                <Link href={`/trailers/${trailer.id}`} className="hover:underline print:text-foreground print:no-underline">
-                  {trailer.id}
+                <Link href={`/loads/${load.id}`} className="hover:underline print:text-foreground print:no-underline">
+                  {load.id}
                 </Link>
               </p>
             </div>
@@ -409,9 +409,9 @@ export default function SingleShipmentPage() {
             </div>
           </div>
         </CardContent>
-        {trailer && trailer.arrivalDate && (
+        {load && load.arrivalDate && (
           <CardFooter className="border-t pt-4 text-xs text-muted-foreground no-print">
-              <p>Associated with Trailer <Link href={`/trailers/${trailer.id}`} className="text-primary hover:underline font-semibold print:text-foreground print:no-underline">{trailer.id}</Link>, arrived on {formatDate(trailer.arrivalDate, 'PP')}.</p>
+              <p>Associated with Load <Link href={`/loads/${load.id}`} className="text-primary hover:underline font-semibold print:text-foreground print:no-underline">{load.id}</Link>, arrived on {formatDate(load.arrivalDate, 'PP')}.</p>
           </CardFooter>
         )}
 

@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Trailer } from '@/types';
+import type { Load } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,9 +27,9 @@ import {
 } from 'date-fns';
 import type { ChartConfig } from '@/components/ui/chart';
 
-interface CompanyTrailerCount {
+interface CompanyLoadCount {
   companyName: string;
-  trailerCount: number;
+  loadCount: number;
 }
 
 // Function to generate distinct colors for the chart
@@ -44,8 +44,8 @@ const generateChartColors = (numColors: number): string[] => {
 };
 
 
-export default function MonthlyCompanyTrailersReportPage() {
-  const { trailers } = useWarehouse();
+export default function MonthlyCompanyLoadsReportPage() {
+  const { loads } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date()); // Date to determine the month to display
@@ -59,34 +59,34 @@ export default function MonthlyCompanyTrailersReportPage() {
   const currentMonthStart = useMemo(() => startOfMonth(displayDate), [displayDate]);
   const currentMonthEnd = useMemo(() => endOfMonth(displayDate), [displayDate]);
 
-  const reportData = useMemo((): CompanyTrailerCount[] => {
+  const reportData = useMemo((): CompanyLoadCount[] => {
     if (!isClient) return [];
 
     const companyCounts: { [companyName: string]: number } = {};
 
-    let filteredTrailers = trailers;
+    let filteredLoads = loads;
     if (user?.companyFilter) {
-        filteredTrailers = trailers.filter(t => t.company === user.companyFilter);
+        filteredLoads = loads.filter(t => t.company === user.companyFilter);
     }
 
-    filteredTrailers.forEach(trailer => {
-      if (trailer.arrivalDate) {
+    filteredLoads.forEach(load => {
+      if (load.arrivalDate) {
         try {
-          const arrival = parseISO(trailer.arrivalDate);
+          const arrival = parseISO(load.arrivalDate);
           if (isWithinInterval(arrival, { start: currentMonthStart, end: currentMonthEnd })) {
-            const companyName = trailer.company || 'Unknown Company';
+            const companyName = load.company || 'Unknown Company';
             companyCounts[companyName] = (companyCounts[companyName] || 0) + 1;
           }
         } catch (error) {
-          console.error("Error processing trailer for company report:", trailer.id, error);
+          console.error("Error processing load for company report:", load.id, error);
         }
       }
     });
 
     return Object.entries(companyCounts)
-      .map(([companyName, trailerCount]) => ({ companyName, trailerCount }))
-      .sort((a, b) => b.trailerCount - a.trailerCount); // Sort by most trailers first
-  }, [trailers, isClient, currentMonthStart, currentMonthEnd, user]);
+      .map(([companyName, loadCount]) => ({ companyName, loadCount }))
+      .sort((a, b) => b.loadCount - a.loadCount); // Sort by most loads first
+  }, [loads, isClient, currentMonthStart, currentMonthEnd, user]);
   
   const chartColors = useMemo(() => generateChartColors(reportData.length), [reportData.length]);
 
@@ -120,10 +120,10 @@ export default function MonthlyCompanyTrailersReportPage() {
 
   const displayedMonthFormatted = format(displayDate, 'MMMM yyyy');
 
-  const pageTitle = `Monthly Trailer Arrivals by Company`;
-  const cardTitleText = `Trailer Arrivals per Company - ${displayedMonthFormatted}`;
-  const cardDescriptionText = `Summary of trailers that arrived in ${displayedMonthFormatted}, grouped by company.`;
-  const printTitleText = 'Monthly Trailer Arrivals by Company Report';
+  const pageTitle = `Monthly Load Arrivals by Company`;
+  const cardTitleText = `Load Arrivals per Company - ${displayedMonthFormatted}`;
+  const cardDescriptionText = `Summary of loads that arrived in ${displayedMonthFormatted}, grouped by company.`;
+  const printTitleText = 'Monthly Load Arrivals by Company Report';
   const printPeriodText = `For month: ${displayedMonthFormatted}`;
 
   const ReportSkeleton = () => (
@@ -133,7 +133,7 @@ export default function MonthlyCompanyTrailersReportPage() {
         <TableHeader>
           <TableRow>
             <TableHead>Company Name</TableHead>
-            <TableHead className="text-right">Trailers Arrived</TableHead>
+            <TableHead className="text-right">Loads Arrived</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -194,7 +194,7 @@ export default function MonthlyCompanyTrailersReportPage() {
             <div className="min-h-[200px] flex flex-col items-center justify-center text-center border-2 border-dashed border-border rounded-md p-8">
               <CalendarCheck className="h-16 w-16 text-muted-foreground mb-4" />
               <p className="text-xl text-muted-foreground">
-                No trailer arrivals recorded for any company in {displayedMonthFormatted}.
+                No load arrivals recorded for any company in {displayedMonthFormatted}.
               </p>
             </div>
           ) : (
@@ -218,7 +218,7 @@ export default function MonthlyCompanyTrailersReportPage() {
                         cursor={{ fill: 'hsl(var(--muted))', fillOpacity: 0.5 }}
                         content={<ChartTooltipContent />}
                       />
-                      <Bar dataKey="trailerCount" radius={[4, 4, 0, 0]}>
+                      <Bar dataKey="loadCount" radius={[4, 4, 0, 0]}>
                         {reportData.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
                         ))}
@@ -234,14 +234,14 @@ export default function MonthlyCompanyTrailersReportPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="whitespace-nowrap"><Briefcase className="inline-block mr-1 h-4 w-4 print:hidden"/>Company Name</TableHead>
-                      <TableHead className="text-right whitespace-nowrap"><BarChart3 className="inline-block mr-1 h-4 w-4 print:hidden"/>Trailers Arrived</TableHead>
+                      <TableHead className="text-right whitespace-nowrap"><BarChart3 className="inline-block mr-1 h-4 w-4 print:hidden"/>Loads Arrived</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {reportData.map((item) => (
                       <TableRow key={item.companyName}>
                         <TableCell className="font-medium">{item.companyName}</TableCell>
-                        <TableCell className="text-right font-semibold text-primary">{item.trailerCount}</TableCell>
+                        <TableCell className="text-right font-semibold text-primary">{item.loadCount}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -253,7 +253,7 @@ export default function MonthlyCompanyTrailersReportPage() {
         {isClient && reportData.length > 0 && (
           <CardFooter className="text-sm text-muted-foreground border-t pt-4 no-print">
             <Info className="h-4 w-4 mr-2 text-primary" />
-            Displaying trailer arrival counts for {reportData.length} companies in {displayedMonthFormatted}.
+            Displaying load arrival counts for {reportData.length} companies in {displayedMonthFormatted}.
           </CardFooter>
         )}
       </Card>
