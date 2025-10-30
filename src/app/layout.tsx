@@ -15,7 +15,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 
 export const metadata: Metadata = {
   title: 'Bondzilla - Warehouse Management',
-  description: 'Efficiently manage trailers, shipments, and locations.',
+  description: 'Efficiently manage loads, shipments, and locations.',
 };
 
 export default function RootLayout({

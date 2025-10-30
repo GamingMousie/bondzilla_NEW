@@ -17,7 +17,7 @@ const Header = () => {
   }
 
   const navLinks = [
-    { href: '/', label: 'Trailers', icon: Truck, permissionKey: '/' },
+    { href: '/', label: 'Loads', icon: Truck, permissionKey: '/' },
     { href: '/shipments', label: 'All Shipments', icon: Package, permissionKey: '/shipments' },
     { href: '/calendar', label: 'Calendar', icon: CalendarDays, permissionKey: '/calendar' },
     { href: '/reports', label: 'Reports', icon: LineChart, permissionKey: '/reports' },

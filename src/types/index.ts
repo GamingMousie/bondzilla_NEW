@@ -1,20 +1,20 @@
 
-export type TrailerStatus = 'Scheduled' | 'Arrived' | 'Loading' | 'Offloading' | 'Devanned';
+export type LoadStatus = 'Scheduled' | 'Arrived' | 'Loading' | 'Offloading' | 'Devanned';
 
 export interface LocationInfo {
   name: string;
   pallets?: number;
 }
 
-export interface Trailer {
+export interface Load {
   id: string; // User-defined unique ID
   name: string; // Optional descriptive name
-  status: TrailerStatus;
-  company?: string; // Optional: Company associated with the trailer
+  status: LoadStatus;
+  company?: string; // Optional: Company associated with the load
   sprattJobNumber?: string; // Optional: Spratt's internal job number
   arrivalDate?: string; // Optional: Date of arrival, ISO string format
   storageExpiryDate?: string; // Optional: Date when storage expires, ISO string format
-  weight?: number; // Optional: Weight of the trailer in kg
+  weight?: number; // Optional: Weight of the load in kg
   customField1?: string; // Represents T1.1
   customField2?: string; // Represents T1.2
   outturnReportDocumentName?: string | null;
@@ -25,7 +25,7 @@ export interface Trailer {
 
 export interface Shipment {
   id: string; // Auto-generated unique ID
-  trailerId: string;
+  loadId: string;
   stsJob: number; // STS job number
   customerJobNumber?: string; // Optional: Customer's job number
   quantity: number;
@@ -90,12 +90,12 @@ export interface ShipmentUpdateData {
   comments?: string;
 }
 
-// Specifically for updating an existing trailer via context
-export interface TrailerUpdateData {
+// Specifically for updating an existing load via context
+export interface LoadUpdateData {
   name?: string;
   company?: string;
   sprattJobNumber?: string;
-  status?: TrailerStatus;
+  status?: LoadStatus;
   arrivalDate?: string | null;
   storageExpiryDate?: string | null;
   weight?: number;
@@ -107,13 +107,13 @@ export interface TrailerUpdateData {
   acpDocumentName?: string | null; // Allow setting to null to clear
 }
 
-// For AddTrailerDialog form
-export interface TrailerFormData {
+// For AddLoadDialog form
+export interface LoadFormData {
   id: string;
   name: string;
   company?: string;
   sprattJobNumber?: string;
-  status: TrailerStatus;
+  status: LoadStatus;
   arrivalDate?: Date | null;
   storageExpiryDate?: Date | null;
   weight?: number | null;
@@ -127,9 +127,9 @@ export interface QuizItem {
   id: string; // Combination of shipmentId and locationName for uniqueness
   shipmentId: string;
   stsJob: number;
-  trailerId: string;
-  trailerCompany?: string;
-  trailerArrivalDateFormatted: string;
+  loadId: string;
+  loadCompany?: string;
+  loadArrivalDateFormatted: string;
   shipmentQuantity: number;
   locationName: string;
   locationPallets?: number;

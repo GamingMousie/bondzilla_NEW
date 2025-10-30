@@ -1,414 +1,225 @@
+'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import type { Trailer, TrailerStatus } from '@/types';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Truck, Package, Edit, Trash2, MoreVertical, ChevronRight, Briefcase, CalendarDays, Boxes, Weight, Tag, Hash } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useAuth } from '@/contexts/AuthContext';
+import LoadCard from '@/components/load/LoadCard';
+import AddLoadDialog from '@/components/load/AddLoadDialog';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, ListFilter, LayoutGrid, Search, Briefcase } from 'lucide-react'; // Added Briefcase
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import EditTrailerDialog from './EditTrailerDialog';
-import ConfirmationDialog from '@/components/shared/ConfirmationDialog';
-import { format, parseISO } from 'date-fns';
+import type { LoadStatus } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
-
-interface TrailerCardProps {
-  trailer: Trailer;
-  viewMode: 'grid' | 'list';
-  onDelete: () => void;
-  onStatusChange: (newStatus: TrailerStatus) => void;
-}
-
-const statusColors: Record<TrailerStatus, string> = {
-  Scheduled: 'bg-orange-500',
-  Arrived: 'bg-blue-500',
-  Loading: 'bg-green-500',
-  Offloading: 'bg-purple-500',
-  Devanned: 'bg-gray-500',
-};
-const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
-
-
-export default function TrailerCard({ trailer, viewMode, onDelete, onStatusChange }: TrailerCardProps) {
-  const { getShipmentsByTrailerId } = useWarehouse();
-  const [isMounted, setIsMounted] = useState(false);
-
-  const [shipmentCount, setShipmentCount] = useState<number>(0);
-  const [totalPieces, setTotalPieces] = useState<number>(0);
-
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+export default function HomePage() {
+  const { loads, deleteLoad, updateLoadStatus } = useWarehouse();
+  const { user } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<LoadStatus | 'all'>('all');
+  const [companyFilter, setCompanyFilter] = useState<string>('all'); // New state for company filter
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   useEffect(() => {
-    setIsMounted(true);
-    const currentShipments = getShipmentsByTrailerId(trailer.id);
-    setShipmentCount(currentShipments.length);
-    setTotalPieces(currentShipments.reduce((acc, s) => acc + s.quantity, 0));
-  }, [trailer.id, getShipmentsByTrailerId, trailer]); // Added trailer to dependency array for potential updates
-
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return 'N/A';
-    try {
-      return format(parseISO(dateString), 'MMM d, yyyy');
-    } catch (error) {
-      console.error("Error formatting date:", dateString, error);
-      return "Invalid Date";
+    setIsClient(true);
+    // If user is a customer, force filter by their company
+    if (user?.companyFilter) {
+      setCompanyFilter(user.companyFilter.toLowerCase());
     }
-  };
+  }, [user]);
 
-  const DateDisplay = ({ label, dateString, icon: Icon }: { label: string, dateString?: string, icon: React.ElementType }) => {
-    return (
-      <div className="flex items-center text-xs text-muted-foreground mt-1">
-        <Icon className="mr-1.5 h-3.5 w-3.5" />
-        <span>{label}: {formatDate(dateString)}</span>
-      </div>
-    );
-  }
+  const uniqueCompanies = useMemo(() => {
+    if (!isClient) return [];
+    let relevantLoads = loads;
+    // If the user has a company filter, only show that company in the dropdown.
+    if (user?.companyFilter) {
+      return [user.companyFilter];
+    }
+    const companies = new Set<string>();
+    relevantLoads.forEach(load => {
+      if (load.company) {
+        companies.add(load.company);
+      }
+    });
+    return Array.from(companies).sort();
+  }, [loads, isClient, user]);
 
-  const CustomFieldDisplay = ({ label, value, icon: Icon }: { label: string, value?: string, icon?: React.ElementType }) => {
-    if (!value) return null;
-    return (
-      <div className="flex items-center text-xs text-muted-foreground mt-1">
-        {Icon && <Icon className="mr-1.5 h-3.5 w-3.5" />}
-        <span>{label}: {value}</span>
-      </div>
-    );
-  }
+  const filteredLoads = useMemo(() => {
+    let companyFilteredLoads = loads || [];
+    // Apply role-based filter first
+    if(user?.companyFilter) {
+      companyFilteredLoads = companyFilteredLoads.filter(t => t.company === user.companyFilter);
+    }
+    
+    return companyFilteredLoads.filter(load => {
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = load.id.toLowerCase().includes(searchLower) ||
+                            load.name.toLowerCase().includes(searchLower) ||
+                            (load.company && load.company.toLowerCase().includes(searchLower));
+      const matchesStatus = statusFilter === 'all' || load.status === statusFilter;
+      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || load.company?.toLowerCase() === companyFilter);
 
+      return matchesSearch && matchesStatus && finalCompanyMatch;
+    });
+  }, [loads, searchTerm, statusFilter, companyFilter, user]);
+  
+  const allStatuses: LoadStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 
-  const GridViewContent = () => (
-    <>
-      <div className="flex items-start justify-between">
-        <CardTitle className="text-xl group-hover:text-primary transition-colors mb-1">
-          ID: {trailer.id}
-        </CardTitle>
-        <Truck className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-      </div>
-
-      {trailer.arrivalDate ? (
-        isMounted ? (
-          <div className="flex items-center text-sm text-foreground mt-0.5 mb-2 font-semibold">
-            <CalendarDays className="mr-1.5 h-4 w-4 text-primary" />
-            <span>Arrived: {formatDate(trailer.arrivalDate)}</span>
-          </div>
+  const LoadListSkeleton = () => (
+    <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
+      {[1, 2, 3].map(i => (
+        viewMode === 'grid' ? (
+          <Card className="shadow-md flex flex-col h-full" key={i}>
+            <CardHeader className="pb-2">
+              <Skeleton className="h-5 w-20 self-start" />
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-8 w-8 rounded-full" />
+              </div>
+              <Skeleton className="h-4 w-1/2 mt-1 mb-1" /> {/* ID */}
+              <Skeleton className="h-4 w-1/3 mt-1 mb-1" /> {/* Company */}
+              <Skeleton className="h-3 w-2/5 mt-1 mb-1" /> {/* Arrival Date */}
+              <Skeleton className="h-3 w-2/5 mt-1 mb-1" /> {/* Storage Expiry Date */}
+              <Skeleton className="h-3 w-1/4 mt-1 mb-4" /> {/* Weight */}
+              
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <Skeleton className="h-4 w-1/4" />
+                  <Skeleton className="h-8 w-[130px]" />
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-4 w-10" />
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <Skeleton className="h-4 w-1/3" /> {/* Label for pieces */}
+                  <Skeleton className="h-4 w-10" /> {/* Value for pieces */}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="pt-4">
+              <div className="flex items-center justify-between w-full">
+                <Skeleton className="h-9 w-2/5" />
+                <Skeleton className="h-8 w-8" />
+              </div>
+            </CardFooter>
+          </Card>
         ) : (
-          <Skeleton className="h-4 w-3/4 mt-1 mb-2" />
-        )
-      ) : null}
-
-      {trailer.name ? (
-        isMounted ? (
-          <CardDescription className="text-xs text-muted-foreground mb-0.5">Name: {trailer.name}</CardDescription>
-        ) : (
-          <Skeleton className="h-3 w-1/2 mb-0.5" />
-        )
-      ) : null}
-
-      {trailer.company ? (
-        isMounted ? (
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Briefcase className="mr-1.5 h-3.5 w-3.5" />
-            <span>{trailer.company}</span>
-          </div>
-        ) : (
-          <Skeleton className="h-3 w-2/3" />
-        )
-      ) : null}
-
-      {trailer.sprattJobNumber ? (
-        isMounted ? (
-          <div className="flex items-center text-xs text-muted-foreground mt-1">
-            <Hash className="mr-1.5 h-3.5 w-3.5" />
-            <span>SJN: {trailer.sprattJobNumber}</span>
-          </div>
-        ) : (
-          <Skeleton className="h-3 w-1/2 mt-1" />
-        )
-      ) : null}
-
-      {trailer.storageExpiryDate ? (
-        isMounted ? (
-          <DateDisplay label="Storage Exp" dateString={trailer.storageExpiryDate} icon={CalendarDays} />
-        ) : (
-          <Skeleton className="h-3 w-1/2 mt-1" />
-        )
-      ) : null}
-
-      {trailer.weight !== undefined && trailer.weight !== null && (
-        isMounted ? (
-          <div className="flex items-center text-xs text-muted-foreground mt-1">
-            <Weight className="mr-1.5 h-3.5 w-3.5" />
-            <span>Weight: {trailer.weight} kg</span>
-          </div>
-        ) : (
-           <Skeleton className="h-3 w-1/3 mt-1" />
-        )
-      )}
-
-      {trailer.customField1 && (
-        isMounted ? (
-          <CustomFieldDisplay label="T1.1" value={trailer.customField1} icon={Tag} />
-        ) : (
-          <Skeleton className="h-3 w-1/3 mt-1" />
-        )
-      )}
-      {trailer.customField2 && (
-        isMounted ? (
-          <CustomFieldDisplay label="T1.2" value={trailer.customField2} icon={Tag} />
-        ) : (
-          <Skeleton className="h-3 w-1/3 mt-1" />
-        )
-      )}
-
-      <div className="mt-4 space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Status:</span>
-           <Select value={trailer.status} onValueChange={(newStatus) => onStatusChange(newStatus as TrailerStatus)}>
-            <SelectTrigger className="h-8 text-xs w-[130px]">
-              <SelectValue placeholder="Change status" />
-            </SelectTrigger>
-            <SelectContent>
-              {allStatuses.map(status => (
-                <SelectItem key={status} value={status} className="text-xs">
-                  <Badge className={`${statusColors[status]} text-white mr-2 w-3 h-3 p-0 inline-block rounded-full`} />
-                  {status}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Shipments:</span>
-          {isMounted ? (
-            <div className="flex items-center">
-              <Package className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span>{shipmentCount}</span>
+          <Card className="shadow-md w-full" key={i}>
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex-grow">
+                <Skeleton className="h-6 w-3/5 mb-1" />
+                <Skeleton className="h-4 w-2/5 mb-1" /> {/* ID */}
+                <Skeleton className="h-3 w-1/3 mt-1 mb-1" /> {/* Company */}
+                <Skeleton className="h-3 w-1/4 mt-1 mb-1" /> {/* Arrival Date */}
+                <Skeleton className="h-3 w-1/4 mt-1 mb-1" /> {/* Storage Expiry Date */}
+                <Skeleton className="h-3 w-1/5 mt-1 mb-2" /> {/* Weight */}
+                <div className="mt-2 flex items-center gap-4 text-sm">
+                  <Skeleton className="h-5 w-20" /> {/* Status Badge */}
+                  <Skeleton className="h-4 w-28" /> {/* Shipment Count */}
+                  <Skeleton className="h-4 w-24" /> {/* Pieces Count */}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-9 w-[130px] hidden sm:flex" /> {/* Status Select */}
+                <Skeleton className="h-9 w-32" /> {/* Manage Shipments button */}
+                <Skeleton className="h-8 w-8" /> {/* MoreVertical Dropdown */}
+              </div>
             </div>
-          ) : <Skeleton className="h-4 w-10" />}
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Total Pieces:</span>
-          {isMounted ? (
-            <div className="flex items-center">
-              <Boxes className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span>{totalPieces}</span>
-            </div>
-          ): <Skeleton className="h-4 w-10" />}
-        </div>
-      </div>
-    </>
-  );
-
-
-  const cardActions = (
-    <div className="flex items-center justify-end gap-1 w-full">
-       <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)} className="h-8">
-        <Edit className="mr-1.5 h-3.5 w-3.5" /> Edit
-      </Button>
-      <Button asChild variant="ghost" size="sm" className="text-primary hover:text-primary-foreground hover:bg-primary h-8">
-        <Link href={`/trailers/${trailer.id}`}>
-          Manage <ChevronRight className="ml-1 h-4 w-4" />
-        </Link>
-      </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreVertical className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Trailer
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </Card>
+        )
+      ))}
     </div>
   );
 
-  if (viewMode === 'list') {
-    return (
-      <>
-        <Card className="group transition-all hover:shadow-lg w-full">
-          <div className="p-4 flex items-center justify-between">
-            <div className="flex-grow">
-              <Link href={`/trailers/${trailer.id}`} className="block">
-                <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
-                  ID: {trailer.id}
-                </h3>
-                {trailer.arrivalDate ? (
-                  isMounted ? (
-                    <div className="flex items-center text-sm text-foreground mt-0.5 font-semibold">
-                      <CalendarDays className="mr-1.5 h-4 w-4 text-primary" />
-                      <span>Arrived: {formatDate(trailer.arrivalDate)}</span>
-                    </div>
-                  ) : (
-                    <Skeleton className="h-4 w-3/4 mt-0.5 mb-1" />
-                  )
-                ) : null}
-
-                {trailer.name ? (
-                  isMounted ? (
-                     <p className="text-xs text-muted-foreground mt-0.5">Name: {trailer.name}</p>
-                  ) : (
-                     <Skeleton className="h-3 w-1/2 mt-0.5" />
-                  )
-                ) : null}
-
-                {trailer.company ? (
-                  isMounted ? (
-                    <div className="mt-1 flex items-center text-xs text-muted-foreground">
-                      <Briefcase className="mr-1.5 h-3 w-3" />
-                      <span>{trailer.company}</span>
-                    </div>
-                  ) : (
-                     <Skeleton className="h-3 w-2/3 mt-1" />
-                  )
-                ) : null}
-
-                {trailer.sprattJobNumber ? (
-                  isMounted ? (
-                    <div className="flex items-center text-xs text-muted-foreground mt-1">
-                      <Hash className="mr-1.5 h-3.5 w-3.5" />
-                      <span>SJN: {trailer.sprattJobNumber}</span>
-                    </div>
-                  ) : (
-                    <Skeleton className="h-3 w-1/2 mt-1" />
-                  )
-                ) : null}
-                
-                {trailer.storageExpiryDate ? (
-                  isMounted ? (
-                    <DateDisplay label="Storage Exp" dateString={trailer.storageExpiryDate} icon={CalendarDays} />
-                  ) : (
-                     <Skeleton className="h-3 w-1/2 mt-1" />
-                  )
-                ) : null}
-
-                {trailer.weight !== undefined && trailer.weight !== null && (
-                  isMounted ? (
-                    <div className="flex items-center text-xs text-muted-foreground mt-1">
-                      <Weight className="mr-1.5 h-3.5 w-3.5" />
-                      <span>Weight: {trailer.weight} kg</span>
-                    </div>
-                  ) : (
-                    <Skeleton className="h-3 w-1/3 mt-1" />
-                  )
-                )}
-                {trailer.customField1 && (
-                  isMounted ? (
-                    <CustomFieldDisplay label="T1.1" value={trailer.customField1} icon={Tag} />
-                  ) : (
-                    <Skeleton className="h-3 w-1/3 mt-1" />
-                  )
-                )}
-                {trailer.customField2 && (
-                  isMounted ? (
-                    <CustomFieldDisplay label="T1.2" value={trailer.customField2} icon={Tag} />
-                  ) : (
-                    <Skeleton className="h-3 w-1/3 mt-1" />
-                  )
-                )}
-              </Link>
-              <div className="mt-2 flex items-center gap-4 text-sm">
-                <div className="flex items-center">
-                  <Badge className={`${statusColors[trailer.status]} text-white text-xs px-1.5 py-0.5`}>{trailer.status}</Badge>
-                </div>
-                <div className="flex items-center text-muted-foreground">
-                  <Package className="h-4 w-4 mr-1" />
-                  {isMounted ? <span>{shipmentCount} Shipments</span> : <Skeleton className="h-4 w-20" /> }
-                </div>
-                <div className="flex items-center text-muted-foreground">
-                  <Boxes className="h-4 w-4 mr-1" />
-                  {isMounted ? <span>{totalPieces} Pieces</span> : <Skeleton className="h-4 w-16" />}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Select value={trailer.status} onValueChange={(newStatus) => onStatusChange(newStatus as TrailerStatus)}>
-                <SelectTrigger className="h-9 text-xs w-[130px] hidden sm:flex">
-                  <SelectValue placeholder="Change status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {allStatuses.map(status => (
-                    <SelectItem key={status} value={status} className="text-xs">
-                      <Badge className={`${statusColors[status]} text-white mr-2 w-3 h-3 p-0 inline-block rounded-full`} />
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {cardActions}
-            </div>
-          </div>
-        </Card>
-        {isEditDialogOpen && (
-          <EditTrailerDialog
-            isOpen={isEditDialogOpen}
-            setIsOpen={setIsEditDialogOpen}
-            trailerToEdit={trailer}
-          />
-        )}
-        {isDeleteDialogOpen && (
-          <ConfirmationDialog
-            isOpen={isDeleteDialogOpen}
-            setIsOpen={setIsDeleteDialogOpen}
-            onConfirm={onDelete}
-            title="Delete Trailer?"
-            description={`Are you sure you want to delete trailer ID: ${trailer.id} (${trailer.name || 'No Name'})? This will also delete all its ${isMounted ? shipmentCount : '...'} associated shipments. This action cannot be undone.`}
-            confirmText="Delete"
-            confirmButtonVariant="destructive"
-          />
-        )}
-      </>
-    );
-  }
-
-  // Grid View
   return (
-    <>
-      <Card className="group transition-all hover:shadow-lg flex flex-col h-full">
-        <Link href={`/trailers/${trailer.id}`} className="block flex-grow flex flex-col">
-          <CardHeader className="pb-2">
-            <Badge className={`${statusColors[trailer.status]} text-white text-xs px-1.5 py-0.5 self-start`}>{trailer.status}</Badge>
-          </CardHeader>
-          <CardContent className="flex-grow">
-            <GridViewContent />
-          </CardContent>
-        </Link>
-        <CardFooter className="pt-4">
-          {cardActions}
-        </CardFooter>
-      </Card>
-      {isEditDialogOpen && (
-        <EditTrailerDialog
-          isOpen={isEditDialogOpen}
-          setIsOpen={setIsEditDialogOpen}
-          trailerToEdit={trailer}
-        />
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-card rounded-lg shadow">
+        <h1 className="text-3xl font-bold text-foreground">Load Dashboard</h1>
+        {user && !user.companyFilter && (
+          <Button onClick={() => setIsAddDialogOpen(true)} className="w-full sm:w-auto">
+            <PlusCircle className="mr-2 h-5 w-5" /> Add New Load
+          </Button>
+        )}
+      </div>
+
+      <div className="p-4 bg-card rounded-lg shadow space-y-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="relative flex-grow">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input 
+              placeholder="Search by ID, Name, or Company..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as LoadStatus | 'all')}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              {allStatuses.map(status => (
+                <SelectItem key={status} value={status}>{status}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {!user?.companyFilter && (
+            <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
+              <SelectTrigger className="w-full md:w-[200px]">
+                 <div className="flex items-center">
+                   <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
+                   <SelectValue placeholder="Filter by company" />
+                 </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Companies</SelectItem>
+                {isClient && uniqueCompanies.map(company => (
+                  <SelectItem key={company} value={company.toLowerCase()}>{company}</SelectItem>
+                ))}
+                {!isClient && <Skeleton className="h-8 w-full my-1" />}
+              </SelectContent>
+            </Select>
+          )}
+          <div className="flex gap-2">
+            <Button variant={viewMode === 'grid' ? 'default' : 'outline'} size="icon" onClick={() => setViewMode('grid')} aria-label="Grid view">
+              <LayoutGrid className="h-5 w-5" />
+            </Button>
+            <Button variant={viewMode === 'list' ? 'default' : 'outline'} size="icon" onClick={() => setViewMode('list')} aria-label="List view">
+              <ListFilter className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {!isClient ? (
+        <LoadListSkeleton />
+      ) : filteredLoads.length === 0 ? (
+        <div className="text-center py-10 bg-card rounded-lg shadow">
+          <p className="text-xl text-muted-foreground">No loads found.</p>
+          <p className="text-muted-foreground">Try adjusting your search or filter, or add a new load.</p>
+        </div>
+      ) : (
+        <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
+          {filteredLoads.map((load) => (
+            <LoadCard 
+              key={load.id} 
+              load={load} 
+              viewMode={viewMode}
+              onDelete={() => deleteLoad(load.id)}
+              onStatusChange={(newStatus) => updateLoadStatus(load.id, newStatus)}
+            />
+          ))}
+        </div>
       )}
-      {isDeleteDialogOpen && (
-        <ConfirmationDialog
-          isOpen={isDeleteDialogOpen}
-          setIsOpen={setIsDeleteDialogOpen}
-          onConfirm={onDelete}
-          title="Delete Trailer?"
-          description={`Are you sure you want to delete trailer ID: ${trailer.id} (${trailer.name || 'No Name'})? This will also delete all its ${isMounted ? shipmentCount : '...'} associated shipments. This action cannot be undone.`}
-          confirmText="Delete"
-          confirmButtonVariant="destructive"
-        />
-      )}
-    </>
+
+      {user && !user.companyFilter && <AddLoadDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
+    </div>
   );
 }

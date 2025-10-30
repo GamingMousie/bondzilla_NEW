@@ -4,7 +4,7 @@
 
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useCallback } from 'react';
-import type { Trailer, Shipment, TrailerStatus, ShipmentUpdateData, TrailerUpdateData, LocationInfo, QuizReport, TrailerFormData, ShipmentFormData } from '@/types';
+import type { Load, Shipment, LoadStatus, ShipmentUpdateData, LoadUpdateData, LocationInfo, QuizReport, LoadFormData, ShipmentFormData } from '@/types';
 import useLocalStorageState from '@/hooks/useLocalStorageState';
 import { v4 as uuidv4 } from 'uuid'; // Using uuid for unique shipment IDs
 import { addDays } from 'date-fns';
@@ -16,16 +16,16 @@ type AddShipmentContextData = Omit<Shipment, 'id' | 'locations' | 'releasedAt' |
 
 
 interface WarehouseContextType {
-  trailers: Trailer[];
-  addTrailer: (trailerData: TrailerFormData) => void;
-  updateTrailerStatus: (trailerId: string, status: TrailerStatus) => void;
-  updateTrailer: (trailerId: string, data: TrailerUpdateData) => void;
-  deleteTrailer: (trailerId: string) => void;
+  loads: Load[];
+  addLoad: (loadData: LoadFormData) => void;
+  updateLoadStatus: (loadId: string, status: LoadStatus) => void;
+  updateLoad: (loadId: string, data: LoadUpdateData) => void;
+  deleteLoad: (loadId: string) => void;
   shipments: Shipment[];
-  getShipmentsByTrailerId: (trailerId: string) => Shipment[];
-  addShipment: (shipment: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { trailerId: string }) => void;
+  getShipmentsByLoadId: (loadId: string) => Shipment[];
+  addShipment: (shipment: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string }) => void;
   deleteShipment: (shipmentId: string) => void;
-  getTrailerById: (trailerId: string) => Trailer | undefined;
+  getLoadById: (loadId: string) => Load | undefined;
   getShipmentById: (shipmentId: string) => Shipment | undefined;
   updateShipment: (shipmentId: string, data: ShipmentUpdateData) => void;
   markShipmentAsPrinted: (shipmentId: string) => void;
@@ -35,13 +35,13 @@ interface WarehouseContextType {
 
 const WarehouseContext = createContext<WarehouseContextType | undefined>(undefined);
 
-const TRAILER_STATUSES: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
+const LOAD_STATUSES: LoadStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 const COMPANIES = ["TCB", "Cardinal Maritime"];
 const IMPORTERS = ["ImpAlpha Co", "ImpBeta Ltd", "ImpGamma Inc", "ImpDelta LLC", "ImpEpsilon Group", "ImpZeta Corp", "ImpEta Solutions", "ImpTheta Global"];
 const EXPORTERS = ["ExpZeta Co", "ExpEta Ltd", "ExpTheta Inc", "ExpIota LLC", "ExpKappa Group", "ExpLambda Exports", "ExpMu Trading", "ExpNu Intl."];
 const LOCATION_PREFIXES = ["Bay ", "Shelf ", "Zone ", "Rack ", "Aisle ", "Area ", "Dock ", "Staging ", "Upper ", "Lower ", "East ", "West "];
 const LOCATION_SUFFIXES = ["A1", "B2-Top", "C3-Low", "D4", "E5-Mid", "F6", "G7-East", "H8-West", "J9", "K10", "L11", "M12"];
-const TRAILER_NAMES_PREFIX = ["Titan", "Voyager", "Goliath", "Pioneer", "Sprinter", "Juggernaut", "Comet", "Stallion"];
+const LOAD_NAMES_PREFIX = ["Titan", "Voyager", "Goliath", "Pioneer", "Sprinter", "Juggernaut", "Comet", "Stallion"];
 const COMMENTS_POOL = ["Handle with care, item is fragile.", "Urgent, needs to be dispatched by EOD.", "Check for seal integrity before offloading.", "Keep in dry storage only.", "Re-palletize on arrival."];
 
 
@@ -76,17 +76,17 @@ const generateRandomLocations = (): LocationInfo[] => {
   return locations;
 };
 
-const newInitialTrailers: Trailer[] = [];
+const newInitialLoads: Load[] = [];
 const newInitialShipments: Shipment[] = [];
-const baseTrailerIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994", "STS2995", "STS2996", "STS2997", "STS2998", "STS2999"];
+const baseLoadIds = ["STS2990", "STS2991", "STS2992", "STS2993", "STS2994", "STS2995", "STS2996", "STS2997", "STS2998", "STS2999"];
 let stsJobCounter = 10001;
 
-baseTrailerIds.forEach((trailerId, index) => {
+baseLoadIds.forEach((loadId, index) => {
   const arrivalDate = getRandomDate(-10, 10);
-  const newTrailer: Trailer = {
-    id: trailerId,
-    name: `${getRandomElement(TRAILER_NAMES_PREFIX)} Hauler ${index + 1}`,
-    status: getRandomElement(TRAILER_STATUSES),
+  const newLoad: Load = {
+    id: loadId,
+    name: `${getRandomElement(LOAD_NAMES_PREFIX)} Hauler ${index + 1}`,
+    status: getRandomElement(LOAD_STATUSES),
     company: getRandomElement(COMPANIES),
     sprattJobNumber: getRandomBoolean() ? `SJN-${getRandomNumber(10000, 99999)}` : undefined,
     arrivalDate: arrivalDate,
@@ -94,12 +94,12 @@ baseTrailerIds.forEach((trailerId, index) => {
     weight: getRandomNumber(2500, 5500, false),
     customField1: getRandomBoolean() ? `T1A-${getRandomNumber(100, 999)}` : undefined,
     customField2: getRandomBoolean() ? `T1B-${getRandomNumber(100, 999)}` : undefined,
-    outturnReportDocumentName: getRandomBoolean() ? `${trailerId}_outturn_${uuidv4().substring(0,4)}.pdf` : null,
-    t1SummaryDocumentName: getRandomBoolean() ? `${trailerId}_t1_${uuidv4().substring(0,4)}.pdf` : null,
-    manifestDocumentName: getRandomBoolean() ? `${trailerId}_manifest_${uuidv4().substring(0,4)}.pdf` : null,
-    acpDocumentName: getRandomBoolean() ? `ACP_${trailerId}_${new Date().getTime().toString().slice(-5)}.pdf` : null,
+    outturnReportDocumentName: getRandomBoolean() ? `${loadId}_outturn_${uuidv4().substring(0,4)}.pdf` : null,
+    t1SummaryDocumentName: getRandomBoolean() ? `${loadId}_t1_${uuidv4().substring(0,4)}.pdf` : null,
+    manifestDocumentName: getRandomBoolean() ? `${loadId}_manifest_${uuidv4().substring(0,4)}.pdf` : null,
+    acpDocumentName: getRandomBoolean() ? `ACP_${loadId}_${new Date().getTime().toString().slice(-5)}.pdf` : null,
   };
-  newInitialTrailers.push(newTrailer);
+  newInitialLoads.push(newLoad);
 
   for (let j = 0; j < 5; j++) {
     const isReleased = getRandomBoolean();
@@ -108,7 +108,7 @@ baseTrailerIds.forEach((trailerId, index) => {
 
     const newShipment: Shipment = {
       id: uuidv4(),
-      trailerId: newTrailer.id,
+      loadId: newLoad.id,
       stsJob: stsJobCounter++,
       customerJobNumber: getRandomBoolean() ? `CUST-${getRandomNumber(1000, 9999)}` : undefined,
       quantity: getRandomNumber(10, 300),
@@ -137,54 +137,54 @@ const initialQuizReports: QuizReport[] = [];
 
 
 export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
-  const [trailers, setTrailers] = useLocalStorageState<Trailer[]>('trailers', newInitialTrailers);
+  const [loads, setLoads] = useLocalStorageState<Load[]>('trailers', newInitialLoads);
   const [shipments, setShipments] = useLocalStorageState<Shipment[]>('shipments', newInitialShipments);
   const [quizReports, setQuizReports] = useLocalStorageState<QuizReport[]>('quizReports', initialQuizReports);
 
-  const addTrailer = useCallback((trailerData: TrailerFormData) => {
-    const newTrailer: Trailer = {
-      id: trailerData.id,
-      name: trailerData.name,
-      status: trailerData.status || 'Scheduled',
-      company: trailerData.company || undefined,
-      sprattJobNumber: trailerData.sprattJobNumber || undefined,
-      arrivalDate: trailerData.arrivalDate ? trailerData.arrivalDate.toISOString() : undefined,
-      storageExpiryDate: trailerData.storageExpiryDate ? trailerData.storageExpiryDate.toISOString() : undefined,
-      weight: trailerData.weight ?? undefined,
-      customField1: trailerData.customField1 || undefined,
-      customField2: trailerData.customField2 || undefined,
+  const addLoad = useCallback((loadData: LoadFormData) => {
+    const newLoad: Load = {
+      id: loadData.id,
+      name: loadData.name,
+      status: loadData.status || 'Scheduled',
+      company: loadData.company || undefined,
+      sprattJobNumber: loadData.sprattJobNumber || undefined,
+      arrivalDate: loadData.arrivalDate ? loadData.arrivalDate.toISOString() : undefined,
+      storageExpiryDate: loadData.storageExpiryDate ? loadData.storageExpiryDate.toISOString() : undefined,
+      weight: loadData.weight ?? undefined,
+      customField1: loadData.customField1 || undefined,
+      customField2: loadData.customField2 || undefined,
       outturnReportDocumentName: undefined,
       t1SummaryDocumentName: undefined,
       manifestDocumentName: undefined,
       acpDocumentName: undefined,
     };
-    setTrailers((prev) => [...prev, newTrailer]);
-  }, [setTrailers]);
+    setLoads((prev) => [...prev, newLoad]);
+  }, [setLoads]);
 
-  const updateTrailerStatus = useCallback((trailerId: string, status: TrailerStatus) => {
-    setTrailers((prev) =>
-      prev.map((t) => (t.id === trailerId ? { ...t, status } : t))
+  const updateLoadStatus = useCallback((loadId: string, status: LoadStatus) => {
+    setLoads((prev) =>
+      prev.map((t) => (t.id === loadId ? { ...t, status } : t))
     );
-  }, [setTrailers]);
+  }, [setLoads]);
 
-  const updateTrailer = useCallback((trailerId: string, data: TrailerUpdateData) => {
-    setTrailers(prev =>
+  const updateLoad = useCallback((loadId: string, data: LoadUpdateData) => {
+    setLoads(prev =>
       prev.map(t =>
-        t.id === trailerId ? { ...t, ...data } : t
+        t.id === loadId ? { ...t, ...data } : t
       )
     );
-  }, [setTrailers]);
+  }, [setLoads]);
 
-  const deleteTrailer = useCallback((trailerId: string) => {
-    setTrailers(prev => prev.filter(t => t.id !== trailerId));
-    setShipments(prev => prev.filter(s => s.trailerId !== trailerId));
-  }, [setTrailers, setShipments]);
+  const deleteLoad = useCallback((loadId: string) => {
+    setLoads(prev => prev.filter(t => t.id !== loadId));
+    setShipments(prev => prev.filter(s => s.loadId !== loadId));
+  }, [setLoads, setShipments]);
 
-  const getShipmentsByTrailerId = useCallback((trailerId: string) => {
-    return shipments.filter((s) => s.trailerId === trailerId);
+  const getShipmentsByLoadId = useCallback((loadId: string) => {
+    return shipments.filter((s) => s.loadId === loadId);
   }, [shipments]);
 
-  const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { trailerId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
+  const addShipment = useCallback((shipmentData: Omit<ShipmentFormData, 'releaseDocument' | 'clearanceDocument' | 'clearanceDate'> & { loadId: string; releaseDocumentName?: string; clearanceDocumentName?: string; }) => {
 
     let initialLocations: LocationInfo[];
     if (shipmentData.initialLocationName) {
@@ -195,7 +195,7 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
 
     const newShipment: Shipment = {
       id: uuidv4(),
-      trailerId: shipmentData.trailerId,
+      loadId: shipmentData.loadId,
       stsJob: shipmentData.stsJob,
       customerJobNumber: shipmentData.customerJobNumber || undefined,
       quantity: shipmentData.quantity,
@@ -292,9 +292,9 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
     setShipments(prev => prev.filter(s => s.id !== shipmentId));
   }, [setShipments]);
 
-  const getTrailerById = useCallback((trailerId: string) => {
-    return trailers.find(t => t.id === trailerId);
-  }, [trailers]);
+  const getLoadById = useCallback((loadId: string) => {
+    return loads.find(t => t.id === loadId);
+  }, [loads]);
 
   const getShipmentById = useCallback((shipmentId: string) => {
     return shipments.find(s => s.id === shipmentId);
@@ -309,17 +309,17 @@ export const WarehouseProvider = ({ children }: { children: ReactNode }) => {
   }, [setQuizReports]);
 
   const value = {
-    trailers,
-    addTrailer,
-    updateTrailerStatus,
-    updateTrailer,
-    deleteTrailer,
+    loads,
+    addLoad,
+    updateLoadStatus,
+    updateLoad,
+    deleteLoad,
     shipments,
-    getShipmentsByTrailerId,
+    getShipmentsByLoadId,
     addShipment,
     updateShipment,
     deleteShipment,
-    getTrailerById,
+    getLoadById,
     getShipmentById,
     markShipmentAsPrinted,
     quizReports,

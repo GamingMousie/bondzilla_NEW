@@ -4,23 +4,23 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
 import { useAuth } from '@/contexts/AuthContext';
-import TrailerCard from '@/components/trailer/TrailerCard';
-import AddTrailerDialog from '@/components/trailer/AddTrailerDialog';
+import LoadCard from '@/components/load/LoadCard';
+import AddLoadDialog from '@/components/load/AddLoadDialog';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, ListFilter, LayoutGrid, Search, Briefcase } from 'lucide-react'; // Added Briefcase
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { TrailerStatus } from '@/types';
+import type { LoadStatus } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
 export default function HomePage() {
-  const { trailers, deleteTrailer, updateTrailerStatus } = useWarehouse();
+  const { loads, deleteLoad, updateLoadStatus } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<TrailerStatus | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<LoadStatus | 'all'>('all');
   const [companyFilter, setCompanyFilter] = useState<string>('all'); // New state for company filter
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
@@ -34,42 +34,42 @@ export default function HomePage() {
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
-    let relevantTrailers = trailers;
+    let relevantLoads = loads;
     // If the user has a company filter, only show that company in the dropdown.
     if (user?.companyFilter) {
       return [user.companyFilter];
     }
     const companies = new Set<string>();
-    relevantTrailers.forEach(trailer => {
-      if (trailer.company) {
-        companies.add(trailer.company);
+    relevantLoads.forEach(load => {
+      if (load.company) {
+        companies.add(load.company);
       }
     });
     return Array.from(companies).sort();
-  }, [trailers, isClient, user]);
+  }, [loads, isClient, user]);
 
-  const filteredTrailers = useMemo(() => {
-    let companyFilteredTrailers = trailers;
+  const filteredLoads = useMemo(() => {
+    let companyFilteredLoads = loads || [];
     // Apply role-based filter first
     if(user?.companyFilter) {
-      companyFilteredTrailers = trailers.filter(t => t.company === user.companyFilter);
+      companyFilteredLoads = companyFilteredLoads.filter(t => t.company === user.companyFilter);
     }
     
-    return companyFilteredTrailers.filter(trailer => {
+    return companyFilteredLoads.filter(load => {
       const searchLower = searchTerm.toLowerCase();
-      const matchesSearch = trailer.id.toLowerCase().includes(searchLower) ||
-                            trailer.name.toLowerCase().includes(searchLower) ||
-                            (trailer.company && trailer.company.toLowerCase().includes(searchLower));
-      const matchesStatus = statusFilter === 'all' || trailer.status === statusFilter;
-      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || trailer.company?.toLowerCase() === companyFilter);
+      const matchesSearch = load.id.toLowerCase().includes(searchLower) ||
+                            load.name.toLowerCase().includes(searchLower) ||
+                            (load.company && load.company.toLowerCase().includes(searchLower));
+      const matchesStatus = statusFilter === 'all' || load.status === statusFilter;
+      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || load.company?.toLowerCase() === companyFilter);
 
       return matchesSearch && matchesStatus && finalCompanyMatch;
     });
-  }, [trailers, searchTerm, statusFilter, companyFilter, user]);
+  }, [loads, searchTerm, statusFilter, companyFilter, user]);
   
-  const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
+  const allStatuses: LoadStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 
-  const TrailerListSkeleton = () => (
+  const LoadListSkeleton = () => (
     <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
       {[1, 2, 3].map(i => (
         viewMode === 'grid' ? (
@@ -141,10 +141,10 @@ export default function HomePage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-card rounded-lg shadow">
-        <h1 className="text-3xl font-bold text-foreground">Trailer Dashboard</h1>
+        <h1 className="text-3xl font-bold text-foreground">Load Dashboard</h1>
         {user && !user.companyFilter && (
           <Button onClick={() => setIsAddDialogOpen(true)} className="w-full sm:w-auto">
-            <PlusCircle className="mr-2 h-5 w-5" /> Add New Trailer
+            <PlusCircle className="mr-2 h-5 w-5" /> Add New Load
           </Button>
         )}
       </div>
@@ -160,7 +160,7 @@ export default function HomePage() {
               className="pl-10"
             />
           </div>
-          <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as TrailerStatus | 'all')}>
+          <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as LoadStatus | 'all')}>
             <SelectTrigger className="w-full md:w-[180px]">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
@@ -200,27 +200,27 @@ export default function HomePage() {
       </div>
 
       {!isClient ? (
-        <TrailerListSkeleton />
-      ) : filteredTrailers.length === 0 ? (
+        <LoadListSkeleton />
+      ) : filteredLoads.length === 0 ? (
         <div className="text-center py-10 bg-card rounded-lg shadow">
-          <p className="text-xl text-muted-foreground">No trailers found.</p>
-          <p className="text-muted-foreground">Try adjusting your search or filter, or add a new trailer.</p>
+          <p className="text-xl text-muted-foreground">No loads found.</p>
+          <p className="text-muted-foreground">Try adjusting your search or filter, or add a new load.</p>
         </div>
       ) : (
         <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
-          {filteredTrailers.map((trailer) => (
-            <TrailerCard 
-              key={trailer.id} 
-              trailer={trailer} 
+          {filteredLoads.map((load) => (
+            <LoadCard 
+              key={load.id} 
+              load={load} 
               viewMode={viewMode}
-              onDelete={() => deleteTrailer(trailer.id)}
-              onStatusChange={(newStatus) => updateTrailerStatus(trailer.id, newStatus)}
+              onDelete={() => deleteLoad(load.id)}
+              onStatusChange={(newStatus) => updateLoadStatus(load.id, newStatus)}
             />
           ))}
         </div>
       )}
 
-      {user && !user.companyFilter && <AddTrailerDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
+      {user && !user.companyFilter && <AddLoadDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
     </div>
   );
 }
