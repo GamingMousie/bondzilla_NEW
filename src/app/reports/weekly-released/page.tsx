@@ -38,7 +38,7 @@ interface MonthlyReleasedReportItem {
 }
 
 export default function MonthlyReleasedReportPage() {
-  const { shipments, getTrailerById } = useWarehouse();
+  const { shipments, getTrailerById, trailers } = useWarehouse();
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [displayDate, setDisplayDate] = useState(new Date()); // Date to determine the month to display
@@ -72,7 +72,7 @@ export default function MonthlyReleasedReportPage() {
 
     let filteredShipments = shipments;
     if(user?.companyFilter) {
-        const companyTrailerIds = new Set(getTrailerById.trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
         filteredShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
     }
 
@@ -106,7 +106,7 @@ export default function MonthlyReleasedReportPage() {
         };
       })
       .sort((a, b) => parseISO(b.releasedAt).getTime() - parseISO(a.releasedAt).getTime()); // Sort by most recent first
-  }, [shipments, getTrailerById, isClient, currentPeriodStart, currentPeriodEnd, user]);
+  }, [shipments, getTrailerById, trailers, isClient, currentPeriodStart, currentPeriodEnd, user]);
 
   const handlePrintReport = () => {
     window.print();
