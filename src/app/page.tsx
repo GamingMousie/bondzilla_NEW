@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import TrailerCard from '@/components/trailer/TrailerCard';
 import AddTrailerDialog from '@/components/trailer/AddTrailerDialog';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 
 export default function HomePage() {
   const { trailers, deleteTrailer, updateTrailerStatus } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +26,11 @@ export default function HomePage() {
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    // If user is a customer, force filter by their company
+    if (user?.companyFilter) {
+      setCompanyFilter(user.companyFilter.toLowerCase());
+    }
+  }, [user]);
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
@@ -38,16 +44,25 @@ export default function HomePage() {
   }, [trailers, isClient]);
 
   const filteredTrailers = useMemo(() => {
-    return trailers.filter(trailer => {
+    let companyFilteredTrailers = trailers;
+    // Apply role-based filter first
+    if(user?.companyFilter) {
+      companyFilteredTrailers = trailers.filter(t => t.company === user.companyFilter);
+    }
+    
+    return companyFilteredTrailers.filter(trailer => {
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch = trailer.id.toLowerCase().includes(searchLower) ||
                             trailer.name.toLowerCase().includes(searchLower) ||
                             (trailer.company && trailer.company.toLowerCase().includes(searchLower));
       const matchesStatus = statusFilter === 'all' || trailer.status === statusFilter;
-      const matchesCompany = companyFilter === 'all' || (trailer.company?.toLowerCase() === companyFilter.toLowerCase());
-      return matchesSearch && matchesStatus && matchesCompany;
+      // If user has a company filter, this component's own filter is either "all" or their specific company.
+      const matchesCompany = companyFilter === 'all' || !user?.companyFilter ? (trailer.company?.toLowerCase() === companyFilter.toLowerCase()) : true;
+      const finalCompanyMatch = user?.companyFilter ? true : (companyFilter === 'all' || trailer.company?.toLowerCase() === companyFilter);
+
+      return matchesSearch && matchesStatus && finalCompanyMatch;
     });
-  }, [trailers, searchTerm, statusFilter, companyFilter]);
+  }, [trailers, searchTerm, statusFilter, companyFilter, user]);
   
   const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 
@@ -124,9 +139,11 @@ export default function HomePage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-card rounded-lg shadow">
         <h1 className="text-3xl font-bold text-foreground">Trailer Dashboard</h1>
-        <Button onClick={() => setIsAddDialogOpen(true)} className="w-full sm:w-auto">
-          <PlusCircle className="mr-2 h-5 w-5" /> Add New Trailer
-        </Button>
+        {user?.profile !== 'Customer' && (
+          <Button onClick={() => setIsAddDialogOpen(true)} className="w-full sm:w-auto">
+            <PlusCircle className="mr-2 h-5 w-5" /> Add New Trailer
+          </Button>
+        )}
       </div>
 
       <div className="p-4 bg-card rounded-lg shadow space-y-4">
@@ -151,21 +168,23 @@ export default function HomePage() {
               ))}
             </SelectContent>
           </Select>
-          <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
-            <SelectTrigger className="w-full md:w-[200px]">
-               <div className="flex items-center">
-                 <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
-                 <SelectValue placeholder="Filter by company" />
-               </div>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Companies</SelectItem>
-              {isClient && uniqueCompanies.map(company => (
-                <SelectItem key={company} value={company.toLowerCase()}>{company}</SelectItem>
-              ))}
-              {!isClient && <Skeleton className="h-8 w-full my-1" />}
-            </SelectContent>
-          </Select>
+          {!user?.companyFilter && (
+            <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
+              <SelectTrigger className="w-full md:w-[200px]">
+                 <div className="flex items-center">
+                   <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
+                   <SelectValue placeholder="Filter by company" />
+                 </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Companies</SelectItem>
+                {isClient && uniqueCompanies.map(company => (
+                  <SelectItem key={company} value={company.toLowerCase()}>{company}</SelectItem>
+                ))}
+                {!isClient && <Skeleton className="h-8 w-full my-1" />}
+              </SelectContent>
+            </Select>
+          )}
           <div className="flex gap-2">
             <Button variant={viewMode === 'grid' ? 'default' : 'outline'} size="icon" onClick={() => setViewMode('grid')} aria-label="Grid view">
               <LayoutGrid className="h-5 w-5" />
@@ -198,7 +217,7 @@ export default function HomePage() {
         </div>
       )}
 
-      <AddTrailerDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />
+      {user?.profile !== 'Customer' && <AddTrailerDialog isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
     </div>
   );
 }

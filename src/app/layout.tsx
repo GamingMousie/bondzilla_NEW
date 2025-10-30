@@ -7,6 +7,7 @@ import './globals.css'; // Ensure this path is correct
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
 import { WarehouseProvider } from '@/contexts/WarehouseContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 // Applying font variables directly to the <html> tag below.
 // This line can be removed if GeistSans.variable and GeistMono.variable are used directly.
@@ -30,13 +31,15 @@ export default function RootLayout({
         The body tag below only needs to contain the application structure.
       */}
       <body>
-        <WarehouseProvider>
-          <Header />
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
-          <Toaster />
-        </WarehouseProvider>
+        <AuthProvider>
+          <WarehouseProvider>
+            <Header />
+            <main className="container mx-auto px-4 py-8">
+              {children}
+            </main>
+            <Toaster />
+          </WarehouseProvider>
+        </AuthProvider>
       </body>
     </html>
   );

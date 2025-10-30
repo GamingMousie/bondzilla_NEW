@@ -1,0 +1,8 @@
+2025-10-29 16:53:53,444 DEBUG    root            Loaded Command Group: ['gcloud', 'config']
+2025-10-29 16:53:53,523 DEBUG    root            Loaded Command Group: ['gcloud', 'config', 'unset']
+2025-10-29 16:53:53,558 DEBUG    root            Running [gcloud.config.unset] with arguments: [SECTION/PROPERTY: "billing/quota_project"]
+2025-10-29 16:53:53,561 INFO     ___FILE_ONLY___ Unset property [billing/quota_project].
+
+2025-10-29 16:53:53,754 DEBUG    root            Chosen display Format:default
+2025-10-29 16:53:53,756 INFO     root            Display format: "default"
+2025-10-29 16:53:53,764 DEBUG    root            SDK update checks are disabled.

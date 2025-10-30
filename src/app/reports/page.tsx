@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Shipment, Trailer } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -25,7 +26,8 @@ interface BondCheckReportItem {
 }
 
 export default function ReportsPage() {
-  const { shipments, getTrailerById } = useWarehouse();
+  const { shipments, getTrailerById, trailers } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [companyFilter, setCompanyFilter] = useState<string>('all');
   const [clientGeneratedDate, setClientGeneratedDate] = useState<string | null>(null);
@@ -34,7 +36,10 @@ export default function ReportsPage() {
   useEffect(() => {
     setIsClient(true);
     setClientGeneratedDate(new Date().toLocaleDateString());
-  }, []);
+    if (user?.companyFilter) {
+      setCompanyFilter(user.companyFilter.toLowerCase());
+    }
+  }, [user]);
 
   const formatDateSafe = (dateString?: string) => {
     if (!dateString) return 'N/A';
@@ -48,7 +53,13 @@ export default function ReportsPage() {
   const rawBondCheckReportData = useMemo((): BondCheckReportItem[] => {
     if (!isClient) return [];
 
-    return shipments
+    let userShipments = shipments;
+    if (user?.companyFilter) {
+        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+        userShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+    }
+
+    return userShipments
       .filter(shipment => !shipment.releasedAt)
       .map(shipment => {
         const trailer = getTrailerById(shipment.trailerId);
@@ -90,7 +101,7 @@ export default function ReportsPage() {
         if (a.stsJob > b.stsJob) return 1;
         return 0;
       });
-  }, [shipments, getTrailerById, isClient]);
+  }, [shipments, getTrailerById, isClient, user, trailers]);
 
   const uniqueCompanies = useMemo(() => {
     if (!isClient) return [];
@@ -104,13 +115,13 @@ export default function ReportsPage() {
   }, [rawBondCheckReportData, isClient]);
 
   const filteredBondCheckReportData = useMemo(() => {
-    if (companyFilter === 'all') {
+    if (companyFilter === 'all' || user?.companyFilter) {
       return rawBondCheckReportData;
     }
     return rawBondCheckReportData.filter(item =>
       item.company?.toLowerCase() === companyFilter.toLowerCase()
     );
-  }, [rawBondCheckReportData, companyFilter]);
+  }, [rawBondCheckReportData, companyFilter, user]);
 
   const handlePrintReport = () => {
     window.print();
@@ -268,21 +279,23 @@ export default function ReportsPage() {
                 </CardDescription>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
-                    <SelectTrigger className="w-full sm:w-[220px]">
-                    <div className="flex items-center">
-                        <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
-                        <SelectValue placeholder="Filter by company" />
-                    </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                    <SelectItem value="all">All Companies</SelectItem>
-                    {isClient && uniqueCompanies.map(company => (
-                        <SelectItem key={company} value={company.toLowerCase()}>{company}</SelectItem>
-                    ))}
-                    {!isClient && <Skeleton className="h-8 w-full my-1" />}
-                    </SelectContent>
-                </Select>
+                { !user?.companyFilter && (
+                    <Select value={companyFilter} onValueChange={(value) => setCompanyFilter(value)}>
+                        <SelectTrigger className="w-full sm:w-[220px]">
+                        <div className="flex items-center">
+                            <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
+                            <SelectValue placeholder="Filter by company" />
+                        </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                        <SelectItem value="all">All Companies</SelectItem>
+                        {isClient && uniqueCompanies.map(company => (
+                            <SelectItem key={company} value={company.toLowerCase()}>{company}</SelectItem>
+                        ))}
+                        {!isClient && <Skeleton className="h-8 w-full my-1" />}
+                        </SelectContent>
+                    </Select>
+                )}
                  <Button onClick={handlePrintReport} variant="outline" className="w-full sm:w-auto">
                     <Printer className="mr-2 h-4 w-4" />
                     Print This Report
@@ -366,5 +379,3 @@ export default function ReportsPage() {
     </div>
   );
 }
-
-

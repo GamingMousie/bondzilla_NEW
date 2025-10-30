@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
+import { useAuth } from '@/contexts/AuthContext';
 import ShipmentCard from '@/components/shipment/ShipmentCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 
 export default function AllShipmentsPage() {
   const { shipments, trailers, deleteShipment } = useWarehouse();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [trailerIdFilter, setTrailerIdFilter] = useState<string | 'all'>('all');
@@ -25,7 +27,13 @@ export default function AllShipmentsPage() {
   }, []);
 
   const filteredShipments = useMemo(() => {
-    return shipments.filter(shipment => {
+    let userShipments = shipments;
+    if (user?.companyFilter) {
+        const companyTrailerIds = new Set(trailers.filter(t => t.company === user.companyFilter).map(t => t.id));
+        userShipments = shipments.filter(s => companyTrailerIds.has(s.trailerId));
+    }
+
+    return userShipments.filter(shipment => {
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch =
         shipment.id.toLowerCase().includes(searchLower) || 
@@ -40,7 +48,14 @@ export default function AllShipmentsPage() {
 
       return matchesSearch && matchesTrailerId;
     });
-  }, [shipments, searchTerm, trailerIdFilter]);
+  }, [shipments, trailers, searchTerm, trailerIdFilter, user]);
+
+  const availableTrailersForFilter = useMemo(() => {
+    if (user?.companyFilter) {
+        return trailers.filter(t => t.company === user.companyFilter);
+    }
+    return trailers;
+  }, [trailers, user]);
 
   const ShipmentListSkeleton = () => (
     <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-4"}>
@@ -123,7 +138,7 @@ export default function AllShipmentsPage() {
           <PackageSearch className="mr-3 h-8 w-8 text-primary" /> All Shipments
         </h1>
         <Badge variant="secondary" className="text-lg px-3 py-1">
-          Total: {isClient ? shipments.length : <Skeleton className="h-5 w-10 inline-block" />}
+          Total: {isClient ? filteredShipments.length : <Skeleton className="h-5 w-10 inline-block" />}
         </Badge>
       </div>
 
@@ -147,7 +162,7 @@ export default function AllShipmentsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Trailers</SelectItem>
-              {isClient && trailers.map(trailer => (
+              {isClient && availableTrailersForFilter.map(trailer => (
                 <SelectItem key={trailer.id} value={trailer.id}>
                   {trailer.name} ({trailer.id})
                 </SelectItem>
