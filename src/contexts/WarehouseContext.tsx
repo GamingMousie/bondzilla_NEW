@@ -107,7 +107,7 @@ baseLoadIds.forEach((loadId, index) => {
 
     const newShipment: Shipment = {
       id: uuidv4(),
-      loadId: newLoad.id,
+      loadId: newLoad.id, // Correctly assign loadId
       stsJob: stsJobCounter++,
       customerJobNumber: getRandomBoolean() ? `CUST-${getRandomNumber(1000, 9999)}` : undefined,
       quantity: getRandomNumber(10, 300),

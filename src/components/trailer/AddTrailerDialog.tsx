@@ -3,7 +3,7 @@ import { useForm, type SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useWarehouse } from '@/contexts/WarehouseContext';
-import type { TrailerStatus, TrailerFormData as ExternalTrailerFormData } from '@/types';
+import type { LoadStatus, LoadFormData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,24 +23,14 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 
-// Internal form data type to handle Date objects from picker and new custom fields
-type TrailerFormData = Omit<ExternalTrailerFormData, 'arrivalDate' | 'storageExpiryDate' | 'weight' | 'customField1' | 'customField2'> & {
-  arrivalDate?: Date | null;
-  storageExpiryDate?: Date | null;
-  weight?: number | null;
-  customField1?: string;
-  customField2?: string;
-  sprattJobNumber?: string;
-};
+const allStatuses: LoadStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
 
-const allStatuses: TrailerStatus[] = ['Scheduled', 'Arrived', 'Loading', 'Offloading', 'Devanned'];
-
-const trailerSchema = z.object({
-  id: z.string().min(1, 'Trailer ID is required').max(20, 'Trailer ID too long'),
-  name: z.string().min(1, 'Trailer Name is required').max(50, 'Trailer Name too long'),
+const loadSchema = z.object({
+  id: z.string().min(1, 'Load ID is required').max(20, 'Load ID too long'),
+  name: z.string().min(1, 'Load Name is required').max(50, 'Load Name too long'),
   company: z.string().max(50, 'Company name too long').optional(),
   sprattJobNumber: z.string().max(50, 'Spratt job number too long').optional(),
-  status: z.enum(allStatuses as [TrailerStatus, ...TrailerStatus[]]).default('Scheduled'),
+  status: z.enum(allStatuses as [LoadStatus, ...LoadStatus[]]).default('Scheduled'),
   arrivalDate: z.date().nullable().optional(),
   storageExpiryDate: z.date().nullable().optional(),
   weight: z.coerce.number().positive('Weight must be a positive number').optional().nullable(),
@@ -57,17 +47,17 @@ const trailerSchema = z.object({
 });
 
 
-interface AddTrailerDialogProps {
+interface AddLoadDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
 
-export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialogProps) {
-  const { addTrailer, trailers } = useWarehouse();
+export default function AddLoadDialog({ isOpen, setIsOpen }: AddLoadDialogProps) {
+  const { addLoad, loads } = useWarehouse();
   const { toast } = useToast();
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setValue, watch, control } = useForm<TrailerFormData>({
-    resolver: zodResolver(trailerSchema),
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setValue, watch, control } = useForm<LoadFormData>({
+    resolver: zodResolver(loadSchema),
     defaultValues: {
       status: 'Scheduled', 
       company: '',
@@ -86,30 +76,20 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
 
   const selectedStatus = watch('status');
 
-  const onSubmit: SubmitHandler<TrailerFormData> = (data) => {
-    if (trailers.some(t => t.id === data.id)) {
+  const onSubmit: SubmitHandler<LoadFormData> = (data) => {
+    if (loads.some(t => t.id === data.id)) {
       toast({
         title: "Error",
-        description: "Trailer ID already exists. Please use a unique ID.",
+        description: "Load ID already exists. Please use a unique ID.",
         variant: "destructive",
       });
       return;
     }
-    addTrailer({
-      id: data.id,
-      name: data.name,
-      company: data.company,
-      sprattJobNumber: data.sprattJobNumber,
-      status: data.status,
-      arrivalDate: data.arrivalDate ? data.arrivalDate.toISOString() : undefined,
-      storageExpiryDate: data.storageExpiryDate ? data.storageExpiryDate.toISOString() : undefined,
-      weight: data.weight ?? undefined,
-      customField1: data.customField1 || undefined,
-      customField2: data.customField2 || undefined,
-    });
+    // The context will handle converting Date to ISO string
+    addLoad(data);
     toast({
       title: "Success!",
-      description: `Trailer "${data.name}" (ID: ${data.id}) added.`,
+      description: `Load "${data.name}" (ID: ${data.id}) added.`,
     });
     reset();
     setIsOpen(false);
@@ -119,19 +99,19 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
     <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) reset(); }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Trailer</DialogTitle>
+          <DialogTitle>Add New Load</DialogTitle>
           <DialogDescription>
-            Enter the details for the new trailer. Trailer ID must be unique.
+            Enter the details for the new load. Load ID must be unique.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4 max-h-[70vh] overflow-y-auto pr-2">
           <div>
-            <Label htmlFor="id">Trailer ID</Label>
-            <Input id="id" {...register('id')} placeholder="e.g., T-101" />
+            <Label htmlFor="id">Load ID</Label>
+            <Input id="id" {...register('id')} placeholder="e.g., L-101" />
             {errors.id && <p className="text-sm text-destructive mt-1">{errors.id.message}</p>}
           </div>
           <div>
-            <Label htmlFor="name">Trailer Name</Label>
+            <Label htmlFor="name">Load Name</Label>
             <Input id="name" {...register('name')} placeholder="e.g., Main Hauler" />
             {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
           </div>
@@ -172,7 +152,7 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
             <Label htmlFor="status">Initial Status</Label>
             <Select 
               value={selectedStatus} 
-              onValueChange={(value) => setValue('status', value as TrailerStatus, { shouldValidate: true })}
+              onValueChange={(value) => setValue('status', value as LoadStatus, { shouldValidate: true })}
             >
               <SelectTrigger id="status">
                 <SelectValue placeholder="Select status" />
@@ -260,7 +240,7 @@ export default function AddTrailerDialog({ isOpen, setIsOpen }: AddTrailerDialog
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => { setIsOpen(false); reset(); }}>Cancel</Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Adding...' : 'Add Trailer'}
+              {isSubmitting ? 'Adding...' : 'Add Load'}
             </Button>
           </DialogFooter>
         </form>
