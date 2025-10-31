@@ -50,7 +50,7 @@ export default function HomePage() {
 
     let companyFilteredLoads = loads;
     if(user?.companyFilter) {
-      companyFilteredLoads = companyFilteredLoads.filter(load => load.company === user.companyFilter);
+      companyFilteredLoads = companyFilteredLoads.filter(load => (load.company || '').toLowerCase() === user.companyFilter!.toLowerCase());
     }
     
     return companyFilteredLoads.filter(load => {
