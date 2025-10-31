@@ -279,9 +279,9 @@ export default function LoadShipmentsPage() {
           <div class="flex items-start gap-4">
             <Truck class="h-12 w-12 text-primary mt-1" />
             <div>
-              <CardTitle class="text-3xl">{load.name}</CardTitle>
+              <CardTitle class="text-3xl">{load.id}</CardTitle>
               <CardDescription>
-                ID: {load.id} | Status: <span class="font-semibold">{load.status}</span>
+                Name: {load.name} | Status: <span class="font-semibold">{load.status}</span>
               </CardDescription>
               {load.company && (
                 <CardDescription class="mt-1 flex items-center">

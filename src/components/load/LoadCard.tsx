@@ -121,10 +121,11 @@ export default function LoadCard({ load, viewMode, onDelete, onStatusChange }: L
         </CardTitle>
         <Truck className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
       </div>
+      <CardDescription className="text-sm text-muted-foreground mb-1">
+        Name: {load.name}
+      </CardDescription>
 
        <DateDisplay label="Arrived" dateString={load.arrivalDate} icon={CalendarDays} />
-
-      {load.name && <CardDescription className="text-xs text-muted-foreground mb-0.5">Name: {load.name}</CardDescription>}
 
       {load.company && (
         <div className="flex items-center text-xs text-muted-foreground">
