@@ -6268,10 +6268,14 @@
                         "children": [
                           {
                             "type": "checkpoint",
-                            "title": "Pending file changes",
+                            "title": "swap TK07 and STS3034",
+                            "commitTimestamp": 1761911336,
+                            "commitHash": "fd29f0f",
                             "onrestore": {
                               "action": "rollback-version",
-                              "args": {}
+                              "args": {
+                                "gitSha": "fd29f0f"
+                              }
                             }
                           }
                         ]
@@ -6281,7 +6285,22 @@
                         "children": [
                           {
                             "type": "fileChanges",
+                            "commitHash": "fd29f0f",
                             "files": [
+                              {
+                                "filePath": ".idx/ai/threads/90a43272-cc5a-45fe-aac6-8f283626c06c/resources/image_c738e4bd-195d-4d32-8f06-efc2de3b3803.png",
+                                "status": "done",
+                                "op": "modify",
+                                "diffAdded": 0,
+                                "diffRemoved": 0
+                              },
+                              {
+                                "filePath": ".idx/ai/prototyper-thread.json",
+                                "status": "done",
+                                "op": "modify",
+                                "diffAdded": 244,
+                                "diffRemoved": 3
+                              },
                               {
                                 "filePath": "src/app/loads/[loadId]/page.tsx",
                                 "status": "done",
@@ -6310,11 +6329,103 @@
       ],
       "agentData": {},
       "uuid": "3dc18277-cd1d-4684-977b-f4b31de23aa0"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "user",
+        "displayName": "Klaudia Gardawska",
+        "shortName": "Klaudia",
+        "icon": "https://lh3.googleusercontent.com/a/ACg8ocKj474lcU9rWMAUOV9zM-TxbaSCnR0-qoczIr2U_-GiM61ygvoU"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "add a button to adding shipment for this trailer"
+        }
+      ],
+      "attachments": [
+        {
+          "type": "image",
+          "pngBase64": "",
+          "imageRef": {
+            "referenceId": "90a43272-cc5a-45fe-aac6-8f283626c06c/image_0da4716e-1a54-4331-8267-e6342d097429.png"
+          }
+        }
+      ],
+      "agentData": {},
+      "uuid": "d95d1c66-5caf-4360-8357-473b2e26063b"
+    },
+    {
+      "type": "message",
+      "speaker": {
+        "type": "agent",
+        "agentId": "prototyper",
+        "displayName": "Gemini",
+        "handle": "",
+        "icon": ":gemini"
+      },
+      "body": [
+        {
+          "type": "markdown",
+          "markdown": "Of course. I'll add an \"Add Shipment\" button to the empty state on the load details page. This will make it more intuitive to add the first shipment when a load is empty.\n\nHere are the changes:\n"
+        },
+        {
+          "type": "ui",
+          "ui": {
+            "type": "fragment",
+            "children": [
+              {
+                "type": "fragment",
+                "children": [
+                  {
+                    "type": "vStack",
+                    "children": [
+                      {
+                        "type": "fragment",
+                        "children": [
+                          {
+                            "type": "checkpoint",
+                            "title": "Pending file changes",
+                            "onrestore": {
+                              "action": "rollback-version",
+                              "args": {}
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "fragment",
+                        "children": [
+                          {
+                            "type": "fileChanges",
+                            "files": [
+                              {
+                                "filePath": "src/app/loads/[loadId]/page.tsx",
+                                "status": "done",
+                                "op": "modify",
+                                "diffAdded": 5,
+                                "diffRemoved": 3
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "agentData": {},
+      "uuid": "1ff1db65-55dc-4f57-b92c-4a7dba219164"
     }
   ],
   "status": "ready",
   "title": "thread.title",
-  "lastEditTimestamp": 1761911333433,
+  "lastEditTimestamp": 1761911418096,
   "thinkingText": "Checking for errors",
   "suggestedPrompts": []
 }

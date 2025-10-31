@@ -369,7 +369,11 @@ export default function LoadShipmentsPage() {
           {shipmentsForCurrentLoad.length === 0 ? (
             <div class="text-center py-10 border rounded-md bg-muted/20">
               <p class="text-xl text-muted-foreground">No shipments for this load yet.</p>
-               {user && !user.companyFilter && <p class="text-sm text-muted-foreground">Click "Add Shipment" to get started.</p>}
+               {user && !user.companyFilter && (
+                <Button onClick={() => setIsAddShipmentDialogOpen(true)} variant="outline" className="mt-4">
+                    <PlusCircle class="mr-2 h-5 w-5" /> Add Shipment
+                </Button>
+            )}
             </div>
           ) : (
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -416,5 +420,3 @@ export default function LoadShipmentsPage() {
     </div>
   );
 }
-
-    
