@@ -1,17 +1,17 @@
 
 'use client';
 
-import type { Shipment, Trailer } from '@/types';
+import type { Shipment, Load } from '@/types';
 import { Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import Barcode from 'react-barcode'; // Changed from named to default import
+import Barcode from 'react-barcode';
 import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
 
 interface ShipmentLabelProps {
   shipment: Shipment;
-  trailer: Trailer;
+  trailer: Load; // Changed to Load
   labelDate: string; // Expecting DD/MM/YYYY format
 }
 
@@ -58,7 +58,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
       const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.href = image;
-      link.download = `label-${trailer.id || 'unknown_trailer'}-${shipment.stsJob}.png`;
+      link.download = `label-${trailer.id || 'unknown_load'}-${shipment.stsJob}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -67,7 +67,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
     }
   };
 
-  const trailerIdDisplay = trailer.id || 'N/A';
+  const loadIdDisplay = trailer.id || 'N/A';
   const companyDisplay = trailer.company || 'N/A';
 
   return (
@@ -107,7 +107,7 @@ export default function ShipmentLabel({ shipment, trailer, labelDate }: Shipment
 
           {/* Trailer ID and Job Number */}
           <p className="print:text-[95pt] print:font-bold text-center print:mb-2"> {/* Changed from 100pt to 95pt */}
-            {trailerIdDisplay} / {shipment.stsJob}
+            {loadIdDisplay} / {shipment.stsJob}
           </p>
         </div>
 

@@ -145,3 +145,9 @@ export interface QuizReport {
   completedBy: string;
   items: AnsweredQuizItem[];
 }
+
+// Keep Trailer types for now to avoid breaking other un-migrated parts
+export type TrailerStatus = 'Scheduled' | 'Arrived' | 'Loading' | 'Offloading' | 'Devanned';
+export interface Trailer extends Load {}
+export interface TrailerUpdateData extends LoadUpdateData {}
+export interface TrailerFormData extends LoadFormData {}

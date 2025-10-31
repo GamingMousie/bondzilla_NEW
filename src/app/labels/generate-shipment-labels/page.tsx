@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useWarehouse } from '@/contexts/WarehouseContext';
-import type { Shipment, Trailer } from '@/types';
+import type { Shipment, Load } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,12 +19,12 @@ import { applyRecursivePrintStyles } from '@/lib/dom-to-image-style-utils';
 
 
 export default function GenerateShipmentLabelsPage() {
-  const { getTrailerById, getShipmentsByTrailerId } = useWarehouse();
+  const { getLoadById, getShipmentsByLoadId } = useWarehouse();
   const { toast } = useToast();
 
   const [isClient, setIsClient] = useState(false);
-  const [trailerIdInput, setTrailerIdInput] = useState('');
-  const [selectedTrailer, setSelectedTrailer] = useState<Trailer | null>(null);
+  const [loadIdInput, setLoadIdInput] = useState('');
+  const [selectedLoad, setSelectedLoad] = useState<Load | null>(null);
   const [shipmentsToLabel, setShipmentsToLabel] = useState<Shipment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,26 +36,26 @@ export default function GenerateShipmentLabelsPage() {
   }, []);
 
   const handleGenerateLabels = () => {
-    if (!trailerIdInput.trim()) {
-      setError('Please enter a Trailer ID.');
-      setSelectedTrailer(null);
+    if (!loadIdInput.trim()) {
+      setError('Please enter a Load ID.');
+      setSelectedLoad(null);
       setShipmentsToLabel([]);
       return;
     }
     setIsLoading(true);
     setError(null);
-    const trailer = getTrailerById(trailerIdInput.trim());
-    if (trailer) {
-      setSelectedTrailer(trailer);
-      const shipments = getShipmentsByTrailerId(trailer.id);
+    const load = getLoadById(loadIdInput.trim());
+    if (load) {
+      setSelectedLoad(load);
+      const shipments = getShipmentsByLoadId(load.id);
       setShipmentsToLabel(shipments);
       if (shipments.length === 0) {
-        setError(`No shipments found for Trailer ID: ${trailer.id}`);
+        setError(`No shipments found for Load ID: ${load.id}`);
       }
       const dateFormat = 'dd/MM/yyyy';
-      if (trailer.arrivalDate) {
+      if (load.arrivalDate) {
         try {
-          setLabelDateForShipments(format(parseISO(trailer.arrivalDate), dateFormat));
+          setLabelDateForShipments(format(parseISO(load.arrivalDate), dateFormat));
         } catch {
           setLabelDateForShipments(format(new Date(), dateFormat));
         }
@@ -63,15 +63,15 @@ export default function GenerateShipmentLabelsPage() {
         setLabelDateForShipments(format(new Date(), dateFormat));
       }
     } else {
-      setError(`Trailer with ID: ${trailerIdInput.trim()} not found.`);
-      setSelectedTrailer(null);
+      setError(`Load with ID: ${loadIdInput.trim()} not found.`);
+      setSelectedLoad(null);
       setShipmentsToLabel([]);
     }
     setIsLoading(false);
   };
 
   const handleDownloadAllLabelsAsPdf = async () => {
-    if (shipmentsToLabel.length === 0 || !selectedTrailer) {
+    if (shipmentsToLabel.length === 0 || !selectedLoad) {
       toast({
         title: "No Labels to Process",
         description: "Please generate labels first.",
@@ -153,7 +153,7 @@ export default function GenerateShipmentLabelsPage() {
       }
     }
 
-    pdf.save(`labels_trailer_${selectedTrailer.id}.pdf`);
+    pdf.save(`labels_load_${selectedLoad.id}.pdf`);
     toast({
       title: "PDF Generated",
       description: "The PDF with all labels has been downloaded.",
@@ -173,11 +173,11 @@ export default function GenerateShipmentLabelsPage() {
         <CardContent>
           <div className="flex flex-col sm:flex-row items-end gap-4">
             <div className="flex-grow">
-              <Label htmlFor="trailerIdInput" className="text-lg font-semibold">Enter Trailer ID:</Label>
+              <Label htmlFor="loadIdInput" className="text-lg font-semibold">Enter Load ID:</Label>
               <Input
-                id="trailerIdInput"
-                value={trailerIdInput}
-                onChange={(e) => setTrailerIdInput(e.target.value)}
+                id="loadIdInput"
+                value={loadIdInput}
+                onChange={(e) => setLoadIdInput(e.target.value)}
                 placeholder="e.g., STS2990"
                 className="mt-1 text-base"
               />
@@ -201,7 +201,7 @@ export default function GenerateShipmentLabelsPage() {
         </div>
       )}
 
-      {isClient && !isLoading && shipmentsToLabel.length > 0 && selectedTrailer && (
+      {isClient && !isLoading && shipmentsToLabel.length > 0 && selectedLoad && (
         <>
           <div className="flex justify-end gap-2 no-print mb-4">
             <Button onClick={handleDownloadAllLabelsAsPdf} variant="outline">
@@ -213,7 +213,7 @@ export default function GenerateShipmentLabelsPage() {
               <ShipmentLabel
                 key={shipment.id}
                 shipment={shipment}
-                trailer={selectedTrailer!}
+                trailer={selectedLoad}
                 labelDate={labelDateForShipments}
               />
             ))}
@@ -221,12 +221,12 @@ export default function GenerateShipmentLabelsPage() {
         </>
       )}
 
-      {isClient && !isLoading && !error && shipmentsToLabel.length === 0 && selectedTrailer && (
+      {isClient && !isLoading && !error && shipmentsToLabel.length === 0 && selectedLoad && (
         <Card className="mt-6">
           <CardContent className="pt-6 text-center">
             <PackageSearch className="mx-auto h-12 w-12 text-muted-foreground" />
             <p className="mt-4 text-xl text-muted-foreground">
-              No shipments found for Trailer ID: <span className="font-semibold">{selectedTrailer.id}</span>.
+              No shipments found for Load ID: <span className="font-semibold">{selectedLoad.id}</span>.
             </p>
           </CardContent>
         </Card>
