@@ -1,4 +1,5 @@
 
+
 export type LoadStatus = 'Scheduled' | 'Arrived' | 'Loading' | 'Offloading' | 'Devanned';
 
 export interface LocationInfo {
