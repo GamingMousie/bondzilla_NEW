@@ -172,21 +172,21 @@ export default function LoadShipmentsPage() {
 
   if (load === undefined) {
     return (
-      <div className="flex justify-center items-center h-[calc(100vh-200px)]">
-        <p className="text-xl text-muted-foreground">Loading load details...</p>
+      <div class="flex justify-center items-center h-[calc(100vh-200px)]">
+        <p class="text-xl text-muted-foreground">Loading load details...</p>
       </div>
     );
   }
 
   if (load === null) {
      return (
-        <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] space-y-4">
-          <Truck className="h-16 w-16 text-muted-foreground" />
-          <p className="text-2xl font-semibold text-destructive">Load Not Found</p>
-          <p className="text-xl text-muted-foreground">Could not find load with ID: {loadId}</p>
+        <div class="flex flex-col justify-center items-center h-[calc(100vh-200px)] space-y-4">
+          <Truck class="h-16 w-16 text-muted-foreground" />
+          <p class="text-2xl font-semibold text-destructive">Load Not Found</p>
+          <p class="text-xl text-muted-foreground">Could not find load with ID: {loadId}</p>
           <Button variant="outline" asChild>
             <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+              <ArrowLeft class="mr-2 h-4 w-4" /> Back to Dashboard
             </Link>
           </Button>
         </div>
@@ -204,125 +204,125 @@ export default function LoadShipmentsPage() {
     icon: React.ElementType, 
     documentField: LoadDocumentField 
   }) => (
-    <div className="py-4 border-t">
-      <h3 className="text-lg font-semibold flex items-center mb-2">
-        <Icon className="mr-2 h-5 w-5 text-primary" />
+    <div class="py-4 border-t">
+      <h3 class="text-lg font-semibold flex items-center mb-2">
+        <Icon class="mr-2 h-5 w-5 text-primary" />
         {title}
       </h3>
       {documentName ? (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-muted/50 rounded-md mb-2 gap-2">
-          <div className="flex items-center">
-            <FileText className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium break-all">{documentName}</span>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-muted/50 rounded-md mb-2 gap-2">
+          <div class="flex items-center">
+            <FileText class="mr-2 h-4 w-4 text-muted-foreground" />
+            <span class="text-sm font-medium break-all">{documentName}</span>
           </div>
-          <div className="flex gap-2 flex-shrink-0">
+          <div class="flex gap-2 flex-shrink-0">
             <Button
               variant="link"
               size="sm"
               onClick={() => handleViewDocument(documentName)}
               aria-label={`View ${title.toLowerCase()} ${documentName}`}
-              className="p-0 h-auto"
+              class="p-0 h-auto"
             >
-              <Eye className="mr-1 h-4 w-4" /> View
+              <Eye class="mr-1 h-4 w-4" /> View
             </Button>
             <Button
               variant="link"
               size="sm"
               onClick={() => handleDownloadDocument(documentName)}
               aria-label={`Download ${title.toLowerCase()} ${documentName}`}
-              className="p-0 h-auto text-primary"
+              class="p-0 h-auto text-primary"
             >
-              <Download className="mr-1 h-4 w-4" /> Download
+              <Download class="mr-1 h-4 w-4" /> Download
             </Button>
           </div>
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground mb-2">No {title.toLowerCase()} attached.</p>
+        <p class="text-sm text-muted-foreground mb-2">No {title.toLowerCase()} attached.</p>
       )}
       <Button
         variant="outline"
         size="sm"
         onClick={() => handleOpenAttachDialog(documentField, title, documentName)}
       >
-        {documentName ? <Edit className="mr-2 h-4 w-4" /> : <UploadCloud className="mr-2 h-4 w-4" />}
+        {documentName ? <Edit class="mr-2 h-4 w-4" /> : <UploadCloud class="mr-2 h-4 w-4" />}
         {documentName ? `Change/Remove ${title}` : `Add ${title}`}
       </Button>
-      <p className="text-xs text-muted-foreground mt-1">Manage the {title.toLowerCase()} PDF.</p>
+      <p class="text-xs text-muted-foreground mt-1">Manage the {title.toLowerCase()} PDF.</p>
     </div>
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+    <div class="space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
         <Button variant="outline" size="sm" asChild>
           <Link href="/">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+            <ArrowLeft class="mr-2 h-4 w-4" /> Back to Dashboard
           </Link>
         </Button>
-        <div className="flex gap-2 flex-wrap justify-center sm:justify-end">
+        <div class="flex gap-2 flex-wrap justify-center sm:justify-end">
           <Button variant="outline" size="sm" onClick={() => setIsEditDialogOpen(true)}>
-            <Edit className="mr-2 h-4 w-4" /> Edit Load Details
+            <Edit class="mr-2 h-4 w-4" /> Edit Load Details
           </Button>
           <Button variant="outline" size="sm" onClick={handleEmailDocuments}>
-            <Mail className="mr-2 h-4 w-4" /> Email Load Documents
+            <Mail class="mr-2 h-4 w-4" /> Email Load Documents
           </Button>
           <Button variant="outline" size="sm" asChild>
             <Link href={`/loads/${load.id}/print`}>
-              <Printer className="mr-2 h-4 w-4" /> Print Load ACP Form
+              <Printer class="mr-2 h-4 w-4" /> Print Load ACP Form
             </Link>
           </Button>
         </div>
       </div>
 
-      <Card className="shadow-lg">
+      <Card class="shadow-lg">
         <CardHeader>
-          <div className="flex items-start gap-4">
-            <Truck className="h-12 w-12 text-primary mt-1" />
+          <div class="flex items-start gap-4">
+            <Truck class="h-12 w-12 text-primary mt-1" />
             <div>
-              <CardTitle className="text-3xl">{load.name}</CardTitle>
+              <CardTitle class="text-3xl">{load.name}</CardTitle>
               <CardDescription>
-                ID: {load.id} | Status: <span className="font-semibold">{load.status}</span>
+                ID: {load.id} | Status: <span class="font-semibold">{load.status}</span>
               </CardDescription>
               {load.company && (
-                <CardDescription className="mt-1 flex items-center">
-                  <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Company: <span className="font-semibold ml-1">{load.company}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <Briefcase class="mr-2 h-4 w-4 text-muted-foreground" />
+                  Company: <span class="font-semibold ml-1">{load.company}</span>
                 </CardDescription>
               )}
                {load.sprattJobNumber && (
-                <CardDescription className="mt-1 flex items-center">
-                  <Briefcase className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Spratt Job Number: <span className="font-semibold ml-1">{load.sprattJobNumber}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <Briefcase class="mr-2 h-4 w-4 text-muted-foreground" />
+                  Spratt Job Number: <span class="font-semibold ml-1">{load.sprattJobNumber}</span>
                 </CardDescription>
               )}
               {load.weight !== undefined && load.weight !== null && (
-                <CardDescription className="mt-1 flex items-center">
-                  <Weight className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Weight: <span className="font-semibold ml-1">{load.weight} kg</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <Weight class="mr-2 h-4 w-4 text-muted-foreground" />
+                  Weight: <span class="font-semibold ml-1">{load.weight} kg</span>
                 </CardDescription>
               )}
                {load.arrivalDate && (
-                <CardDescription className="mt-1 flex items-center">
-                  <CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Arrival: <span className="font-semibold ml-1">{formatDate(load.arrivalDate)}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <CalendarDays class="mr-2 h-4 w-4 text-muted-foreground" />
+                  Arrival: <span class="font-semibold ml-1">{formatDate(load.arrivalDate)}</span>
                 </CardDescription>
               )}
               {load.storageExpiryDate && (
-                <CardDescription className="mt-1 flex items-center">
-                  <CalendarDays className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Storage Expiry: <span className="font-semibold ml-1">{formatDate(load.storageExpiryDate)}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <CalendarDays class="mr-2 h-4 w-4 text-muted-foreground" />
+                  Storage Expiry: <span class="font-semibold ml-1">{formatDate(load.storageExpiryDate)}</span>
                 </CardDescription>
               )}
               {load.customField1 && (
-                <CardDescription className="mt-1 flex items-center">
-                  <Tag className="mr-2 h-4 w-4 text-muted-foreground" />
-                  T1.1: <span className="font-semibold ml-1">{load.customField1}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <Tag class="mr-2 h-4 w-4 text-muted-foreground" />
+                  T1.1: <span class="font-semibold ml-1">{load.customField1}</span>
                 </CardDescription>
               )}
               {load.customField2 && (
-                <CardDescription className="mt-1 flex items-center">
-                  <Tag className="mr-2 h-4 w-4 text-muted-foreground" />
-                  T1.2: <span className="font-semibold ml-1">{load.customField2}</span>
+                <CardDescription class="mt-1 flex items-center">
+                  <Tag class="mr-2 h-4 w-4 text-muted-foreground" />
+                  T1.2: <span class="font-semibold ml-1">{load.customField2}</span>
                 </CardDescription>
               )}
             </div>
@@ -354,25 +354,25 @@ export default function LoadShipmentsPage() {
             documentField="acpDocumentName"
           />
 
-          <div className="flex justify-between items-center mb-6 pt-4 border-t mt-4">
-            <h2 className="text-2xl font-semibold flex items-center">
-              <Package className="mr-3 h-7 w-7 text-primary" />
+          <div class="flex justify-between items-center mb-6 pt-4 border-t mt-4">
+            <h2 class="text-2xl font-semibold flex items-center">
+              <Package class="mr-3 h-7 w-7 text-primary" />
               Shipments ({shipmentsForCurrentLoad.length})
             </h2>
             {user && !user.companyFilter && (
                 <Button onClick={() => setIsAddShipmentDialogOpen(true)}>
-                    <PlusCircle className="mr-2 h-5 w-5" /> Add Shipment
+                    <PlusCircle class="mr-2 h-5 w-5" /> Add Shipment
                 </Button>
             )}
           </div>
 
           {shipmentsForCurrentLoad.length === 0 ? (
-            <div className="text-center py-10 border rounded-md bg-muted/20">
-              <p className="text-xl text-muted-foreground">No shipments for this load yet.</p>
-               {user && !user.companyFilter && <p className="text-sm text-muted-foreground">Click "Add Shipment" to get started.</p>}
+            <div class="text-center py-10 border rounded-md bg-muted/20">
+              <p class="text-xl text-muted-foreground">No shipments for this load yet.</p>
+               {user && !user.companyFilter && <p class="text-sm text-muted-foreground">Click "Add Shipment" to get started.</p>}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {shipmentsForCurrentLoad.map((shipment) => (
                 <ShipmentCard
                   key={shipment.id}
@@ -416,3 +416,5 @@ export default function LoadShipmentsPage() {
     </div>
   );
 }
+
+    
